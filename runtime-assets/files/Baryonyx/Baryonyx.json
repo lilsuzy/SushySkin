@@ -1,0 +1,303 @@
+{
+  "name": "Baryonyx",
+  "quality": "compact",
+  "model": "Baryonyx.glb",
+  "body": {
+    "layerColors": {
+      "red": {
+        "hex": "4C666D",
+        "rgb": [
+          0.072272,
+          0.132868,
+          0.152926
+        ],
+        "default": false
+      },
+      "green": {
+        "hex": "9F8D79",
+        "rgb": [
+          0.346704,
+          0.266356,
+          0.191202
+        ],
+        "default": false
+      },
+      "blue": {
+        "hex": "6D473A",
+        "rgb": [
+          0.152926,
+          0.06301,
+          0.042311
+        ],
+        "default": false
+      },
+      "cyan": {
+        "hex": "926D50",
+        "rgb": [
+          0.287441,
+          0.152926,
+          0.08022
+        ],
+        "default": false
+      },
+      "magenta": {
+        "hex": "1F1F1F",
+        "rgb": [
+          0.013702,
+          0.013702,
+          0.013702
+        ],
+        "default": false
+      },
+      "yellow": {
+        "hex": "000000",
+        "rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "default": false
+      }
+    },
+    "shadingModel": "Subsurface",
+    "blendMode": "Opaque",
+    "mouthColor": {
+      "hex": "AA8275",
+      "rgb": [
+        0.4,
+        0.223047,
+        0.179468
+      ],
+      "default": true
+    },
+    "clawColor": {
+      "hex": "595448",
+      "rgb": [
+        0.1,
+        0.089582,
+        0.065104
+      ],
+      "default": true
+    },
+    "teethColor": {
+      "hex": "A08A74",
+      "rgb": [
+        0.35,
+        0.252261,
+        0.175
+      ],
+      "default": true
+    },
+    "detailScale": 12.0,
+    "skinNoiseTiling": 8.0,
+    "detailNormalIntensity": 2.0,
+    "extra": {
+      "scalars": {
+        "BloodAmount": 0.0,
+        "BoneWeightsRowsPerFrame": 0.0,
+        "CarcassGoreTiling": 0.5,
+        "DirectionWet": 0.0,
+        "DirtAmount": 0.0,
+        "DryBloodAmount": 0.0,
+        "DryDuckweedAmount": 0.0,
+        "DryMudAmount": 0.0,
+        "DuckweedAmount": 0.0,
+        "DustAmount": 0.0,
+        "EndFrame": 0.0,
+        "Frame": 0.0,
+        "FullWetAmount": 0.0,
+        "GrowthAmount": 1.0,
+        "HatchlingToJuvenilePoint": 0.33,
+        "IsEnvenomated": 0.0,
+        "IsFemale": 0.0,
+        "IsHallucinating": 0.0,
+        "IsSignaling": 0.0,
+        "LowFood": 0.0,
+        "LowHealth": 0.0,
+        "MorphCarcassGore": 0.0,
+        "MouthGore": 0.0,
+        "MudAmount": 0.0,
+        "NumBones": 0.0,
+        "NumFrames": 1.0,
+        "Playrate": 1.0,
+        "PrevFrame": 0.0,
+        "RottenCarcassGore": 0.0,
+        "SS_Mask_Intensity": 0.2,
+        "SampleRate": 30.0,
+        "SandAmount": 0.0,
+        "StartFrame": 0.0,
+        "TimeOffset": 0.0,
+        "VomitAmount": 0.0
+      },
+      "colors": {
+        "MinBBox": {
+          "hex": "000000",
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "default": false
+        },
+        "SizeBBox": {
+          "hex": "000000",
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "default": false
+        }
+      },
+      "switches": {
+        "UseSkinSystem": true
+      }
+    },
+    "patterns": {
+      "adult": [
+        {
+          "name": "1",
+          "path": "Textures/T_Baryonyx_Adult_Pattern_1.webp",
+          "label": "1"
+        },
+        {
+          "name": "2",
+          "path": "Textures/T_Baryonyx_Adult_Pattern_2.webp",
+          "label": "2"
+        },
+        {
+          "name": "3",
+          "path": "Textures/T_Baryonyx_Adult_Pattern_3.webp",
+          "label": "3"
+        },
+        {
+          "name": "4",
+          "path": "Textures/T_Baryonyx_Adult_Pattern_4_Royal.webp",
+          "label": "Royal"
+        },
+        {
+          "name": "5",
+          "path": "Textures/T_Baryonyx_Adult_Pattern_5_Brindle.webp",
+          "label": "Brindle"
+        }
+      ],
+      "juvenile": "Textures/T_Baryonyx_Juvenile_Pattern.webp",
+      "hatchling": "Textures/T_Baryonyx_Hatchling_Pattern.webp"
+    },
+    "palettes": {
+      "Palette1": {
+        "blue": "Textures/Gradients/Palette1/T_Baryonyx_palette1_BlueLayer.webp",
+        "cyan": "Textures/Gradients/Palette1/T_Baryonyx_palette1_CyanLayer.webp",
+        "green": "Textures/Gradients/Palette1/T_Baryonyx_palette1_GreenLayer.webp",
+        "magenta": "Textures/Gradients/Palette1/T_Baryonyx_palette1_MagentaLayer.webp",
+        "red": "Textures/Gradients/Palette1/T_Baryonyx_palette1_RedLayer.webp"
+      },
+      "Palette2": {
+        "blue": "Textures/Gradients/Palette2/T_Baryonyx_palette2_BlueLayer.webp",
+        "cyan": "Textures/Gradients/Palette2/T_Baryonyx_palette2_CyanLayer.webp",
+        "green": "Textures/Gradients/Palette2/T_Baryonyx_palette2_GreenLayer.webp",
+        "magenta": "Textures/Gradients/Palette2/T_Baryonyx_palette2_MagentaLayer.webp",
+        "red": "Textures/Gradients/Palette2/T_Baryonyx_palette2_RedLayer.webp"
+      },
+      "Palette4Royal": {
+        "blue": "Textures/Gradients/Palette4Royal/T_Baryonyx_palette4_Royal_BlueLayer.webp",
+        "cyan": "Textures/Gradients/Palette4Royal/T_Baryonyx_palette4_Royal_CyanLayer.webp",
+        "green": "Textures/Gradients/Palette4Royal/T_Baryonyx_palette4_Royal_GreenLayer.webp",
+        "magenta": "Textures/Gradients/Palette4Royal/T_Baryonyx_palette4_Royal_MagentaLayer.webp",
+        "red": "Textures/Gradients/Palette4Royal/T_Baryonyx_palette4_Royal_RedLayer.webp"
+      },
+      "Palette5Brindle": {
+        "blue": "Textures/Gradients/Palette5Brindle/T_Baryonyx_palette5_Brindle_BlueLayer.webp",
+        "cyan": "Textures/Gradients/Palette5Brindle/T_Baryonyx_palette5_Brindle_CyanLayer.webp",
+        "green": "Textures/Gradients/Palette5Brindle/T_Baryonyx_palette5_Brindle_GreenLayer.webp",
+        "magenta": "Textures/Gradients/Palette5Brindle/T_Baryonyx_palette5_Brindle_MagentaLayer.webp",
+        "red": "Textures/Gradients/Palette5Brindle/T_Baryonyx_palette5_Brindle_RedLayer.webp"
+      }
+    },
+    "maps": {
+      "mask": "Textures/T_Baryonyx_Mask_TMC.webp",
+      "vfxMask": "Textures/T_Baryonix_VFX_M.webp",
+      "albedo": "Textures/T_Baryonyx_Mask_Albedo.webp",
+      "skinNoise": "Textures/T_SkinNoise_M.webp"
+    }
+  },
+  "eye": {
+    "irisPrimary": {
+      "hex": "58442F",
+      "rgb": [
+        0.098958,
+        0.057769,
+        0.028347
+      ],
+      "default": false
+    },
+    "irisSecondary": {
+      "hex": "CDA174",
+      "rgb": [
+        0.609375,
+        0.355737,
+        0.174558
+      ],
+      "default": false
+    },
+    "sclera": {
+      "hex": "20100C",
+      "rgb": [
+        0.015,
+        0.005511,
+        0.00375
+      ],
+      "default": false
+    },
+    "irisScale": 0.6,
+    "irisOutlineScale": 0.452,
+    "pupilScale": 0.35,
+    "irisBlur": 1.0,
+    "extra": {
+      "scalars": {
+        "Blink": 1.0,
+        "Iris_Blur": 1.0,
+        "IsCarcass": 0.0
+      },
+      "colors": {
+        "EyeCarcassColor": {
+          "hex": "CADCD3",
+          "rgb": [
+            0.591667,
+            0.71,
+            0.650833
+          ],
+          "default": false
+        }
+      }
+    },
+    "eyeNormalTexture": "Textures/Eye/T_EyeBase_1_N.webp",
+    "irisTexture": "Textures/Eye/T_AnimalEyes_Iris_1.webp",
+    "pupilTexture": "Textures/Eye/T_AnimalEyes_Pupil_2.webp",
+    "scleraTexture": "Textures/Eye/T_Eye_Sclera_D.webp",
+    "flipbooks": {
+      "membrane": {
+        "path": "Textures/Eye/T_Membrane_D.webp",
+        "frames": 8,
+        "columns": 8,
+        "rows": 4,
+        "frameWidth": 128,
+        "frameHeight": 256
+      }
+    },
+    "composedTexture": "Textures/Eye/Baryonyx_Eye.webp"
+  },
+  "morphStages": [
+    "Juvenile",
+    "Adult",
+    "Elder"
+  ],
+  "growth": {
+    "stages": [
+      "Juvenile",
+      "Adult",
+      "Elder"
+    ],
+    "hatchlingToJuvenile": 0.33
+  }
+}

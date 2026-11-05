@@ -1,0 +1,303 @@
+{
+  "name": "Pachycephalosaurus",
+  "quality": "compact",
+  "model": "Pachycephalosaurus.glb",
+  "body": {
+    "layerColors": {
+      "red": {
+        "hex": "7C4538",
+        "rgb": [
+          0.2,
+          0.06,
+          0.04
+        ],
+        "default": false
+      },
+      "green": {
+        "hex": "807C71",
+        "rgb": [
+          0.215,
+          0.200348,
+          0.166326
+        ],
+        "default": false
+      },
+      "blue": {
+        "hex": "454A4D",
+        "rgb": [
+          0.06,
+          0.068883,
+          0.075
+        ],
+        "default": false
+      },
+      "cyan": {
+        "hex": "6C635E",
+        "rgb": [
+          0.15,
+          0.126135,
+          0.1125
+        ],
+        "default": false
+      },
+      "magenta": {
+        "hex": "2A2A2B",
+        "rgb": [
+          0.023047,
+          0.023047,
+          0.025
+        ],
+        "default": false
+      },
+      "yellow": {
+        "hex": "000000",
+        "rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "default": true
+      }
+    },
+    "shadingModel": "Subsurface",
+    "blendMode": "Opaque",
+    "mouthColor": {
+      "hex": "AA8275",
+      "rgb": [
+        0.4,
+        0.223047,
+        0.179468
+      ],
+      "default": true
+    },
+    "clawColor": {
+      "hex": "595448",
+      "rgb": [
+        0.1,
+        0.089582,
+        0.065104
+      ],
+      "default": true
+    },
+    "teethColor": {
+      "hex": "A08A74",
+      "rgb": [
+        0.35,
+        0.252261,
+        0.175
+      ],
+      "default": true
+    },
+    "detailScale": 16.0,
+    "skinNoiseTiling": 8.0,
+    "extra": {
+      "scalars": {
+        "BloodAmount": 0.0,
+        "BoneWeightsRowsPerFrame": 0.0,
+        "CarcassGoreTiling": 0.5,
+        "DirectionWet": 0.0,
+        "DirtAmount": 0.0,
+        "DryBloodAmount": 0.0,
+        "DryDuckweedAmount": 0.0,
+        "DryMudAmount": 0.0,
+        "DuckweedAmount": 0.0,
+        "DustAmount": 0.0,
+        "EndFrame": 0.0,
+        "Frame": 0.0,
+        "FullWetAmount": 0.0,
+        "GrowthAmount": 0.933333,
+        "HatchlingToJuvenilePoint": 0.33,
+        "IsEnvenomated": 0.0,
+        "IsFemale": 0.0,
+        "IsHallucinating": 0.0,
+        "IsSignaling": 0.0,
+        "LowFood": 0.0,
+        "LowHealth": 0.0,
+        "MorphCarcassGore": 0.0,
+        "MouthGore": 0.0,
+        "MudAmount": 0.0,
+        "NumBones": 0.0,
+        "NumFrames": 1.0,
+        "Playrate": 1.0,
+        "PrevFrame": 0.0,
+        "RottenCarcassGore": 0.0,
+        "SS_Mask_Intensity": 0.2,
+        "SampleRate": 30.0,
+        "SandAmount": 0.0,
+        "StartFrame": 0.0,
+        "TimeOffset": 0.0,
+        "VomitAmount": 0.0
+      },
+      "colors": {
+        "MinBBox": {
+          "hex": "000000",
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "default": false
+        },
+        "SizeBBox": {
+          "hex": "000000",
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "default": false
+        }
+      },
+      "switches": {
+        "UseSkinSystem": true
+      }
+    },
+    "patterns": {
+      "adult": [
+        {
+          "name": "1",
+          "path": "Textures/T_Pachycephalosaurus_Adult_Pattern_1.webp",
+          "label": "1"
+        },
+        {
+          "name": "2",
+          "path": "Textures/T_Pachycephalosaurus_Adult_Pattern_2.webp",
+          "label": "2"
+        },
+        {
+          "name": "3",
+          "path": "Textures/T_Pachycephalosaurus_Adult_Pattern_3.webp",
+          "label": "3"
+        },
+        {
+          "name": "4",
+          "path": "Textures/T_Pachycephalosaurus_Adult_Pattern_Ram_Male.webp",
+          "label": "Ram"
+        },
+        {
+          "name": "5",
+          "path": "Textures/T_Pachycephalosaurus_Adult_Pattern_TSL.webp",
+          "label": "TSL"
+        }
+      ],
+      "juvenile": "Textures/T_Pachycephalosaurus_Juvenile_Pattern.webp",
+      "hatchling": "Textures/T_Pachycephalosaurus_Hatchling_Pattern.webp"
+    },
+    "palettes": {
+      "Palette1": {
+        "blue": "Textures/Gradients/Palette1/T_Pachycephalosaurus_Palette1_BlueLayer.webp",
+        "cyan": "Textures/Gradients/Palette1/T_Pachycephalosaurus_Palette1_CyanLayer.webp",
+        "green": "Textures/Gradients/Palette1/T_Pachycephalosaurus_Palette1_GreenLayer.webp",
+        "red": "Textures/Gradients/Palette1/T_Pachycephalosaurus_Palette1_RedLayer.webp"
+      },
+      "Palette2": {
+        "blue": "Textures/Gradients/Palette2/T_Pachycephalosaurus_palette2_BlueLayer.webp",
+        "cyan": "Textures/Gradients/Palette2/T_Pachycephalosaurus_palette2_CyanLayer.webp",
+        "green": "Textures/Gradients/Palette2/T_Pachycephalosaurus_palette2_GreenLayer.webp",
+        "magenta": "Textures/Gradients/Palette2/T_Pachycephalosaurus_palette2_MagentaLayer.webp",
+        "red": "Textures/Gradients/Palette2/T_Pachycephalosaurus_palette2_RedLayer.webp"
+      },
+      "Palette4Ram": {
+        "blue": "Textures/Gradients/Palette4Ram/T_Pachycephalosaurus_paletteRam_BlueLayer.webp",
+        "cyan": "Textures/Gradients/Palette4Ram/T_Pachycephalosaurus_paletteRam_CyanLayer.webp",
+        "green": "Textures/Gradients/Palette4Ram/T_Pachycephalosaurus_paletteRam_GreenLayer.webp",
+        "magenta": "Textures/Gradients/Palette4Ram/T_Pachycephalosaurus_paletteRam_MagentaLayer.webp",
+        "red": "Textures/Gradients/Palette4Ram/T_Pachycephalosaurus_paletteRam_RedLayer.webp"
+      },
+      "Palette5TSL": {
+        "blue": "Textures/Gradients/Palette5TSL/T_Pachycephalosaurus_paletteTSL_BlueLayer.webp",
+        "cyan": "Textures/Gradients/Palette5TSL/T_Pachycephalosaurus_paletteTSL_CyanLayer.webp",
+        "green": "Textures/Gradients/Palette5TSL/T_Pachycephalosaurus_paletteTSL_GreenLayer.webp",
+        "magenta": "Textures/Gradients/Palette5TSL/T_Pachycephalosaurus_paletteTSL_MagentaLayer.webp",
+        "red": "Textures/Gradients/Palette5TSL/T_Pachycephalosaurus_paletteTSL_RedLayer.webp"
+      }
+    },
+    "maps": {
+      "mask": "Textures/T_Pachycephalosaurus_Mask_TMC.webp",
+      "vfxMask": "Textures/T_Pachycephalosaurus_Mask_VFX.webp",
+      "albedo": "Textures/T_Pachy_Default_New_Albedo.webp",
+      "skinNoise": "Textures/T_SkinNoise_M.webp"
+    }
+  },
+  "eye": {
+    "irisPrimary": {
+      "hex": "638289",
+      "rgb": [
+        0.125,
+        0.223317,
+        0.25
+      ],
+      "default": false
+    },
+    "irisSecondary": {
+      "hex": "90BC9A",
+      "rgb": [
+        0.278646,
+        0.5,
+        0.320991
+      ],
+      "default": false
+    },
+    "sclera": {
+      "hex": "2B211E",
+      "rgb": [
+        0.025,
+        0.015282,
+        0.013478
+      ],
+      "default": false
+    },
+    "irisScale": 0.65,
+    "irisOutlineScale": 0.6,
+    "pupilScale": 0.4,
+    "irisBlur": 1.0,
+    "extra": {
+      "scalars": {
+        "Blink": 1.0,
+        "Iris_Blur": 1.0,
+        "IsCarcass": 0.0
+      },
+      "colors": {
+        "EyeCarcassColor": {
+          "hex": "CADCD3",
+          "rgb": [
+            0.591667,
+            0.71,
+            0.650833
+          ],
+          "default": false
+        }
+      }
+    },
+    "eyeNormalTexture": "Textures/Eye/T_EyeBase_1_N.webp",
+    "irisTexture": "Textures/Eye/T_AnimalEyes_Iris_1.webp",
+    "pupilTexture": "Textures/Eye/T_AnimalEyes_Pupil_2.webp",
+    "scleraTexture": "Textures/Eye/T_Eye_Sclera_D.webp",
+    "flipbooks": {
+      "membrane": {
+        "path": "Textures/Eye/T_Membrane_D.webp",
+        "frames": 8,
+        "columns": 8,
+        "rows": 4,
+        "frameWidth": 128,
+        "frameHeight": 256
+      }
+    },
+    "composedTexture": "Textures/Eye/Pachycephalosaurus_Eye.webp"
+  },
+  "morphStages": [
+    "Juvenile",
+    "SubAdult",
+    "Adult",
+    "Elder"
+  ],
+  "growth": {
+    "stages": [
+      "Juvenile",
+      "SubAdult",
+      "Adult",
+      "Elder"
+    ],
+    "hatchlingToJuvenile": 0.33
+  }
+}

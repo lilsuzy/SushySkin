@@ -1,0 +1,280 @@
+{
+  "name": "Pteranodon",
+  "quality": "compact",
+  "model": "Pteranodon.glb",
+  "body": {
+    "layerColors": {
+      "red": {
+        "hex": "AAA288",
+        "rgb": [
+          0.4,
+          0.362264,
+          0.245283
+        ],
+        "default": false
+      },
+      "green": {
+        "hex": "BCB19E",
+        "rgb": [
+          0.5,
+          0.436633,
+          0.341584
+        ],
+        "default": false
+      },
+      "blue": {
+        "hex": "6C5F42",
+        "rgb": [
+          0.15,
+          0.115278,
+          0.054167
+        ],
+        "default": false
+      },
+      "cyan": {
+        "hex": "E1B05E",
+        "rgb": [
+          0.75,
+          0.43125,
+          0.1125
+        ],
+        "default": false
+      },
+      "magenta": {
+        "hex": "34302B",
+        "rgb": [
+          0.035,
+          0.03,
+          0.025
+        ],
+        "default": false
+      },
+      "yellow": {
+        "hex": "000000",
+        "rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "default": true
+      }
+    },
+    "shadingModel": "Subsurface",
+    "blendMode": "Opaque",
+    "mouthColor": {
+      "hex": "414242",
+      "rgb": [
+        0.05339,
+        0.05435,
+        0.05448
+      ],
+      "default": false
+    },
+    "clawColor": {
+      "hex": "3F3733",
+      "rgb": [
+        0.05,
+        0.038419,
+        0.033334
+      ],
+      "default": false
+    },
+    "teethColor": {
+      "hex": "A08A74",
+      "rgb": [
+        0.35,
+        0.252261,
+        0.175
+      ],
+      "default": true
+    },
+    "detailScale": 10.0,
+    "skinNoiseTiling": 8.0,
+    "detailNormalIntensity": 2.0,
+    "extra": {
+      "scalars": {
+        "BloodAmount": 0.0,
+        "BoneWeightsRowsPerFrame": 0.0,
+        "CarcassGoreTiling": 0.2,
+        "DirectionWet": 0.0,
+        "DirtAmount": 0.0,
+        "DryBloodAmount": 0.0,
+        "DryDuckweedAmount": 0.0,
+        "DryMudAmount": 0.0,
+        "DuckweedAmount": 0.0,
+        "DustAmount": 0.0,
+        "EndFrame": 0.0,
+        "Frame": 0.0,
+        "FullWetAmount": 0.0,
+        "GrowthAmount": 1.0,
+        "HatchlingToJuvenilePoint": 0.33,
+        "IsEnvenomated": 0.0,
+        "IsFemale": 0.0,
+        "IsHallucinating": 0.0,
+        "IsSignaling": 0.0,
+        "LowFood": 0.0,
+        "LowHealth": 0.0,
+        "MorphCarcassGore": 0.0,
+        "MouthGore": 0.0,
+        "MudAmount": 0.0,
+        "NumBones": 0.0,
+        "NumFrames": 1.0,
+        "Playrate": 1.0,
+        "PrevFrame": 0.0,
+        "RottenCarcassGore": 0.0,
+        "SS_Mask_Intensity": 0.2,
+        "SampleRate": 30.0,
+        "SandAmount": 0.0,
+        "StartFrame": 0.0,
+        "TimeOffset": 0.0,
+        "VomitAmount": 0.0,
+        "Wet_Roughness": 0.28
+      },
+      "colors": {
+        "MinBBox": {
+          "hex": "000000",
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "default": false
+        },
+        "SizeBBox": {
+          "hex": "000000",
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "default": false
+        }
+      },
+      "switches": {
+        "UseSkinSystem": true
+      }
+    },
+    "patterns": {
+      "adult": [
+        {
+          "name": "1",
+          "path": "Textures/T_Pteranodon_Adult_Pattern_1.webp",
+          "label": "1"
+        },
+        {
+          "name": "2",
+          "path": "Textures/T_Pteranodon_Adult_Pattern_2.webp",
+          "label": "2"
+        },
+        {
+          "name": "3",
+          "path": "Textures/T_Pteranodon_Adult_Pattern_3.webp",
+          "label": "3"
+        }
+      ],
+      "juvenile": "Textures/T_Pteranodon_Juvenile_Pattern.webp",
+      "hatchling": "Textures/T_Pteranodon_Hatcling_Pattern.webp"
+    },
+    "palettes": {
+      "Palette1": {
+        "blue": "Textures/Gradients/Palette1/T_Pteranodon_Palette1_BlueLayer.webp",
+        "cyan": "Textures/Gradients/Palette1/T_Pteranodon_Palette1_CyanLayer.webp",
+        "green": "Textures/Gradients/Palette1/T_Pteranodon_Palette1_GreenLayer.webp",
+        "magenta": "Textures/Gradients/Palette1/T_Pteranodon_Palette1_MagentaLayer.webp",
+        "red": "Textures/Gradients/Palette1/T_Pteranodon_Palette1_RedLayer.webp"
+      },
+      "Palette2": {
+        "blue": "Textures/Gradients/Palette2/T_Pteranodon_palette2_BlueLayer.webp",
+        "cyan": "Textures/Gradients/Palette2/T_Pteranodon_palette2_CyanLayer.webp",
+        "green": "Textures/Gradients/Palette2/T_Pteranodon_palette2_GreenLayer.webp",
+        "magenta": "Textures/Gradients/Palette2/T_Pteranodon_palette2_MagentaLayer.webp",
+        "red": "Textures/Gradients/Palette2/T_Pteranodon_palette2_RedLayer.webp"
+      }
+    },
+    "maps": {
+      "mask": "Textures/T_Pteranodon_Detail_M.webp",
+      "vfxMask": "Textures/T_Pteranodon_FX_M.webp",
+      "albedo": "Textures/T_Pteranodon_Albedo.webp",
+      "skinNoise": "Textures/T_SkinNoise_M.webp"
+    }
+  },
+  "eye": {
+    "irisPrimary": {
+      "hex": "C28522",
+      "rgb": [
+        0.539479,
+        0.234493,
+        0.015996
+      ],
+      "default": false
+    },
+    "irisSecondary": {
+      "hex": "C25622",
+      "rgb": [
+        0.539479,
+        0.093059,
+        0.015996
+      ],
+      "default": false
+    },
+    "sclera": {
+      "hex": "3F312D",
+      "rgb": [
+        0.05,
+        0.030563,
+        0.026956
+      ],
+      "default": false
+    },
+    "irisScale": 0.8,
+    "irisOutlineScale": 0.8,
+    "pupilScale": 0.5,
+    "irisBlur": 10.0,
+    "extra": {
+      "scalars": {
+        "Blink": 1.0,
+        "Iris_Blur": 10.0,
+        "IsCarcass": 0.0
+      },
+      "colors": {
+        "EyeCarcassColor": {
+          "hex": "CADCD3",
+          "rgb": [
+            0.591667,
+            0.71,
+            0.650833
+          ],
+          "default": false
+        }
+      }
+    },
+    "eyeNormalTexture": "Textures/Eye/T_EyeBase_1_N.webp",
+    "irisTexture": "Textures/Eye/T_AnimalEyes_Iris_1.webp",
+    "pupilTexture": "Textures/Eye/T_AnimalEyes_Pupil_1.webp",
+    "scleraTexture": "Textures/Eye/T_Eye_Sclera_D.webp",
+    "flipbooks": {
+      "membrane": {
+        "path": "Textures/Eye/T_Membrane_D.webp",
+        "frames": 8,
+        "columns": 8,
+        "rows": 4,
+        "frameWidth": 128,
+        "frameHeight": 256
+      }
+    },
+    "composedTexture": "Textures/Eye/Pteranodon_Eye.webp"
+  },
+  "morphStages": [
+    "Juvenile",
+    "Elder",
+    "Female"
+  ],
+  "growth": {
+    "stages": [
+      "Juvenile",
+      "Elder",
+      "Female"
+    ],
+    "hatchlingToJuvenile": 0.33
+  }
+}

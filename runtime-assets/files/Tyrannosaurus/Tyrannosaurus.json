@@ -1,0 +1,304 @@
+{
+  "name": "Tyrannosaurus",
+  "quality": "compact",
+  "model": "Tyrannosaurus.glb",
+  "body": {
+    "layerColors": {
+      "red": {
+        "hex": "6C3729",
+        "rgb": [
+          0.15,
+          0.038438,
+          0.0225
+        ],
+        "default": false
+      },
+      "green": {
+        "hex": "D3B48B",
+        "rgb": [
+          0.65,
+          0.455,
+          0.26
+        ],
+        "default": false
+      },
+      "blue": {
+        "hex": "594934",
+        "rgb": [
+          0.1,
+          0.067793,
+          0.035
+        ],
+        "default": false
+      },
+      "cyan": {
+        "hex": "897559",
+        "rgb": [
+          0.25,
+          0.17751,
+          0.1
+        ],
+        "default": false
+      },
+      "magenta": {
+        "hex": "342F29",
+        "rgb": [
+          0.035,
+          0.028448,
+          0.02275
+        ],
+        "default": false
+      },
+      "yellow": {
+        "hex": "000000",
+        "rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "default": false
+      }
+    },
+    "shadingModel": "Subsurface",
+    "blendMode": "Opaque",
+    "mouthColor": {
+      "hex": "7C5859",
+      "rgb": [
+        0.2,
+        0.097917,
+        0.099721
+      ],
+      "default": false
+    },
+    "clawColor": {
+      "hex": "595448",
+      "rgb": [
+        0.1,
+        0.089582,
+        0.065104
+      ],
+      "default": true
+    },
+    "teethColor": {
+      "hex": "A08A74",
+      "rgb": [
+        0.35,
+        0.252261,
+        0.175
+      ],
+      "default": true
+    },
+    "detailScale": 12.0,
+    "skinNoiseTiling": 8.0,
+    "detailNormalIntensity": 2.0,
+    "extra": {
+      "scalars": {
+        "BloodAmount": 0.0,
+        "BoneWeightsRowsPerFrame": 0.0,
+        "CarcassGoreTiling": 0.5,
+        "DirectionWet": 0.0,
+        "DirtAmount": 0.0,
+        "DryBloodAmount": 0.0,
+        "DryDuckweedAmount": 0.0,
+        "DryMudAmount": 0.0,
+        "DuckweedAmount": 0.0,
+        "DustAmount": 0.0,
+        "EndFrame": 0.0,
+        "Frame": 0.0,
+        "FullWetAmount": 0.0,
+        "GrowthAmount": 1.0,
+        "HatchlingToJuvenilePoint": 0.33,
+        "IsEnvenomated": 0.0,
+        "IsFemale": 0.0,
+        "IsHallucinating": 0.0,
+        "IsSignaling": 0.0,
+        "LowFood": 0.0,
+        "LowHealth": 0.0,
+        "MorphCarcassGore": 0.0,
+        "MouthGore": 0.0,
+        "MudAmount": 0.0,
+        "NumBones": 0.0,
+        "NumFrames": 1.0,
+        "Playrate": 1.0,
+        "PrevFrame": 0.0,
+        "RottenCarcassGore": 0.0,
+        "SS_Mask_Intensity": 0.2,
+        "SampleRate": 30.0,
+        "SandAmount": 0.0,
+        "StartFrame": 0.0,
+        "TimeOffset": 0.0,
+        "VomitAmount": 0.0
+      },
+      "colors": {
+        "MinBBox": {
+          "hex": "000000",
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "default": false
+        },
+        "SizeBBox": {
+          "hex": "000000",
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "default": false
+        }
+      },
+      "switches": {
+        "UseSkinSystem": true
+      }
+    },
+    "patterns": {
+      "adult": [
+        {
+          "name": "1",
+          "path": "Textures/T_Tyrannosaurus_Adult_Pattern_1.webp",
+          "label": "1"
+        },
+        {
+          "name": "2",
+          "path": "Textures/T_Tyrannosaurus_Adult_Pattern_2.webp",
+          "label": "2"
+        },
+        {
+          "name": "3",
+          "path": "Textures/T_Tyrannosaurus_Adult_Pattern_3.webp",
+          "label": "3"
+        },
+        {
+          "name": "4",
+          "path": "Textures/T_Tyrannosaurus_Adult_Pattern_4__Grizzly_V1__3_.webp",
+          "label": "Grizzly"
+        },
+        {
+          "name": "5",
+          "path": "Textures/T_Tyrannosaurus_Adult_Pattern_Simple.webp",
+          "label": "Simple"
+        }
+      ],
+      "juvenile": "Textures/T_Tyrannosaurus_Juvie_Pattern.webp",
+      "hatchling": "Textures/T_Tyrannosaurus_Hatchling_Pattern.webp"
+    },
+    "palettes": {
+      "Palette1": {
+        "blue": "Textures/Gradients/Palette1/T_Tyrannosaurus_Palette1_BlueLayer.webp",
+        "cyan": "Textures/Gradients/Palette1/T_Tyrannosaurus_Palette1_CyanLayer.webp",
+        "green": "Textures/Gradients/Palette1/T_Tyrannosaurus_Palette1_GreenLayer.webp",
+        "magenta": "Textures/Gradients/Palette1/T_Tyrannosaurus_Palette1_MagentaLayer.webp",
+        "red": "Textures/Gradients/Palette1/T_Tyrannosaurus_Palette1_RedLayer.webp"
+      },
+      "Palette2": {
+        "blue": "Textures/Gradients/Palette2/T_Tyrannosaurus_palette2_BlueLayer.webp",
+        "cyan": "Textures/Gradients/Palette2/T_Tyrannosaurus_palette2_CyanLayer.webp",
+        "green": "Textures/Gradients/Palette2/T_Tyrannosaurus_palette2_GreenLayer.webp",
+        "magenta": "Textures/Gradients/Palette2/T_Tyrannosaurus_palette2_MagentaLayer.webp",
+        "red": "Textures/Gradients/Palette2/T_Tyrannosaurus_palette2_RedLayer.webp"
+      },
+      "Palette3-Grizzly": {
+        "blue": "Textures/Gradients/Palette3-Grizzly/T_Tyrannosaurus_PaletteGrizzly_BlueLayer.webp",
+        "cyan": "Textures/Gradients/Palette3-Grizzly/T_Tyrannosaurus_PaletteGrizzly_CyanLayer.webp",
+        "green": "Textures/Gradients/Palette3-Grizzly/T_Tyrannosaurus_PaletteGrizzly_GreenLayer.webp",
+        "magenta": "Textures/Gradients/Palette3-Grizzly/T_Tyrannosaurus_PaletteGrizzly_MagentaLayer.webp",
+        "red": "Textures/Gradients/Palette3-Grizzly/T_Tyrannosaurus_PaletteGrizzly_RedLayer.webp",
+        "yellow": "Textures/Gradients/Palette3-Grizzly/T_Tyrannosaurus_PaletteGrizzly_YellowLayer.webp"
+      },
+      "Palette4-simple": {
+        "blue": "Textures/Gradients/Palette4-simple/T_Tyrannosaurus_paletteSimple_BlueLayer.webp",
+        "cyan": "Textures/Gradients/Palette4-simple/T_Tyrannosaurus_paletteSimple_CyanLayer.webp",
+        "green": "Textures/Gradients/Palette4-simple/T_Tyrannosaurus_paletteSimple_GreenLayer.webp"
+      }
+    },
+    "maps": {
+      "mask": "Textures/T_Tyrannosaurus_Mask_TMC.webp",
+      "vfxMask": "Textures/T_Tyrannosaurus_VFX_M.webp",
+      "albedo": "Textures/T_Tyrannosaurus_Albedo.webp",
+      "skinNoise": "Textures/T_SkinNoise_M.webp"
+    }
+  },
+  "eye": {
+    "irisPrimary": {
+      "hex": "6C2514",
+      "rgb": [
+        0.151042,
+        0.019077,
+        0.00708
+      ],
+      "default": false
+    },
+    "irisSecondary": {
+      "hex": "C76E00",
+      "rgb": [
+        0.567708,
+        0.154878,
+        0.0
+      ],
+      "default": false
+    },
+    "sclera": {
+      "hex": "20100C",
+      "rgb": [
+        0.015,
+        0.005511,
+        0.00375
+      ],
+      "default": false
+    },
+    "irisScale": 0.5,
+    "irisOutlineScale": 0.75,
+    "pupilScale": 0.25,
+    "irisBlur": 5.0,
+    "extra": {
+      "scalars": {
+        "Blink": 1.0,
+        "Iris_Blur": 5.0,
+        "IsCarcass": 0.0
+      },
+      "colors": {
+        "EyeCarcassColor": {
+          "hex": "CADCD3",
+          "rgb": [
+            0.591667,
+            0.71,
+            0.650833
+          ],
+          "default": false
+        }
+      }
+    },
+    "eyeNormalTexture": "Textures/Eye/T_EyeBase_1_N.webp",
+    "irisTexture": "Textures/Eye/T_AnimalEyes_Iris_2.webp",
+    "pupilTexture": "Textures/Eye/T_AnimalEyes_Pupil_3.webp",
+    "scleraTexture": "Textures/Eye/T_Eye_Sclera_D.webp",
+    "flipbooks": {
+      "membrane": {
+        "path": "Textures/Eye/T_Membrane_D.webp",
+        "frames": 8,
+        "columns": 8,
+        "rows": 4,
+        "frameWidth": 128,
+        "frameHeight": 256
+      }
+    },
+    "composedTexture": "Textures/Eye/Tyrannosaurus_Eye.webp"
+  },
+  "morphStages": [
+    "Hatchling",
+    "Juvenile",
+    "SubAdult",
+    "Elder"
+  ],
+  "growth": {
+    "stages": [
+      "Hatchling",
+      "Juvenile",
+      "SubAdult",
+      "Elder"
+    ],
+    "hatchlingToJuvenile": 0.33
+  }
+}

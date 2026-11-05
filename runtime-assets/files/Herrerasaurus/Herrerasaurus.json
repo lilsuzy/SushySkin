@@ -1,0 +1,302 @@
+{
+  "name": "Herrerasaurus",
+  "quality": "compact",
+  "model": "Herrerasaurus.glb",
+  "body": {
+    "layerColors": {
+      "red": {
+        "hex": "955556",
+        "rgb": [
+          0.298039,
+          0.090196,
+          0.094118
+        ],
+        "default": false
+      },
+      "green": {
+        "hex": "AAA382",
+        "rgb": [
+          0.4,
+          0.364706,
+          0.223529
+        ],
+        "default": false
+      },
+      "blue": {
+        "hex": "727F4D",
+        "rgb": [
+          0.168627,
+          0.211765,
+          0.07451
+        ],
+        "default": false
+      },
+      "cyan": {
+        "hex": "B0C35F",
+        "rgb": [
+          0.431373,
+          0.545098,
+          0.113725
+        ],
+        "default": false
+      },
+      "magenta": {
+        "hex": "4B5849",
+        "rgb": [
+          0.070588,
+          0.098039,
+          0.066667
+        ],
+        "default": false
+      },
+      "yellow": {
+        "hex": "000000",
+        "rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "default": true
+      }
+    },
+    "shadingModel": "Subsurface",
+    "blendMode": "Opaque",
+    "mouthColor": {
+      "hex": "AA8275",
+      "rgb": [
+        0.4,
+        0.223047,
+        0.179468
+      ],
+      "default": true
+    },
+    "clawColor": {
+      "hex": "A08A74",
+      "rgb": [
+        0.35,
+        0.252261,
+        0.175
+      ],
+      "default": false
+    },
+    "teethColor": {
+      "hex": "A08A74",
+      "rgb": [
+        0.35,
+        0.252261,
+        0.175
+      ],
+      "default": true
+    },
+    "detailScale": 12.0,
+    "skinNoiseTiling": 8.0,
+    "detailNormalIntensity": 2.0,
+    "extra": {
+      "scalars": {
+        "BloodAmount": 0.0,
+        "BoneWeightsRowsPerFrame": 0.0,
+        "CarcassGoreTiling": 0.2,
+        "DirectionWet": 0.0,
+        "DirtAmount": 0.0,
+        "DryBloodAmount": 0.0,
+        "DryDuckweedAmount": 0.0,
+        "DryMudAmount": 0.0,
+        "DuckweedAmount": 0.0,
+        "DustAmount": 0.0,
+        "EndFrame": 0.0,
+        "Frame": 0.0,
+        "FullWetAmount": 0.0,
+        "GrowthAmount": 1.0,
+        "HatchlingToJuvenilePoint": 0.33,
+        "IsEnvenomated": 0.0,
+        "IsFemale": 0.0,
+        "IsHallucinating": 0.0,
+        "IsSignaling": 0.0,
+        "LowFood": 0.0,
+        "LowHealth": 0.0,
+        "MorphCarcassGore": 0.0,
+        "MouthGore": 0.0,
+        "MudAmount": 0.0,
+        "NumBones": 0.0,
+        "NumFrames": 1.0,
+        "Playrate": 1.0,
+        "PrevFrame": 0.0,
+        "RottenCarcassGore": 0.0,
+        "SS_Mask_Intensity": 0.2,
+        "SampleRate": 30.0,
+        "SandAmount": 0.0,
+        "StartFrame": 0.0,
+        "TimeOffset": 0.0,
+        "VomitAmount": 0.0,
+        "Wet_Roughness": 0.28
+      },
+      "colors": {
+        "MinBBox": {
+          "hex": "000000",
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "default": false
+        },
+        "SizeBBox": {
+          "hex": "000000",
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "default": false
+        }
+      },
+      "switches": {
+        "UseSkinSystem": true
+      }
+    },
+    "patterns": {
+      "adult": [
+        {
+          "name": "1",
+          "path": "Textures/Herrera_Adult_Pattern.webp",
+          "label": "Default"
+        },
+        {
+          "name": "2",
+          "path": "Textures/Herrera_Adult_Pattern_2.webp",
+          "label": "2"
+        },
+        {
+          "name": "3",
+          "path": "Textures/T_Herrerasaurus_Adult_Pattern_3.webp",
+          "label": "3"
+        },
+        {
+          "name": "4",
+          "path": "Textures/T_Herrerasaurus_Adult_Pattern_4.webp",
+          "label": "4"
+        },
+        {
+          "name": "5",
+          "path": "Textures/T_Herrerasaurus_Adult_Pattern_5.webp",
+          "label": "5"
+        }
+      ],
+      "juvenile": "Textures/Herrera_Juvie_Pattern.webp",
+      "hatchling": "Textures/Herrera_Hatch_Pattern.webp"
+    },
+    "palettes": {
+      "Palette1": {
+        "blue": "Textures/Gradients/Palette1/T_Herrerasaurus_Palette1_BlueLayer.webp",
+        "cyan": "Textures/Gradients/Palette1/T_Herrerasaurus_Palette1_CyanLayer.webp",
+        "green": "Textures/Gradients/Palette1/T_Herrerasaurus_Palette1_GreenLayer.webp",
+        "magenta": "Textures/Gradients/Palette1/T_Herrerasaurus_Palette1_MagentaLayer.webp",
+        "red": "Textures/Gradients/Palette1/T_Herrerasaurus_Palette1_RedLayer.webp"
+      },
+      "Palette2": {
+        "blue": "Textures/Gradients/Palette2/T_Herrerasaurus_palette2_BlueLayer.webp",
+        "cyan": "Textures/Gradients/Palette2/T_Herrerasaurus_palette2_CyanLayer.webp",
+        "green": "Textures/Gradients/Palette2/T_Herrerasaurus_palette2_GreenLayer.webp",
+        "magenta": "Textures/Gradients/Palette2/T_Herrerasaurus_palette2_MagentaLayer.webp",
+        "red": "Textures/Gradients/Palette2/T_Herrerasaurus_palette2_RedLayer.webp"
+      },
+      "Palette5": {
+        "blue": "Textures/Gradients/Palette5/T_Herrerasaurus_palette5_BlueLayer.webp",
+        "cyan": "Textures/Gradients/Palette5/T_Herrerasaurus_palette5_CyanLayer.webp",
+        "green": "Textures/Gradients/Palette5/T_Herrerasaurus_palette5_GreenLayer.webp",
+        "magenta": "Textures/Gradients/Palette5/T_Herrerasaurus_palette5_MagentaLayer.webp",
+        "red": "Textures/Gradients/Palette5/T_Herrerasaurus_palette5_RedLayer.webp"
+      },
+      "PaletteOcelot": {
+        "blue": "Textures/Gradients/PaletteOcelot/T_Herrerasaurus_paletteOcelot_BlueLayer.webp",
+        "cyan": "Textures/Gradients/PaletteOcelot/T_Herrerasaurus_paletteOcelot_CyanLayer.webp",
+        "green": "Textures/Gradients/PaletteOcelot/T_Herrerasaurus_paletteOcelot_GreenLayer.webp",
+        "magenta": "Textures/Gradients/PaletteOcelot/T_Herrerasaurus_paletteOcelot_MagentaLayer.webp",
+        "red": "Textures/Gradients/PaletteOcelot/T_Herrerasaurus_paletteOcelot_RedLayer.webp"
+      }
+    },
+    "maps": {
+      "mask": "Textures/T_Herrerasaurus_M.webp",
+      "vfxMask": "Textures/T_Herrerasaurus_FX_M.webp",
+      "albedo": "Textures/T_Herrerasaurus_Albedo.webp",
+      "skinNoise": "Textures/T_SkinNoise_M.webp"
+    }
+  },
+  "eye": {
+    "irisPrimary": {
+      "hex": "FF6100",
+      "rgb": [
+        2.421875,
+        0.121094,
+        0.0
+      ],
+      "default": false
+    },
+    "irisSecondary": {
+      "hex": "FFEC00",
+      "rgb": [
+        5.0,
+        0.833333,
+        0.0
+      ],
+      "default": false
+    },
+    "sclera": {
+      "hex": "3F312D",
+      "rgb": [
+        0.05,
+        0.030563,
+        0.026956
+      ],
+      "default": false
+    },
+    "irisScale": 0.6,
+    "irisOutlineScale": 0.75,
+    "pupilScale": 0.5,
+    "irisBlur": 3.0,
+    "extra": {
+      "scalars": {
+        "Blink": 1.0,
+        "Iris_Blur": 3.0,
+        "IsCarcass": 0.0
+      },
+      "colors": {
+        "EyeCarcassColor": {
+          "hex": "CADCD3",
+          "rgb": [
+            0.591667,
+            0.71,
+            0.650833
+          ],
+          "default": false
+        }
+      }
+    },
+    "eyeNormalTexture": "Textures/Eye/T_EyeBase_1_N.webp",
+    "irisTexture": "Textures/Eye/T_AnimalEyes_Iris_2.webp",
+    "pupilTexture": "Textures/Eye/T_AnimalEyes_Pupil_1.webp",
+    "scleraTexture": "Textures/Eye/T_Eye_Sclera_D.webp",
+    "flipbooks": {
+      "membrane": {
+        "path": "Textures/Eye/T_Membrane_D.webp",
+        "frames": 8,
+        "columns": 8,
+        "rows": 4,
+        "frameWidth": 128,
+        "frameHeight": 256
+      }
+    },
+    "composedTexture": "Textures/Eye/Herrerasaurus_Eye.webp"
+  },
+  "morphStages": [
+    "Juvenile",
+    "Elder"
+  ],
+  "growth": {
+    "stages": [
+      "Juvenile",
+      "Elder"
+    ],
+    "hatchlingToJuvenile": 0.33
+  }
+}

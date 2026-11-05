@@ -1,0 +1,3932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sushy Skin Editor</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cedarville+Cursive&family=Honk:MORF@15&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@1..144,1..1000&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 5px;
+            background: #0e0e0e;
+            color: #ffffff;
+            font-family: "Cedarville Cursive", cursive;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        #sidebar {
+            width: 360px;
+            flex: 0 0 360px;
+            background: linear-gradient(145deg, rgba(37, 24, 33, 0.58), rgba(24, 14, 21, 0.58));
+            padding: 25px;
+            margin: 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(253, 88, 185, 0.2);
+            backdrop-filter: blur(5px);
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            z-index: 10;
+        }
+        #viewer-container {
+            position: fixed;
+            inset: 0;
+            flex-grow: 1;
+            z-index: 0;
+        }
+        #viewer-message {
+            position: absolute;
+            inset: 20px;
+            display: grid;
+            place-items: center;
+            color: #ffffff;
+            font: 14px/1.5 "Google Sans Flex", sans-serif;
+            text-align: center;
+            white-space: pre-line;
+            pointer-events: none;
+        }
+        #viewer-message[hidden] {
+            display: none;
+        }
+        h2 { 
+            font-size: 45px; 
+            margin-top: 0px; 
+            color: #ee0909;
+            font-family: "Honk", system-ui;
+            text-align: center;
+            margin-bottom: 0px; 
+        }
+        @font-palette-values --title-green {
+            font-family: "Honk";
+            override-colors: 2 #eaffb0, 3 #b5f58c, 4 #6fe08a, 5 #3cc97e, 6 #1fb37a, 7 #1fb37a;
+        }
+        @font-palette-values --title-blue {
+            font-family: "Honk";
+            override-colors: 2 #d9f0ff, 3 #a8d4ff, 4 #78b4ff, 5 #4d90f5, 6 #3a6de0, 7 #3a6de0;
+        }
+        @font-palette-values --title-red {
+            font-family: "Honk";
+            override-colors: 2 #ffe9b0, 3 #ffc080, 4 #ff8f6a, 5 #ff5a50, 6 #e83030, 7 #e83030;
+        }
+        @font-palette-values --title-grey {
+            font-family: "Honk";
+            override-colors: 2 #f5f5f5, 3 #dcdce0, 4 #bdbdc4, 5 #9e9ea6, 6 #80808a, 7 #80808a;
+        }
+        @font-palette-values --title-purple {
+            font-family: "Honk";
+            override-colors: 2 #f0dcff, 3 #d9b4ff, 4 #bb8cff, 5 #9c64f0, 6 #7e45d6, 7 #7e45d6;
+        }
+        @font-palette-values --title-orange {
+            font-family: "Honk";
+            override-colors: 2 #fff0b0, 3 #ffd27a, 4 #ffaa4d, 5 #ff8a2a, 6 #e8680f, 7 #e8680f;
+        }
+        .author-text {
+            font-size: 25px; 
+            color: rgb(253, 88, 185);
+            opacity: 0.8;
+            margin-top: -10px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        /* Species Selection Style */
+        .select-container {
+            min-width: 0;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .select-container label {
+            font-family: "Google Sans Flex", sans-serif;
+            font-size: 14px;
+            color: rgb(253, 88, 185);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .species-dropdown {
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            background: linear-gradient(145deg, rgba(37, 24, 33, 0.52), rgba(24, 14, 21, 0.52));
+            border: 1px solid rgba(253, 88, 185, 0.16);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(4px);
+            opacity: 0.62;
+            color-scheme: dark;
+            color: #ffebb3;
+            padding: 10px;
+            border-radius: 12px;
+            font-family: "Google Sans Flex", sans-serif;
+            font-size: 14px;
+            outline: none;
+            cursor: pointer;
+            transition: opacity 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .species-dropdown:hover:not(:disabled),
+        .species-dropdown:focus-visible {
+            opacity: 1;
+            border-color: rgba(253, 88, 185, 0.9);
+            box-shadow: 0 0 20px rgba(253, 88, 185, 0.38), 0 4px 18px rgba(0, 0, 0, 0.45);
+        }
+        .species-dropdown option {
+            background: #1c111a;
+            color: #ffebb3;
+        }
+        .species-dropdown option:checked,
+        .species-dropdown option:hover {
+            background: #5a1f45 linear-gradient(0deg, #5a1f45, #5a1f45);
+            color: #ffebb3;
+        }
+        @supports (appearance: base-select) {
+            .species-dropdown,
+            .species-dropdown::picker(select) {
+                appearance: base-select;
+            }
+            .species-dropdown {
+                min-height: 42px;
+                padding: 10px;
+            }
+            .species-dropdown::picker-icon {
+                color: #fd58b9;
+                transition: rotate 0.2s ease;
+            }
+            .species-dropdown:open::picker-icon {
+                rotate: 180deg;
+            }
+            .species-dropdown::picker(select) {
+                box-sizing: border-box;
+                max-height: 320px;
+                margin-top: 6px;
+                padding: 6px;
+                color: #ffebb3;
+                background: linear-gradient(145deg, rgba(37, 24, 33, 0.96), rgba(24, 14, 21, 0.96));
+                border: 1px solid rgba(253, 88, 185, 0.9);
+                border-radius: 12px;
+                box-shadow: 0 0 20px rgba(253, 88, 185, 0.38), 0 4px 18px rgba(0, 0, 0, 0.45);
+                font-family: "Google Sans Flex", sans-serif;
+                font-size: 14px;
+            }
+            .species-dropdown option {
+                padding: 8px 10px;
+                border-radius: 8px;
+                background: transparent;
+                color: #ffebb3;
+                font-family: "Google Sans Flex", sans-serif;
+                cursor: pointer;
+            }
+            .species-dropdown option::checkmark {
+                color: #fd58b9;
+            }
+            .species-dropdown option:hover,
+            .species-dropdown option:focus,
+            .species-dropdown option:checked {
+                background: rgba(253, 88, 185, 0.22);
+                color: #ffebb3;
+            }
+        }
+
+        /* Only the control zones container scrolls */
+        #controls-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding-right: 5px;
+            min-width: 0;
+        }
+
+        /* Modern design for dynamic zone groups */
+        .zone-group {
+            min-width: 0;
+            background: linear-gradient(145deg, rgba(37, 24, 33, 0.52), rgba(24, 14, 21, 0.52));
+            padding: 0;
+            margin-bottom: 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(253, 88, 185, 0.16);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(4px);
+            text-align: left;
+            opacity: 0.62;
+            transition: opacity 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .zone-group:hover,
+        .zone-group:focus-within {
+            opacity: 1;
+            border-color: rgba(253, 88, 185, 0.9);
+            box-shadow: 0 0 20px rgba(253, 88, 185, 0.38), 0 4px 18px rgba(0, 0, 0, 0.45);
+        }
+        #backgroundControls .zone-group {
+            margin: 0;
+            background: none;
+            border: 0;
+            box-shadow: none;
+            backdrop-filter: none;
+            opacity: 1;
+        }
+        .zone-group.is-disabled {
+            opacity: 0.35;
+            filter: saturate(0.45);
+        }
+        .zone-group.is-disabled > summary {
+            cursor: not-allowed;
+        }
+        .zone-group.is-disabled:hover,
+        .zone-group.is-disabled:focus-within {
+            opacity: 0.35;
+            border-color: rgba(253, 88, 185, 0.16);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+        .zone-group > summary {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 14px;
+            cursor: pointer;
+            list-style: none;
+            font-family: "Google Sans Flex", sans-serif;
+        }
+        .zone-group > summary::-webkit-details-marker {
+            display: none;
+        }
+        .zone-group > summary::after {
+            content: '+';
+            color: #ffebb3;
+            font-size: 25px;
+        }
+        .zone-group[open] > summary::after {
+            content: '−';
+        }
+        .zone-preview {
+            width: 28px;
+            height: 22px;
+            margin-left: auto;
+            flex: 0 0 40px;
+            border: 1px solid rgba(255, 255, 255, 0.55);
+            border-radius: 5px;
+            box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2);
+        }
+        .rgb-control-body.hide-rgb-fields > label.zone-title,
+        .rgb-control-body.hide-rgb-fields > .rgb-fields {
+            display: none;
+        }
+        .rgb-control-body {
+            padding: 0 14px 14px;
+        }
+        html:not(.win95) .clippy-agent {
+            display: none !important;
+        }
+        .color-tools {
+            display: flex;
+            gap: 8px;
+            margin: 8px 0 4px;
+        }
+        .color-tools button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 34px;
+            padding: 0;
+            background: rgba(10, 5, 8, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #fd58b9;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .color-tools button:hover:not(:disabled) {
+            border-color: #fd58b9;
+        }
+        .color-tools button:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+        .color-tools button.tool-done {
+            border-color: #7ee787;
+            background: rgba(126, 231, 135, 0.18);
+        }
+        html.win95 .color-tools button {
+            border: 0;
+            border-radius: 0;
+            background: #c0c0c0;
+            box-shadow: var(--w-raised);
+            color: #000;
+        }
+        html.win95 .color-tools button:active:not(:disabled) {
+            box-shadow: var(--w-sunken);
+        }
+        html.win95 .color-tools button:disabled {
+            color: #808080;
+            opacity: 1;
+        }
+        .zone-title {
+            color: #ffebb3;
+            font-size: 18px;
+            font-family: "Google Sans Flex", sans-serif;
+            font-weight: normal;
+        }
+        .rgb-control-body > label {
+            display: block;
+            font-size: 14px;
+            margin-top: 6px;
+            margin-bottom: 8px;
+            color: #fd58b9;
+            opacity: 0.55;
+            font-family: "Google Sans Flex", sans-serif;
+            font-weight: light;
+            line-height: normal;
+            letter-spacing: normal;
+            text-transform: none;
+        }
+        .zone-group input {
+            width: 100%;
+            background: rgba(10, 5, 8, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 8px;
+            box-sizing: border-box;
+            border-radius: 8px;
+            font-family: "Google Sans Flex", sans-serif;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .zone-group input:focus {
+            border-color: #fd58b9;
+        }
+        .rgb-fields {
+            display: grid;
+            width: 100%;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 2px;
+        }
+        .rgb-fields label {
+            min-width: 0;
+            margin: 0;
+            font-size: 15px;
+            font-family: "Google Sans Flex", sans-serif;
+            color: #fd58b9;
+            text-align: center;
+        }
+        .rgb-fields input {
+            min-width: 0;
+            padding: 10px 6px;
+            text-align: center;
+        }
+        .rgb-number-control {
+            display: flex;
+            align-items: stretch;
+            gap: 2px;
+            min-width: 0;
+        }
+        .rgb-fields input[type="number"] {
+            color: #ffebb3;
+            padding-right: 2px;
+            padding-left: 2px;
+            font-size: 15px;
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
+        .rgb-fields input[type="number"]::-webkit-inner-spin-button,
+        .rgb-fields input[type="number"]::-webkit-outer-spin-button {
+            margin: 0;
+            -webkit-appearance: none;
+        }
+        .rgb-number-buttons {
+            display: flex;
+            flex-direction: column;
+            flex: 0 0 18px;
+            gap: 2px;
+        }
+        .rgb-number-buttons button {
+            position: relative;
+            flex: 1;
+            min-height: 0;
+            padding: 0;
+            border: 1px solid rgba(253, 88, 185, 0.4);
+            border-radius: 3px;
+            background: rgba(253, 88, 185, 0.14);
+            cursor: pointer;
+        }
+        .rgb-number-buttons button:hover,
+        .rgb-number-buttons button:focus-visible {
+            border-color: #fd58b9;
+            background: rgba(253, 88, 185, 0.3);
+            outline: none;
+        }
+        .rgb-number-buttons button::after {
+            position: absolute;
+            left: 50%;
+            width: 0;
+            height: 0;
+            content: "";
+            transform: translateX(-50%);
+            border-right: 4px solid transparent;
+            border-left: 4px solid transparent;
+        }
+        .rgb-number-buttons .increment::after {
+            top: 2px;
+            border-bottom: 4px solid #fd58b9;
+        }
+        .rgb-number-buttons .decrement::after {
+            bottom: 2px;
+            border-top: 4px solid #fd58b9;
+        }
+        .disk-picker {
+            display: block;
+            width: 180px;
+            height: 180px;
+            max-width: 100%;
+            margin: 12px auto 4px;
+            cursor: crosshair;
+            touch-action: none;
+        }
+        .brightness-control {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            align-items: center;
+            gap: 10px;
+            color: #bbb;
+            font: 18px "Google Sans Flex", sans-serif;
+        }
+        .zone-group .brightness-control input {
+            padding: 0;
+        }
+        .brightness-control input[type="range"] {
+            appearance: none;
+            height: 18px;
+            border: 0;
+            background: transparent;
+        }
+        .brightness-control input[type="range"]::-webkit-slider-runnable-track {
+            height: 8px;
+            border-radius: 999px;
+            background: linear-gradient(to right, #000000, var(--brightness-color, #ffffff));
+        }
+        .brightness-control input[type="range"]::-moz-range-track {
+            height: 8px;
+            border-radius: 999px;
+            background: linear-gradient(to right, #000000, var(--brightness-color, #ffffff));
+        }
+        .brightness-control input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            margin-top: -3px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            background: #fd58b9;
+        }
+        .brightness-control input[type="range"]::-moz-range-thumb {
+            width: 10px;
+            height: 10px;
+            border: 2px solid #ffebb3;
+            border-radius: 50%;
+            background: #fd58b9;
+        }
+        .gender-selector {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .gender-selector button {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid rgba(253, 88, 185, 0.4);
+            border-radius: 8px;
+            background: #1a1015;
+            color: #ffebb3;
+            font: 18px "Google Sans Flex", sans-serif;
+            cursor: pointer;
+        }
+        .gender-selector .mdi {
+            width: 24px;
+            height: 24px;
+            vertical-align: middle;
+        }
+        .gender-selector #maleButton[aria-pressed="true"] {
+            border-color: rgba(126, 202, 255, 0.9);
+            background: rgba(126, 202, 255, 0.2);
+            color: #b8e3ff;
+            box-shadow: 0 0 14px rgba(126, 202, 255, 0.32);
+        }
+        .gender-selector #femaleButton[aria-pressed="true"] {
+            border-color: rgba(253, 88, 185, 0.9);
+            background: rgba(253, 88, 185, 0.2);
+            color: #ffb5d9;
+            box-shadow: 0 0 14px rgba(253, 88, 185, 0.32);
+        }
+        .growth-control {
+            margin: 0 0 16px;
+            padding: 10px 12px 9px;
+            border: 1px solid rgba(255, 235, 179, 0.16);
+            border-radius: 9px;
+            background: linear-gradient(135deg, rgba(255, 235, 179, 0.07), rgba(253, 88, 185, 0.06));
+            color: #ffebb3;
+            font-family: "Google Sans Flex", sans-serif;
+        }
+        .growth-control-heading,
+        .growth-control-range {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+        .growth-control-heading {
+            margin-bottom: 5px;
+            font-size: 12px;
+            letter-spacing: 0.04em;
+        }
+        .growth-control-heading output {
+            color: #ffb5d9;
+            font-weight: 600;
+            text-align: right;
+        }
+        .growth-control input[type="range"] {
+            display: block;
+            width: 100%;
+            height: 18px;
+            margin: 0;
+            appearance: none;
+            background: transparent;
+            cursor: pointer;
+        }
+        .growth-control input[type="range"]::-webkit-slider-runnable-track {
+            height: 5px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, rgba(255, 235, 179, 0.5), #fd58b9);
+        }
+        .growth-control input[type="range"]::-moz-range-track {
+            height: 5px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, rgba(255, 235, 179, 0.5), #fd58b9);
+        }
+        .growth-control input[type="range"]::-webkit-slider-thumb {
+            width: 14px;
+            height: 14px;
+            margin-top: -5px;
+            appearance: none;
+            border: 2px solid #ffebb3;
+            border-radius: 50%;
+            background: #fd58b9;
+            box-shadow: 0 0 8px rgba(253, 88, 185, 0.45);
+        }
+        .growth-control input[type="range"]::-moz-range-thumb {
+            width: 10px;
+            height: 10px;
+            border: 2px solid #ffebb3;
+            border-radius: 50%;
+            background: #fd58b9;
+            box-shadow: 0 0 8px rgba(253, 88, 185, 0.45);
+        }
+        .growth-control-range {
+            color: rgba(255, 235, 179, 0.62);
+            font-size: 10px;
+        }
+        #topTools {
+            position: fixed;
+            top: 14px;
+            right: 14px;
+            z-index: 30;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font: 13px "Google Sans Flex", sans-serif;
+        }
+        .lighting-controls {
+            position: relative;
+            color: #ffebb3;
+            background: linear-gradient(145deg, rgba(37, 24, 33, 0.48), rgba(24, 14, 21, 0.48));
+            border: 1px solid rgba(253, 88, 185, 0.16);
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(4px);
+            opacity: 0.58;
+            transition: opacity 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .lighting-controls:hover,
+        .lighting-controls:focus-within {
+            opacity: 1;
+            border-color: rgba(253, 88, 185, 0.9);
+            box-shadow: 0 0 20px rgba(253, 88, 185, 0.3), 0 4px 18px rgba(0, 0, 0, 0.45);
+        }
+        .lighting-controls > summary {
+            display: grid;
+            width: 40px;
+            height: 40px;
+            box-sizing: border-box;
+            place-items: center;
+            color: #ffebb3;
+            cursor: pointer;
+            list-style: none;
+        }
+        .lighting-controls > summary::-webkit-details-marker {
+            display: none;
+        }
+        .lighting-controls > summary .mdi {
+            width: 22px;
+            height: 22px;
+            color: currentColor;
+        }
+        #animationToggleButton,
+        #themeToggleButton,
+        #win95ToggleButton {
+            display: grid;
+            width: 42px;
+            height: 42px;
+            box-sizing: border-box;
+            place-items: center;
+            padding: 0;
+            color: #ffebb3;
+            background: linear-gradient(145deg, rgba(37, 24, 33, 0.48), rgba(24, 14, 21, 0.48));
+            border: 1px solid rgba(253, 88, 185, 0.16);
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(4px);
+            opacity: 0.58;
+            cursor: pointer;
+            transition: opacity 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        #animationToggleButton:hover:not(:disabled),
+        #animationToggleButton:focus-visible,
+        #themeToggleButton:hover,
+        #themeToggleButton:focus-visible,
+        #win95ToggleButton:hover,
+        #win95ToggleButton:focus-visible {
+            opacity: 1;
+            border-color: rgba(253, 88, 185, 0.9);
+            box-shadow: 0 0 20px rgba(253, 88, 185, 0.3), 0 4px 18px rgba(0, 0, 0, 0.45);
+        }
+        #animationToggleButton:disabled {
+            cursor: not-allowed;
+            opacity: 0.32;
+        }
+        #animationToggleButton .mdi,
+        #themeToggleButton .mdi,
+        #win95ToggleButton .mdi {
+            width: 22px;
+            height: 22px;
+        }
+        .lighting-controls-body {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            display: grid;
+            width: min(280px, calc(100vw - 28px));
+            box-sizing: border-box;
+            gap: 8px;
+            padding: 14px;
+            color: #ffebb3;
+            background: linear-gradient(145deg, rgba(37, 24, 33, 0.52), rgba(24, 14, 21, 0.52));
+            border: 1px solid rgba(253, 88, 185, 0.16);
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(4px);
+            font: 12px "Google Sans Flex", sans-serif;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .lighting-controls:hover > .lighting-controls-body,
+        .lighting-controls:focus-within > .lighting-controls-body {
+            border-color: rgba(253, 88, 185, 0.9);
+            box-shadow: 0 0 20px rgba(253, 88, 185, 0.38), 0 4px 18px rgba(0, 0, 0, 0.45);
+        }
+        .lighting-controls:not([open]) .lighting-controls-body {
+            display: none;
+        }
+        .lighting-controls-body label {
+            color: #fd58b9;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .lighting-controls-body input[type="range"] {
+            width: 100%;
+            height: 18px;
+            margin: 0;
+            appearance: none;
+            background: transparent;
+            cursor: pointer;
+        }
+        .lighting-controls-body input[type="range"]::-webkit-slider-runnable-track {
+            height: 5px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #fd58b9, #ffebb3);
+        }
+        .lighting-controls-body input[type="range"]::-moz-range-track {
+            height: 5px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #fd58b9, #ffebb3);
+        }
+        .lighting-controls-body input[type="range"]::-webkit-slider-thumb {
+            width: 14px;
+            height: 14px;
+            margin-top: -5px;
+            appearance: none;
+            border: 2px solid #ffebb3;
+            border-radius: 50%;
+            background: #fd58b9;
+            box-shadow: 0 0 8px rgba(253, 88, 185, 0.45);
+        }
+        .lighting-controls-body input[type="range"]::-moz-range-thumb {
+            width: 10px;
+            height: 10px;
+            border: 2px solid #ffebb3;
+            border-radius: 50%;
+            background: #fd58b9;
+            box-shadow: 0 0 8px rgba(253, 88, 185, 0.45);
+        }
+        .lighting-controls-body output {
+            color: #ffebb3;
+            font-variant-numeric: tabular-nums;
+        }
+        .preset-panel {
+            position: relative;
+            width: min(320px, calc(100vw - 28px));
+            min-width: 0;
+            max-width: min(320px, calc(100vw - 28px));
+            box-sizing: border-box;
+            color: #ffebb3;
+            background: linear-gradient(145deg, rgba(37, 24, 33, 0.52), rgba(24, 14, 21, 0.52));
+            border: 1px solid rgba(253, 88, 185, 0.16);
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(4px);
+            opacity: 0.62;
+            font: 13px "Google Sans Flex", sans-serif;
+            transition: opacity 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .preset-panel:hover,
+        .preset-panel:focus-within {
+            opacity: 1;
+            border-color: rgba(253, 88, 185, 0.9);
+            box-shadow: 0 0 20px rgba(253, 88, 185, 0.38), 0 4px 18px rgba(0, 0, 0, 0.45);
+        }
+        .preset-panel > summary {
+            padding: 11px 14px;
+            color: #ffebb3;
+            cursor: pointer;
+            font-weight: bold;
+            list-style: none;
+        }
+        .preset-panel > summary::-webkit-details-marker {
+            display: none;
+        }
+        .preset-panel > summary::after {
+            content: '+';
+            float: right;
+            font-size: 17px;
+        }
+        .preset-panel[open] > summary::after {
+            content: '−';
+        }
+        .preset-panel-content {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 12px;
+            max-height: min(72vh, 620px);
+            overflow-x: hidden;
+            overflow-y: auto;
+            padding: 0 12px 12px;
+        }
+        .preset-panel-content > *,
+        .preset-card > * {
+            min-width: 0;
+            max-width: 100%;
+        }
+        .preset-card {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 8px;
+            padding: 11px;
+            border: 1px solid rgba(253, 88, 185, 0.24);
+            border-radius: 10px;
+            background: rgba(10, 5, 8, 0.4);
+        }
+        .preset-card h3 {
+            margin: 0 0 2px;
+            color: #ffebb3;
+            font-size: 13px;
+        }
+        .preset-panel label {
+            color: #fd58b9;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        .preset-panel input,
+        .preset-panel select,
+        .preset-panel textarea,
+        .preset-panel button {
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid rgba(253, 88, 185, 0.35);
+            border-radius: 7px;
+            padding: 8px;
+            color: #ffebb3;
+            background: rgba(10, 5, 8, 0.82);
+            font: 12px "Google Sans Flex", sans-serif;
+        }
+        .preset-panel textarea {
+            min-height: 64px;
+            resize: vertical;
+            overflow-wrap: anywhere;
+        }
+        .preset-panel button {
+            cursor: pointer;
+            background: rgba(253, 88, 185, 0.12);
+        }
+        .preset-panel button:hover {
+            border-color: #fd58b9;
+            background: rgba(253, 88, 185, 0.25);
+        }
+        .preset-actions {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: 7px;
+        }
+        #presetStatus {
+            min-height: 16px;
+            color: #ffebb3;
+            font-size: 11px;
+            overflow-wrap: anywhere;
+        }
+        .preset-help {
+            color: rgba(255, 235, 179, 0.75);
+            font-size: 11px;
+            line-height: 1.4;
+        }
+        /* Optional Windows 95 look: html.win95 overrides the styles above; the color themes only tint the title bar and selections. */
+        html.win95 {
+            --w-raised: inset -1px -1px #0a0a0a, inset 1px 1px #ffffff, inset -2px -2px #808080, inset 2px 2px #dfdfdf;
+            --w-sunken: inset -1px -1px #ffffff, inset 1px 1px #808080, inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a;
+            --w-font: Tahoma, "MS Sans Serif", "Segoe UI", Arial, sans-serif;
+        }
+        html.win95 body {
+            background: #3a6ea5;
+            font-family: var(--w-font);
+        }
+        /* Classic XP desktop wallpaper; brightness is adjustable. */
+        html.win95 #viewer-container::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            filter: brightness(var(--wallpaper-brightness, 1));
+            background: #3a6ea5 url("/win-background.png") center / cover no-repeat;
+        }
+        html.win95.wallpaper-off #viewer-container::before {
+            display: none;
+        }
+        #wallpaperToggle {
+            display: none;
+        }
+        html.win95 #wallpaperToggle {
+            display: block;
+            width: 100%;
+            margin-bottom: 8px;
+            padding: 6px 10px;
+            border: 0;
+            background: #c0c0c0;
+            box-shadow: var(--w-raised);
+            color: #000;
+            font: 12px var(--w-font);
+            cursor: pointer;
+        }
+        html.win95 #wallpaperToggle:active {
+            box-shadow: var(--w-sunken);
+        }
+        #wallpaperBrightness {
+            display: none;
+        }
+        html.win95:not(.wallpaper-off) #wallpaperBrightness {
+            display: block;
+            margin-bottom: 8px;
+            padding: 4px 6px 6px;
+            background: #c0c0c0;
+            box-shadow: var(--w-sunken);
+            color: #000;
+            font: 12px var(--w-font);
+        }
+        #wallpaperBrightness input {
+            display: block;
+            width: 100%;
+            margin: 4px 0 0;
+            cursor: pointer;
+        }
+        html.win95 #sidebar *,
+        html.win95 #topTools * {
+            font-family: var(--w-font);
+        }
+        html.win95 #sidebar {
+            padding: 12px;
+            background: rgba(192, 192, 192, 0.72);
+            border: 0;
+            border-radius: 0;
+            box-shadow: var(--w-raised), 4px 4px 0 #00000055;
+            backdrop-filter: blur(10px) saturate(1.2);
+            color: #000000;
+        }
+        html.win95 h2 {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: -9px -9px 10px;
+            padding: 3px 4px 3px 6px;
+            background: linear-gradient(90deg, var(--win-accent-dark, #000080), var(--win-accent, #1084d0));
+            color: #ffffff;
+            font: bold 13px var(--w-font);
+            text-align: left;
+            font-palette: normal !important;
+        }
+        html.win95 h2::after {
+            content: "_ □ ×";
+            padding: 1px 4px;
+            background: #c0c0c0;
+            box-shadow: var(--w-raised);
+            color: #000000;
+            font: bold 11px/12px var(--w-font);
+            letter-spacing: 3px;
+        }
+        html.win95 .author-text {
+            margin: 0 0 12px;
+            color: #000000;
+            font-size: 12px;
+            opacity: 1;
+            text-align: left;
+        }
+        html.win95 .select-container {
+            margin-bottom: 10px;
+        }
+        html.win95 .select-container label {
+            color: #000000;
+            font-size: 12px;
+            letter-spacing: 0;
+            text-transform: none;
+        }
+        html.win95 .species-dropdown,
+        html.win95 .species-dropdown:hover:not(:disabled),
+        html.win95 .species-dropdown:focus-visible {
+            min-height: 24px;
+            padding: 3px 6px;
+            background: rgba(255, 255, 255, 0.78);
+            border: 0;
+            border-radius: 0;
+            box-shadow: var(--w-sunken);
+            backdrop-filter: none;
+            color: #000000;
+            color-scheme: light;
+            font-size: 13px;
+            opacity: 1;
+            transition: none;
+        }
+        html.win95 .species-dropdown option {
+            background: #ffffff;
+            color: #000000;
+        }
+        html.win95 .species-dropdown option:checked,
+        html.win95 .species-dropdown option:hover {
+            background: var(--win-accent-dark, #000080);
+            color: #ffffff;
+        }
+        @supports (appearance: base-select) {
+            html.win95 .species-dropdown::picker-icon {
+                color: #000000;
+            }
+            html.win95 .species-dropdown::picker(select) {
+                margin-top: 0;
+                padding: 1px;
+                background: #ffffff;
+                border: 1px solid #000000;
+                border-radius: 0;
+                box-shadow: none;
+                color: #000000;
+                font-family: var(--w-font);
+                font-size: 13px;
+            }
+            html.win95 .species-dropdown option {
+                padding: 2px 6px;
+                border-radius: 0;
+                background: transparent;
+                color: #000000;
+                font-family: var(--w-font);
+            }
+            html.win95 .species-dropdown option::checkmark {
+                color: currentColor;
+            }
+            html.win95 .species-dropdown option:hover,
+            html.win95 .species-dropdown option:focus,
+            html.win95 .species-dropdown option:checked {
+                background: var(--win-accent-dark, #000080);
+                color: #ffffff;
+            }
+        }
+        html.win95 :is(.zone-group, .lighting-controls, .lighting-controls-body, .preset-panel, .preset-card, .growth-control, #animationToggleButton, #themeToggleButton, #win95ToggleButton) {
+            background: rgba(192, 192, 192, 0.5);
+            border: 0;
+            border-radius: 0;
+            box-shadow: var(--w-raised);
+            backdrop-filter: blur(6px);
+            color: #000000;
+            filter: none;
+            opacity: 1;
+            transition: none;
+        }
+        html.win95 :is(#animationToggleButton, #themeToggleButton, #win95ToggleButton, .lighting-controls, .preset-panel, .lighting-controls-body) {
+            background: rgba(192, 192, 192, 0.78);
+            backdrop-filter: blur(10px) saturate(1.2);
+        }
+        html.win95 .lighting-controls:hover > .lighting-controls-body,
+        html.win95 .lighting-controls:focus-within > .lighting-controls-body {
+            border: 0;
+            box-shadow: var(--w-raised);
+        }
+        html.win95 #animationToggleButton:hover:not(:disabled),
+        html.win95 #animationToggleButton:focus-visible,
+        html.win95 #themeToggleButton:hover,
+        html.win95 #themeToggleButton:focus-visible,
+        html.win95 #win95ToggleButton:hover,
+        html.win95 #win95ToggleButton:focus-visible {
+            border: 0;
+            box-shadow: var(--w-raised);
+            opacity: 1;
+        }
+        html.win95 #animationToggleButton:active:not(:disabled),
+        html.win95 #themeToggleButton:active,
+        html.win95 #win95ToggleButton,
+        html.win95 #win95ToggleButton:hover,
+        html.win95 #win95ToggleButton:focus-visible {
+            box-shadow: var(--w-sunken);
+        }
+        html.win95 #animationToggleButton:disabled {
+            color: #808080;
+            opacity: 1;
+        }
+        html.win95 .zone-group.is-disabled,
+        html.win95 .zone-group.is-disabled:hover,
+        html.win95 .zone-group.is-disabled:focus-within {
+            border: 0;
+            box-shadow: var(--w-raised);
+            color: #808080;
+            filter: none;
+            opacity: 0.6;
+        }
+        html.win95 #backgroundControls .zone-group {
+            background: none;
+            box-shadow: none;
+        }
+        html.win95 .zone-group {
+            margin-bottom: 6px;
+        }
+        html.win95 .zone-group > summary {
+            padding: 8px 10px;
+        }
+        html.win95 .zone-group > summary::after,
+        html.win95 .preset-panel > summary::after {
+            color: #000000;
+            font-size: 16px;
+        }
+        html.win95 .zone-title,
+        html.win95 .preset-card h3,
+        html.win95 .preset-panel > summary,
+        html.win95 .lighting-controls > summary {
+            color: #000000;
+            font-size: 13px;
+        }
+        html.win95 .zone-preview {
+            border: 0;
+            border-radius: 0;
+            box-shadow: var(--w-sunken);
+        }
+        html.win95 .rgb-control-body > label,
+        html.win95 .rgb-fields label,
+        html.win95 .lighting-controls-body label,
+        html.win95 .preset-panel label {
+            color: #000000;
+            font-size: 12px;
+            opacity: 1;
+        }
+        html.win95 .lighting-controls-body output,
+        html.win95 .preset-help,
+        html.win95 .brightness-control,
+        html.win95 #presetStatus {
+            color: #000000 !important;
+        }
+        html.win95 .zone-group input[type="number"],
+        html.win95 .zone-group input[type="text"],
+        html.win95 .preset-panel input,
+        html.win95 .preset-panel select,
+        html.win95 .preset-panel textarea {
+            background: rgba(255, 255, 255, 0.78);
+            border: 0;
+            border-radius: 0;
+            box-shadow: var(--w-sunken);
+            color: #000000;
+            font-size: 13px;
+        }
+        html.win95 .rgb-fields input[type="number"] {
+            padding: 4px 2px;
+            color: #000000;
+            font-size: 13px;
+        }
+        html.win95 .rgb-number-buttons button,
+        html.win95 .preset-panel button,
+        html.win95 .preset-panel button:hover,
+        html.win95 .gender-selector button {
+            border: 0;
+            border-radius: 0;
+            background: rgba(192, 192, 192, 0.6);
+            box-shadow: var(--w-raised);
+            color: #000000;
+            font-size: 12px;
+        }
+        html.win95 .rgb-number-buttons button:hover,
+        html.win95 .rgb-number-buttons button:focus-visible {
+            border: 0;
+            background: #c0c0c0;
+        }
+        html.win95 .rgb-number-buttons button:active,
+        html.win95 .preset-panel button:active,
+        html.win95 .gender-selector button:active {
+            box-shadow: var(--w-sunken);
+        }
+        html.win95 .rgb-number-buttons .increment::after {
+            border-bottom-color: #000000;
+        }
+        html.win95 .rgb-number-buttons .decrement::after {
+            border-top-color: #000000;
+        }
+        html.win95 .gender-selector button {
+            padding: 6px;
+        }
+        html.win95 .gender-selector .mdi {
+            width: 20px;
+            height: 20px;
+        }
+        html.win95 .gender-selector #maleButton[aria-pressed="true"],
+        html.win95 .gender-selector #femaleButton[aria-pressed="true"] {
+            border: 0;
+            box-shadow: var(--w-sunken);
+            color: #000000;
+        }
+        html.win95 .gender-selector #maleButton[aria-pressed="true"] {
+            background: #a8d4ff;
+        }
+        html.win95 .gender-selector #femaleButton[aria-pressed="true"] {
+            background: #ffb0d8;
+        }
+        html.win95 .growth-control {
+            padding: 8px 10px;
+            color: #000000;
+        }
+        html.win95 .growth-control-heading output,
+        html.win95 .growth-control-range {
+            color: #000000;
+        }
+        html.win95 :is(.growth-control, .lighting-controls-body, .brightness-control) input[type="range"]::-webkit-slider-runnable-track {
+            height: 4px;
+            border-radius: 0;
+            background: #808080;
+            box-shadow: var(--w-sunken);
+        }
+        html.win95 .brightness-control input[type="range"]::-webkit-slider-runnable-track {
+            height: 6px;
+            background: linear-gradient(to right, #000000, var(--brightness-color, #ffffff));
+        }
+        html.win95 :is(.growth-control, .lighting-controls-body, .brightness-control) input[type="range"]::-webkit-slider-thumb {
+            width: 11px;
+            height: 20px;
+            margin-top: -8px;
+            border: 0;
+            border-radius: 0;
+            background: #c0c0c0;
+            box-shadow: var(--w-raised);
+        }
+        html.win95 .brightness-control input[type="range"]::-webkit-slider-thumb {
+            margin-top: -7px;
+        }
+        html.win95 *::-webkit-scrollbar {
+            width: 16px;
+            height: 16px;
+        }
+        html.win95 *::-webkit-scrollbar-track {
+            background-color: #ffffff;
+            background-image: conic-gradient(#c0c0c0 25%, #ffffff 0 50%, #c0c0c0 0 75%, #ffffff 0);
+            background-size: 2px 2px;
+        }
+        html.win95 *::-webkit-scrollbar-thumb {
+            background: #c0c0c0;
+            box-shadow: var(--w-raised);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="topTools">
+    <button type="button" id="animationToggleButton" aria-label="Pause animation" title="Pause animation" aria-pressed="false" disabled>
+        <span id="animationToggleIcon" aria-hidden="true"></span>
+    </button>
+    <details id="lightingPanel" class="lighting-controls">
+        <summary aria-label="Lighting &amp; surface settings" title="Lighting &amp; surface settings">
+            <span id="lightingIcon" aria-hidden="true"></span>
+        </summary>
+        <div class="lighting-controls-body">
+            <label for="ambientIntensity">Environment <output id="ambientIntensityValue" for="ambientIntensity">0.50</output></label>
+            <input id="ambientIntensity" type="range" min="0" max="3" step="0.05" value="0.5">
+            <label for="sunIntensity">Key light <output id="sunIntensityValue" for="sunIntensity">3.00</output></label>
+            <input id="sunIntensity" type="range" min="0" max="3" step="0.05" value="3">
+            <label for="sunHeight">Light height <output id="sunHeightValue" for="sunHeight">0.20</output></label>
+            <input id="sunHeight" type="range" min="0" max="1" step="0.01" value="0.2">
+            <label for="fillIntensity">Fill light <output id="fillIntensityValue" for="fillIntensity">0.10</output></label>
+            <input id="fillIntensity" type="range" min="0" max="1" step="0.05" value="0.1">
+            <label for="skinSpecular">Surface shine <output id="skinSpecularValue" for="skinSpecular">0.10</output></label>
+            <input id="skinSpecular" type="range" min="0" max="1" step="0.01" value="0.1">
+        </div>
+    </details>
+    <details id="backgroundPanel" class="lighting-controls">
+        <summary aria-label="Background color" title="Background color">
+            <span id="backgroundIcon" aria-hidden="true"></span>
+        </summary>
+        <div class="lighting-controls-body" id="backgroundControls"></div>
+    </details>
+    <button type="button" id="themeToggleButton" aria-label="Change color theme" title="Change color theme">
+        <span id="themeIcon" aria-hidden="true"></span>
+    </button>
+    <button type="button" id="win95ToggleButton" aria-label="Toggle Windows 95 style" title="Toggle Windows 95 style" aria-pressed="false">
+        <span id="win95Icon" aria-hidden="true"></span>
+    </button>
+    <details id="presetPanel" class="preset-panel">
+        <summary>Skin Presets &amp; Codes</summary>
+        <div class="preset-panel-content">
+            <section class="preset-card" aria-labelledby="savedPresetsHeading">
+                <h3 id="savedPresetsHeading">Saved presets</h3>
+                <label for="presetName">Preset name</label>
+                <input id="presetName" type="text" maxlength="60" placeholder="My skin preset">
+                <button type="button" id="savePresetButton">Save current skin</button>
+                <label for="savedPresetSelect">Choose a preset</label>
+                <select id="savedPresetSelect">
+                    <option value="">No saved presets</option>
+                </select>
+                <div class="preset-actions">
+                    <button type="button" id="loadPresetButton">Load preset</button>
+                    <button type="button" id="deletePresetButton">Delete preset</button>
+                </div>
+            </section>
+            <section class="preset-card" aria-labelledby="skinCodesHeading">
+                <h3 id="skinCodesHeading">Skin codes</h3>
+                <label for="skinCodeFormat">Export format</label>
+                <select id="skinCodeFormat">
+                    <option value="skinhex1">Editor code (SKINHEX1)</option>
+                    <option value="extended-rgb">Extended RGB (preserves NERF limit ±1,000,000)</option>
+                    <option value="oasis-base64">Oasis code (Base64)</option>
+                    <option value="nerf-base64">NERF-compatible code (Base64)</option>
+                    <option value="color-hex">Color hex list</option>
+                </select>
+                <label for="skinCodeOutput">Exported skin code</label>
+                <textarea id="skinCodeOutput" readonly placeholder="Generate a code for the current skin"></textarea>
+                <div class="preset-actions">
+                    <button type="button" id="exportSkinCodeButton">Generate code</button>
+                    <button type="button" id="copySkinCodeButton">Copy code</button>
+                </div>
+                <label for="skinCodeInput">Load skin code</label>
+                <textarea id="skinCodeInput" placeholder="Skin JSON, SKINHEX1, Base64 skin code, or hex colors"></textarea>
+                <label for="base64PatternNumbering">Base64 pattern numbering</label>
+                <select id="base64PatternNumbering">
+                    <option value="auto">Auto (0 or 1 = first pattern)</option>
+                    <option value="zero-based">Zero-based (NERF)</option>
+                    <option value="one-based">One-based (Oasis)</option>
+                </select>
+                <button type="button" id="loadSkinCodeButton">Apply skin code</button>
+            </section>
+            <div id="presetStatus" role="status" aria-live="polite"></div>
+        </div>
+    </details>
+    </div>
+    
+    <div id="sidebar">
+        <h2>Skin Editor</h2>
+        <p class="author-text">by Sushy</p>
+        
+        <!-- Species Selector -->
+        <div class="select-container">
+            <label for="speciesSelect">Species</label>
+            <select id="speciesSelect" class="species-dropdown">
+                <!-- Dynamically populated -->
+            </select>
+        </div>
+
+        <div class="select-container">
+            <label for="animationSelect">Animation</label>
+            <select id="animationSelect" class="species-dropdown" disabled>
+                <option value="">Load a model first</option>
+            </select>
+        </div>
+
+        <div class="select-container">
+            <label for="patternSelect">Skin pattern</label>
+            <select id="patternSelect" class="species-dropdown" disabled>
+                <option value="">Load a model first</option>
+            </select>
+        </div>
+
+        <div class="gender-selector" role="group" aria-label="Model gender">
+            <button type="button" id="maleButton" aria-label="Male" title="Male" aria-pressed="true"></button>
+            <button type="button" id="femaleButton" aria-label="Female" title="Female" aria-pressed="false"></button>
+        </div>
+        <div class="growth-control">
+            <div class="growth-control-heading">
+                <label for="growthSlider">Growth</label>
+                <output id="growthStageValue" for="growthSlider">Adult</output>
+            </div>
+            <input id="growthSlider" type="range" min="0" max="1" step="0.01" value="0.5"
+                aria-label="Model growth stage">
+            <div class="growth-control-range" aria-hidden="true">
+                <span id="growthStartLabel">Juvenile</span>
+                <span id="growthEndLabel">Elder</span>
+            </div>
+        </div>
+
+        <div id="controls-container">
+            <!-- Dynamic Shader Zones -->
+        </div>
+    </div>
+
+    <div id="viewer-container">
+        <div id="viewer-message" role="status" hidden></div>
+    </div>
+
+    <script type="module">
+        import React from 'react';
+        import { createRoot } from 'react-dom/client';
+        import Icon from '@mdi/react';
+        import * as THREE from 'three';
+        import {
+            mdiGenderFemale,
+            mdiGenderMale,
+            mdiLightbulbOn10,
+            mdiPanoramaOutline,
+            mdiPaletteOutline,
+            mdiMicrosoftWindowsClassic,
+            mdiPause,
+            mdiPlay,
+            mdiEyedropper,
+            mdiEyedropperPlus,
+            mdiWaterOutline,
+            mdiWaterCheckOutline,
+        } from '@mdi/js';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+        import { KTX2Loader } from 'three/addons/loaders/KTX2Loader.js';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
+        import { buildUEAnimationClip, parseUEAnim } from './ueanim.js';
+
+        console.log("Starting Glitched Skin Editor...");
+
+        createRoot(document.getElementById('lightingIcon')).render(
+            React.createElement(Icon, { path: mdiLightbulbOn10, size: 1 }),
+        );
+        createRoot(document.getElementById('backgroundIcon')).render(
+            React.createElement(Icon, { path: mdiPanoramaOutline, size: 1 }),
+        );
+        createRoot(document.getElementById('themeIcon')).render(
+            React.createElement(Icon, { path: mdiPaletteOutline, size: 1 }),
+        );
+        createRoot(document.getElementById('win95Icon')).render(
+            React.createElement(Icon, { path: mdiMicrosoftWindowsClassic, size: 1 }),
+        );
+        let isAnimationPaused = false;
+        const animationToggleButton = document.getElementById('animationToggleButton');
+        const animationToggleIconRoot = createRoot(document.getElementById('animationToggleIcon'));
+        function updateAnimationToggle() {
+            const label = isAnimationPaused ? 'Play animation' : 'Pause animation';
+            animationToggleButton.setAttribute('aria-label', label);
+            animationToggleButton.title = label;
+            animationToggleButton.setAttribute('aria-pressed', String(isAnimationPaused));
+            animationToggleIconRoot.render(
+                React.createElement(Icon, { path: isAnimationPaused ? mdiPlay : mdiPause, size: 1 }),
+            );
+        }
+        updateAnimationToggle();
+        createRoot(document.getElementById('maleButton')).render(
+            React.createElement(Icon, { path: mdiGenderMale, size: 1 }),
+        );
+        createRoot(document.getElementById('femaleButton')).render(
+            React.createElement(Icon, { path: mdiGenderFemale, size: 1 }),
+        );
+
+        const lightingPanel = document.getElementById('lightingPanel');
+        const presetPanel = document.getElementById('presetPanel');
+        const backgroundPanel = document.getElementById('backgroundPanel');
+        document.addEventListener('click', event => {
+            if (!lightingPanel.contains(event.target)) lightingPanel.open = false;
+            if (!backgroundPanel.contains(event.target)) backgroundPanel.open = false;
+            if (!presetPanel.contains(event.target)) presetPanel.open = false;
+        });
+
+        const downloadedAssetsBase = import.meta.env.DEV ? __DOWNLOADED_ASSETS_BASE__ : `${import.meta.env.BASE_URL}runtime-assets`;
+        const speciesList = [
+            "Allosaurus", "Austroraptor", "Avaceratops", "Baryonyx", "Beipiaosaurus", "Camarasaurus", 
+            "Carnotaurus", "Ceratosaurus", "Deinosuchus", "Diabloceratops", "Dilophosaurus", "Dryosaurus", 
+            "Gallimimus", "Herrerasaurus", "Hypsilophodon", "Kentrosaurus", 
+            "Maiasaura", "Omniraptor", "Oviraptor", "Pachycephalosaurus", "Pteranodon", 
+            "Stegosaurus", "Tenontosaurus", "Triceratops", "Troodon", "Tyrannosaurus"
+        ];
+
+        const container = document.getElementById('viewer-container');
+        const viewerMessage = document.getElementById('viewer-message');
+        const scene = new THREE.Scene();
+        scene.background = null;
+
+        const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+        camera.position.set(0, 2, 5);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.outputColorSpace = THREE.SRGBColorSpace;
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1;
+        renderer.setClearColor(0x000000, 0);
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.VSMShadowMap;
+        container.appendChild(renderer.domElement);
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.08;
+        controls.minDistance = 0.5;
+        controls.maxDistance = 100;
+        controls.mouseButtons.LEFT = THREE.MOUSE.PAN;
+        controls.mouseButtons.RIGHT = THREE.MOUSE.ROTATE;
+
+        const initialEnvironmentIntensity = Number(document.getElementById('ambientIntensity').value);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.45 * initialEnvironmentIntensity);
+        scene.add(ambientLight);
+        const ambientIntensityInput = document.getElementById('ambientIntensity');
+        const ambientIntensityValue = document.getElementById('ambientIntensityValue');
+        const sunIntensityInput = document.getElementById('sunIntensity');
+        const sunIntensityValue = document.getElementById('sunIntensityValue');
+        const sunHeightInput = document.getElementById('sunHeight');
+        const sunHeightValue = document.getElementById('sunHeightValue');
+        const fillIntensityInput = document.getElementById('fillIntensity');
+        const fillIntensityValue = document.getElementById('fillIntensityValue');
+        const skinSpecularInput = document.getElementById('skinSpecular');
+        const skinSpecularValue = document.getElementById('skinSpecularValue');
+        let currentSkinSpecularUniform = null;
+        const updateLightingControl = (input, output, update) => {
+            const value = Number(input.value);
+            output.value = value.toFixed(2);
+            output.textContent = output.value;
+            update(value);
+        };
+        ambientIntensityInput.addEventListener('input', () => {
+            updateLightingControl(ambientIntensityInput, ambientIntensityValue, value => {
+                ambientLight.intensity = 0.45 * value;
+                hemisphereLight.intensity = 0.65 * value;
+            });
+        });
+        const hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x383838, 0.65 * initialEnvironmentIntensity);
+        scene.add(hemisphereLight);
+
+        const sunDirection = new THREE.Vector3(2, 2 + Number(sunHeightInput.value) * 4, 3).normalize();
+        const fillDirection = new THREE.Vector3(-4, 2, -3).normalize();
+        const lightYaw = new THREE.Quaternion();
+        const lightYawAxis = new THREE.Vector3(0, 1, 0);
+        let sunAzimuthOffset = 0;
+        const rotatedSunDirection = new THREE.Vector3();
+        const rotatedFillDirection = new THREE.Vector3();
+        const sunCenter = new THREE.Vector3();
+        let keyLightDistance = 100;
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, Number(sunIntensityInput.value));
+        directionalLight.castShadow = true;
+        directionalLight.shadow.mapSize.set(2048, 2048);
+        directionalLight.shadow.bias = -0.0005;
+        directionalLight.shadow.normalBias = 0.02;
+        directionalLight.shadow.radius = 4;
+        directionalLight.shadow.blurSamples = 8;
+        scene.add(directionalLight);
+        directionalLight.target.position.copy(controls.target);
+        scene.add(directionalLight.target);
+
+        const fillLight = new THREE.DirectionalLight(0xffffff, Number(fillIntensityInput.value));
+        scene.add(fillLight);
+        fillLight.target.position.copy(controls.target);
+        scene.add(fillLight.target);
+        const groundMaterial = new THREE.ShadowMaterial({ color: 0x000000, opacity: 0.55 });
+        const groundPlane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), groundMaterial);
+        groundPlane.rotation.x = -Math.PI / 2;
+        groundPlane.receiveShadow = true;
+        scene.add(groundPlane);
+        sunIntensityInput.addEventListener('input', () => {
+            updateLightingControl(sunIntensityInput, sunIntensityValue, value => {
+                directionalLight.intensity = value;
+            });
+        });
+        sunHeightInput.addEventListener('input', () => {
+            updateLightingControl(sunHeightInput, sunHeightValue, value => {
+                sunDirection.set(2, 2 + value * 4, 3).normalize();
+            });
+        });
+        fillIntensityInput.addEventListener('input', () => {
+            updateLightingControl(fillIntensityInput, fillIntensityValue, value => {
+                fillLight.intensity = value;
+            });
+        });
+        skinSpecularInput.addEventListener('input', () => {
+            updateLightingControl(skinSpecularInput, skinSpecularValue, value => {
+                if (currentSkinSpecularUniform) currentSkinSpecularUniform.value = value;
+            });
+        });
+
+        const ktx2Loader = new KTX2Loader();
+        ktx2Loader.setTranscoderPath(`${import.meta.env.BASE_URL}basis/`);
+        ktx2Loader.detectSupport(renderer);
+        const loader = new GLTFLoader()
+            .setKTX2Loader(ktx2Loader)
+            .setMeshoptDecoder(MeshoptDecoder);
+        let currentModel = null;
+        let currentMixer = null;
+        let currentAction = null;
+        let idleClip = null;
+        let currentSkinMaterial = null;
+        let currentEyeMaterial = null;
+        let currentImportedMaterials = [];
+        let currentSkinTextures = [];
+        let currentPatternChoices = [];
+        let currentEyeImage = null;
+        let currentEyeUvMap = null;
+        let currentZoneUniforms = [];
+        let zoneColors = [];
+        let zoneRgbaValues = [];
+        let currentSkinIsGlitched = false;
+        let isFemale = false;
+        let currentGenderUniform = null;
+        const growthStageOrder = ['Hatchling', 'Juvenile', 'SubAdult', 'Adult', 'Elder'];
+        let growthMeshes = [];
+        let currentGrowthStages = ['Juvenile', 'Adult', 'Elder'];
+        let growthValue = 0.5;
+        let eyeColorRgba = rgbaValuesFromHex('#FFBE00');
+        const rgbaColorControls = new Map();
+        // Color copied with the eyedropper; the water-drop buttons paste it into any zone.
+        let copiedZoneColor = null;
+        const colorPasteButtons = new Set();
+        const detailColorSettings = [
+            { key: 'mouthColor', label: 'Mouth', defaultColor: '#ECC0B8' },
+            { key: 'clawColor', label: 'Claws', defaultColor: '#312E27' },
+            { key: 'teethColor', label: 'Teeth', defaultColor: '#D4C090' },
+        ];
+        let detailColors = Object.fromEntries(detailColorSettings.map(({ key, defaultColor }) => [
+            key,
+            rgbaValuesFromHex(defaultColor),
+        ]));
+        let currentDetailUniforms = {};
+        let downloadedManifest = null;
+        let downloadedManifestPromise = null;
+        let modelLoadRequest = 0;
+        let hasLoadedSpeciesModel = false;
+        const clock = new THREE.Clock();
+        const animationSelect = document.getElementById('animationSelect');
+        const patternSelect = document.getElementById('patternSelect');
+        const maleButton = document.getElementById('maleButton');
+        const femaleButton = document.getElementById('femaleButton');
+        const growthSlider = document.getElementById('growthSlider');
+        const growthStageValue = document.getElementById('growthStageValue');
+        const growthStartLabel = document.getElementById('growthStartLabel');
+        const growthEndLabel = document.getElementById('growthEndLabel');
+        let maleDisplayZoneControl = null;
+
+        function adultGrowthValue() {
+            const adultIndex = currentGrowthStages.indexOf('Adult');
+            return currentGrowthStages.length > 1 && adultIndex >= 0
+                ? adultIndex / (currentGrowthStages.length - 1)
+                : 0;
+        }
+
+        function updateGrowthControl() {
+            const position = growthValue * Math.max(currentGrowthStages.length - 1, 0);
+            const lowerIndex = Math.floor(position);
+            const upperIndex = Math.min(lowerIndex + 1, currentGrowthStages.length - 1);
+            const blend = position - lowerIndex;
+            const label = blend < 0.01 || lowerIndex === upperIndex
+                ? currentGrowthStages[lowerIndex]
+                : `${currentGrowthStages[lowerIndex]} → ${currentGrowthStages[upperIndex]}`;
+            growthStageValue.value = label;
+            growthSlider.setAttribute('aria-valuetext', label);
+            growthStartLabel.textContent = currentGrowthStages[0];
+            growthEndLabel.textContent = currentGrowthStages[currentGrowthStages.length - 1];
+        }
+
+        function applyGrowthMorphs() {
+            const position = growthValue * Math.max(currentGrowthStages.length - 1, 0);
+            const lowerIndex = Math.floor(position);
+            const upperIndex = Math.min(lowerIndex + 1, currentGrowthStages.length - 1);
+            const blend = position - lowerIndex;
+            const stageWeights = new Map();
+            if (lowerIndex === upperIndex) {
+                stageWeights.set(currentGrowthStages[lowerIndex], 1);
+            } else {
+                stageWeights.set(currentGrowthStages[lowerIndex], 1 - blend);
+                stageWeights.set(currentGrowthStages[upperIndex], blend);
+            }
+
+            growthMeshes.forEach(mesh => {
+                const { morphTargetDictionary, morphTargetInfluences } = mesh;
+                if (!morphTargetDictionary || !morphTargetInfluences) return;
+                Object.entries(morphTargetDictionary).forEach(([name, index]) => {
+                    if (name === 'Female') {
+                        morphTargetInfluences[index] = isFemale ? 1 : 0;
+                    } else if (growthStageOrder.includes(name)) {
+                        morphTargetInfluences[index] = stageWeights.get(name) || 0;
+                    }
+                });
+            });
+        }
+
+        function setGrowth(value) {
+            growthValue = Math.max(0, Math.min(1, Number(value)));
+            growthSlider.value = String(growthValue);
+            updateGrowthControl();
+            applyGrowthMorphs();
+        }
+
+        function setGender(female) {
+            isFemale = female;
+            currentGenderUniform && (currentGenderUniform.value = female);
+            maleButton.setAttribute('aria-pressed', String(!female));
+            femaleButton.setAttribute('aria-pressed', String(female));
+            if (maleDisplayZoneControl) {
+                maleDisplayZoneControl.classList.toggle('is-disabled', female);
+                maleDisplayZoneControl.setAttribute('aria-disabled', String(female));
+                maleDisplayZoneControl.querySelector('summary').setAttribute('aria-disabled', String(female));
+                maleDisplayZoneControl.querySelectorAll('input, button').forEach(control => {
+                    control.disabled = female;
+                });
+                if (female) maleDisplayZoneControl.open = false;
+            }
+            applyGrowthMorphs();
+        }
+
+        maleButton.addEventListener('click', () => setGender(false));
+        femaleButton.addEventListener('click', () => setGender(true));
+        growthSlider.addEventListener('input', event => setGrowth(event.target.value));
+        updateGrowthControl();
+
+        function rgbaValuesFromHex(hex) {
+            return {
+                r: Number.parseInt(hex.slice(1, 3), 16),
+                g: Number.parseInt(hex.slice(3, 5), 16),
+                b: Number.parseInt(hex.slice(5, 7), 16),
+            };
+        }
+
+        const glitchRgbLimit = 1_000_000;
+
+        function colorFromRgba(values) {
+            if (currentSkinIsGlitched) {
+                return new THREE.Color().setRGB(
+                    values.r,
+                    values.g,
+                    values.b,
+                    THREE.LinearSRGBColorSpace,
+                );
+            }
+            return new THREE.Color().setRGB(
+                values.r / 255,
+                values.g / 255,
+                values.b / 255,
+                THREE.SRGBColorSpace,
+            );
+        }
+
+        function hasNonByteRgbValues(colors) {
+            return colors.some(color => ['r', 'g', 'b'].some(channel =>
+                !Number.isInteger(color[channel]) || color[channel] < 0 || color[channel] > 255));
+        }
+
+        function setSkinGlitchMode(enabled) {
+            if (currentSkinIsGlitched === enabled) return;
+            currentSkinIsGlitched = enabled;
+            zoneRgbaValues.forEach((values, index) => {
+                currentZoneUniforms[index]?.value.copy(colorFromRgba(values));
+            });
+            refreshEyeTexture();
+            detailColorSettings.forEach(({ key }) => {
+                currentDetailUniforms[key]?.value.copy(colorFromRgba(detailColors[key]));
+            });
+        }
+
+        function rgbaToHex(values) {
+            const channel = value => Math.round(THREE.MathUtils.clamp(value, 0, 255))
+                .toString(16).padStart(2, '0');
+            return `#${channel(values.r)}${channel(values.g)}${channel(values.b)}`;
+        }
+
+        function setColorPreviewColor(preview, values) {
+            preview.style.backgroundColor = currentSkinIsGlitched
+                ? rgbaToNerfGlitchHex(values)
+                : rgbaToHex(values);
+        }
+
+        function refreshRgbaColorPreviews() {
+            document.querySelectorAll('#controls-container [data-color-control]').forEach(control => {
+                const values = [...control.querySelectorAll('.rgb-fields input[type="number"]')]
+                    .map(input => Number(input.value));
+                if (values.length !== 3 || values.some(value => !Number.isFinite(value))) return;
+                const preview = control.querySelector('.zone-preview');
+                if (preview) {
+                    setColorPreviewColor(preview, {
+                        r: values[0],
+                        g: values[1],
+                        b: values[2],
+                    });
+                }
+            });
+        }
+
+        function createRgbaColorControl(containerElement, key, label, initialValues, onChange, options = {}) {
+            const byteOnly = Boolean(options.byteOnly);
+            const channelMin = byteOnly ? 0 : -glitchRgbLimit;
+            const channelMax = byteOnly ? 255 : glitchRgbLimit;
+            const details = document.createElement('details');
+            details.className = 'zone-group';
+            details.dataset.colorControl = key;
+            const summary = document.createElement('summary');
+            const title = document.createElement('span');
+            title.className = 'zone-title';
+            title.textContent = label;
+            const preview = document.createElement('span');
+            preview.className = 'zone-preview';
+            preview.setAttribute('aria-label', `${label} color preview`);
+            summary.append(title, preview);
+            details.appendChild(summary);
+            if (key === 'zone-0') {
+                summary.addEventListener('click', event => {
+                    if (isFemale) event.preventDefault();
+                });
+                summary.addEventListener('keydown', event => {
+                    if (isFemale && (event.key === 'Enter' || event.key === ' ')) event.preventDefault();
+                });
+            }
+            details.addEventListener('toggle', () => {
+                if (!details.open) return;
+                requestAnimationFrame(() => {
+                    const containerBounds = containerElement.getBoundingClientRect();
+                    const detailsBounds = details.getBoundingClientRect();
+                    const topOverflow = detailsBounds.top - containerBounds.top;
+                    const bottomOverflow = detailsBounds.bottom - containerBounds.bottom;
+                    const scrollAmount = detailsBounds.height <= containerElement.clientHeight
+                        ? bottomOverflow > 0 ? bottomOverflow : topOverflow < 0 ? topOverflow : 0
+                        : topOverflow;
+                    if (scrollAmount) {
+                        containerElement.scrollBy({ top: scrollAmount, behavior: 'smooth' });
+                    }
+                });
+            });
+
+            const body = document.createElement('div');
+            body.className = 'rgb-control-body';
+            if (options.hideFields) body.classList.add('hide-rgb-fields');
+            const rgbLabel = document.createElement('label');
+            rgbLabel.textContent = byteOnly ? 'RGB (0–255)' : 'RGB (±1,000,000)';
+            rgbLabel.className = 'zone-title';
+            body.appendChild(rgbLabel);
+            const fields = document.createElement('div');
+            fields.className = 'rgb-fields';
+            const inputs = {};
+            const picker = document.createElement('canvas');
+            picker.className = 'disk-picker';
+            picker.width = 180;
+            picker.height = 180;
+            picker.setAttribute('role', 'group');
+            picker.setAttribute('aria-label', `${label} color disk`);
+            const pickerContext = picker.getContext('2d');
+            const brightnessLabel = document.createElement('label');
+            brightnessLabel.className = 'brightness-control';
+            const brightnessText = document.createElement('span');
+            brightnessText.textContent = 'Brightness';
+            const brightness = document.createElement('input');
+            brightness.type = 'range';
+            brightness.min = '0';
+            brightness.max = '1';
+            brightness.step = '0.01';
+            brightness.setAttribute('aria-label', `${label} brightness`);
+            brightnessLabel.append(brightnessText, brightness);
+            const center = picker.width / 2;
+            const radius = center - 3;
+            const wheelImage = pickerContext.createImageData(picker.width, picker.height);
+            for (let y = 0; y < picker.height; y++) {
+                for (let x = 0; x < picker.width; x++) {
+                    const dx = x - center + 0.5;
+                    const dy = center - y - 0.5;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance > radius) continue;
+                    const hue = (Math.atan2(dy, dx) / (Math.PI * 2) + 1) % 1;
+                    const saturation = distance / radius;
+                    const sector = hue * 6;
+                    const chroma = saturation;
+                    const secondary = chroma * (1 - Math.abs((sector % 2) - 1));
+                    const rgb = sector < 1 ? [chroma, secondary, 0]
+                        : sector < 2 ? [secondary, chroma, 0]
+                            : sector < 3 ? [0, chroma, secondary]
+                                : sector < 4 ? [0, secondary, chroma]
+                                    : sector < 5 ? [secondary, 0, chroma]
+                                        : [chroma, 0, secondary];
+                    const offset = (y * picker.width + x) * 4;
+                    wheelImage.data[offset] = Math.round((rgb[0] + 1 - chroma) * 255);
+                    wheelImage.data[offset + 1] = Math.round((rgb[1] + 1 - chroma) * 255);
+                    wheelImage.data[offset + 2] = Math.round((rgb[2] + 1 - chroma) * 255);
+                    wheelImage.data[offset + 3] = 255;
+                }
+            }
+            pickerContext.putImageData(wheelImage, 0, 0);
+
+            let selectedHue = 0;
+            let selectedSaturation = 0;
+            const pickerRgbAtBrightness = value => {
+                const sector = selectedHue * 6;
+                const chroma = selectedSaturation;
+                const secondary = chroma * (1 - Math.abs((sector % 2) - 1));
+                const base = sector < 1 ? [chroma, secondary, 0]
+                    : sector < 2 ? [secondary, chroma, 0]
+                        : sector < 3 ? [0, chroma, secondary]
+                            : sector < 4 ? [0, secondary, chroma]
+                                : sector < 5 ? [secondary, 0, chroma]
+                                    : [chroma, 0, secondary];
+                return base.map(channel => Math.round((channel + 1 - chroma) * value * 255));
+            };
+            const updateBrightnessTrack = () => {
+                const [r, g, b] = pickerRgbAtBrightness(1);
+                brightness.style.setProperty('--brightness-color', `rgb(${r}, ${g}, ${b})`);
+            };
+            const updatePreview = values => {
+                setColorPreviewColor(preview, values);
+                const maxChannel = Math.max(values.r, values.g, values.b);
+                const minChannel = Math.min(values.r, values.g, values.b);
+                const range = maxChannel - minChannel;
+                brightness.value = String(THREE.MathUtils.clamp(maxChannel / 255, 0, 1));
+                selectedSaturation = maxChannel > 0 ? range / maxChannel : 0;
+                if (range > 0) {
+                    if (maxChannel === values.r) selectedHue = ((values.g - values.b) / range / 6 + 1) % 1;
+                    else if (maxChannel === values.g) selectedHue = ((values.b - values.r) / range + 2) / 6;
+                    else selectedHue = ((values.r - values.g) / range + 4) / 6;
+                }
+                updateBrightnessTrack();
+                pickerContext.putImageData(wheelImage, 0, 0);
+                const angle = selectedHue * Math.PI * 2;
+                const markerX = center + Math.cos(angle) * selectedSaturation * radius;
+                const markerY = center - Math.sin(angle) * selectedSaturation * radius;
+                pickerContext.beginPath();
+                pickerContext.arc(markerX, markerY, 5, 0, Math.PI * 2);
+                pickerContext.strokeStyle = maxChannel > 160 ? '#111' : '#fff';
+                pickerContext.lineWidth = 2;
+                pickerContext.stroke();
+            };
+            const readValues = () => Object.fromEntries(
+                Object.entries(inputs).map(([channel, input]) => [channel, Number(input.value)]),
+            );
+            const applyPickerColor = () => {
+                const rgb = pickerRgbAtBrightness(Number(brightness.value));
+                const values = { ...readValues(), r: rgb[0], g: rgb[1], b: rgb[2] };
+                ['r', 'g', 'b'].forEach((channel, index) => {
+                    inputs[channel].value = String(values[channel]);
+                });
+                updatePreview(values);
+                onChange(values);
+            };
+
+            for (const channel of ['r', 'g', 'b']) {
+                const field = document.createElement('label');
+                field.textContent = channel.toUpperCase();
+                const input = document.createElement('input');
+                input.type = 'number';
+                input.min = String(channelMin);
+                input.max = String(channelMax);
+                input.step = 'any';
+                input.value = String(initialValues[channel]);
+                input.setAttribute('aria-label', `${label} ${channel.toUpperCase()}`);
+                const numberControl = document.createElement('div');
+                numberControl.className = 'rgb-number-control';
+                const buttons = document.createElement('div');
+                buttons.className = 'rgb-number-buttons';
+                const increment = document.createElement('button');
+                increment.type = 'button';
+                increment.className = 'increment';
+                increment.setAttribute('aria-label', `Increase ${label} ${channel.toUpperCase()}`);
+                const decrement = document.createElement('button');
+                decrement.type = 'button';
+                decrement.className = 'decrement';
+                decrement.setAttribute('aria-label', `Decrease ${label} ${channel.toUpperCase()}`);
+                const adjust = amount => {
+                    input.value = String(THREE.MathUtils.clamp(
+                        Number(input.value || 0) + amount,
+                        channelMin,
+                        channelMax,
+                    ));
+                    input.dispatchEvent(new Event('input', { bubbles: true }));
+                };
+                const bindRepeatingButton = (button, amount) => {
+                    let holdTimeout;
+                    let repeatInterval;
+                    let isRepeating = false;
+                    let suppressNextClick = false;
+                    let activePointerId;
+
+                    const stopRepeating = () => {
+                        window.clearTimeout(holdTimeout);
+                        window.clearInterval(repeatInterval);
+                        holdTimeout = undefined;
+                        repeatInterval = undefined;
+                    };
+
+                    const handlePointerUp = event => {
+                        if (event.pointerId !== activePointerId) return;
+                        stopRepeating();
+                        suppressNextClick = isRepeating;
+                        isRepeating = false;
+                        activePointerId = undefined;
+                        if (suppressNextClick) {
+                            window.setTimeout(() => {
+                                suppressNextClick = false;
+                            }, 0);
+                        }
+                        window.removeEventListener('pointerup', handlePointerUp);
+                        window.removeEventListener('pointercancel', handlePointerCancel);
+                    };
+                    const handlePointerCancel = event => {
+                        if (event.pointerId !== activePointerId) return;
+                        stopRepeating();
+                        isRepeating = false;
+                        suppressNextClick = false;
+                        activePointerId = undefined;
+                        window.removeEventListener('pointerup', handlePointerUp);
+                        window.removeEventListener('pointercancel', handlePointerCancel);
+                    };
+
+                    button.addEventListener('pointerdown', event => {
+                        if (event.button !== 0 || activePointerId !== undefined) return;
+                        stopRepeating();
+                        isRepeating = false;
+                        suppressNextClick = false;
+                        activePointerId = event.pointerId;
+                        window.addEventListener('pointerup', handlePointerUp);
+                        window.addEventListener('pointercancel', handlePointerCancel);
+                        holdTimeout = window.setTimeout(() => {
+                            isRepeating = true;
+                            adjust(amount);
+                            repeatInterval = window.setInterval(() => adjust(amount), 75);
+                        }, 350);
+                    });
+                    button.addEventListener('click', () => {
+                        if (suppressNextClick) {
+                            suppressNextClick = false;
+                            return;
+                        }
+                        adjust(amount);
+                    });
+                };
+                bindRepeatingButton(increment, 1);
+                bindRepeatingButton(decrement, -1);
+                buttons.append(increment, decrement);
+                input.addEventListener('input', () => {
+                    if (input.value === '') return;
+                    const enteredValue = Number(input.value);
+                    if (!Number.isFinite(enteredValue)) return;
+                    const value = THREE.MathUtils.clamp(enteredValue, channelMin, channelMax);
+                    if (value !== enteredValue) input.value = String(value);
+                    const values = Object.fromEntries(
+                        Object.entries(inputs).map(([name, element]) => [name, Number(element.value)]),
+                    );
+                    if (Object.values(inputs).some(element => element.value === '')
+                        || Object.values(values).some(channel => !Number.isFinite(channel))) return;
+                    if (!byteOnly && hasNonByteRgbValues([values])) setSkinGlitchMode(true);
+                    updatePreview(values);
+                    onChange(values);
+                });
+                numberControl.append(input, buttons);
+                field.appendChild(numberControl);
+                fields.appendChild(field);
+                inputs[channel] = input;
+            }
+            picker.addEventListener('pointerdown', event => {
+                picker.setPointerCapture(event.pointerId);
+                const bounds = picker.getBoundingClientRect();
+                const scaleX = picker.width / bounds.width;
+                const scaleY = picker.height / bounds.height;
+                const x = (event.clientX - bounds.left) * scaleX - center;
+                const y = center - (event.clientY - bounds.top) * scaleY;
+                const distance = Math.min(Math.sqrt(x * x + y * y), radius);
+                selectedHue = (Math.atan2(y, x) / (Math.PI * 2) + 1) % 1;
+                selectedSaturation = distance / radius;
+                applyPickerColor();
+            });
+            picker.addEventListener('pointermove', event => {
+                if (!picker.hasPointerCapture(event.pointerId)) return;
+                const bounds = picker.getBoundingClientRect();
+                const scaleX = picker.width / bounds.width;
+                const scaleY = picker.height / bounds.height;
+                const x = (event.clientX - bounds.left) * scaleX - center;
+                const y = center - (event.clientY - bounds.top) * scaleY;
+                const distance = Math.min(Math.sqrt(x * x + y * y), radius);
+                selectedHue = (Math.atan2(y, x) / (Math.PI * 2) + 1) % 1;
+                selectedSaturation = distance / radius;
+                applyPickerColor();
+            });
+            brightness.addEventListener('input', applyPickerColor);
+            if (!options.hideFields) {
+                const tools = document.createElement('div');
+                tools.className = 'color-tools';
+                const makeToolButton = (iconPath, text) => {
+                    const button = document.createElement('button');
+                    button.type = 'button';
+                    button.title = text;
+                    button.setAttribute('aria-label', `${text} (${label})`);
+                    const icon = document.createElement('span');
+                    icon.setAttribute('aria-hidden', 'true');
+                    button.appendChild(icon);
+                    const root = createRoot(icon);
+                    const iconSize = text === 'Copy this color' ? 0.85 : 1;
+                    root.render(React.createElement(Icon, { path: iconPath, size: iconSize }));
+                    button.setIcon = path => root.render(React.createElement(Icon, { path, size: iconSize }));
+                    button.defaultIcon = iconPath;
+                    return button;
+                };
+                const flash = (button, doneIcon) => {
+                    window.clearTimeout(button.flashTimer);
+                    button.classList.add('tool-done');
+                    if (doneIcon) button.setIcon(doneIcon);
+                    button.flashTimer = window.setTimeout(() => {
+                        button.classList.remove('tool-done');
+                        button.setIcon(button.defaultIcon);
+                    }, 1200);
+                };
+                const copyButton = makeToolButton(mdiEyedropper, 'Copy this color');
+                const pasteButton = makeToolButton(mdiWaterOutline, 'Paste copied color');
+                pasteButton.disabled = !copiedZoneColor;
+                colorPasteButtons.add(pasteButton);
+                copyButton.addEventListener('click', () => {
+                    const { r, g, b } = readValues();
+                    copiedZoneColor = { r, g, b };
+                    colorPasteButtons.forEach(button => { button.disabled = false; });
+                    try { navigator.clipboard?.writeText(`${r} ${g} ${b}`)?.catch(() => {}); } catch { /* clipboard unavailable */ }
+                    flash(copyButton, mdiEyedropperPlus);
+                });
+                pasteButton.addEventListener('click', () => {
+                    if (!copiedZoneColor) return;
+                    ['r', 'g', 'b'].forEach(channel => {
+                        inputs[channel].value = String(THREE.MathUtils.clamp(copiedZoneColor[channel], channelMin, channelMax));
+                    });
+                    inputs.r.dispatchEvent(new Event('input', { bubbles: true }));
+                    flash(pasteButton, mdiWaterCheckOutline);
+                });
+                tools.append(copyButton, pasteButton);
+                body.appendChild(tools);
+            }
+            body.append(fields, picker, brightnessLabel);
+            details.appendChild(body);
+            containerElement.appendChild(details);
+            const setValues = values => {
+                Object.entries(inputs).forEach(([channel, input]) => {
+                    input.value = String(values[channel]);
+                });
+                updatePreview(values);
+            };
+            setValues(initialValues);
+            rgbaColorControls.set(key, setValues);
+            return details;
+        }
+
+        const backgroundStorageKey = 'skinEditorBackgroundColor';
+        const defaultBackgroundColor = { r: 14, g: 14, b: 14 };
+        const applyBackgroundColor = values => {
+            container.style.backgroundColor = `rgb(${values.r}, ${values.g}, ${values.b})`;
+            try {
+                localStorage.setItem(backgroundStorageKey, JSON.stringify(values));
+            } catch { /* storage unavailable */ }
+        };
+        let initialBackgroundColor = defaultBackgroundColor;
+        try {
+            const stored = JSON.parse(localStorage.getItem(backgroundStorageKey));
+            if (stored && ['r', 'g', 'b'].every(channel => Number.isFinite(stored[channel]))) {
+                initialBackgroundColor = {
+                    r: THREE.MathUtils.clamp(Math.round(stored.r), 0, 255),
+                    g: THREE.MathUtils.clamp(Math.round(stored.g), 0, 255),
+                    b: THREE.MathUtils.clamp(Math.round(stored.b), 0, 255),
+                };
+            }
+        } catch { /* ignore invalid stored color */ }
+        applyBackgroundColor(initialBackgroundColor);
+        createRgbaColorControl(
+            document.getElementById('backgroundControls'),
+            'background',
+            'Background',
+            initialBackgroundColor,
+            applyBackgroundColor,
+            { byteOnly: true, hideFields: true },
+        ).open = true;
+
+        // UI color themes: the default pink/yellow palette is remapped by rewriting the matching stylesheet colors.
+        const themeColorKeys = {
+            accent: '253,88,185',
+            text: '255,235,179',
+            panel: '37,24,33',
+            panelDeep: '24,14,21',
+            field: '10,5,8',
+            solid: '26,16,21',
+            solidAlt: '28,17,26',
+            accentDark: '90,31,69',
+            surface: '18,10,15',
+            accentLight: '255,181,217',
+        };
+        const uiThemes = [
+            {
+                id: 'pink', label: 'Pink',
+                colors: {
+                    accent: '253,88,185', text: '255,235,179', panel: '37,24,33', panelDeep: '24,14,21',
+                    field: '10,5,8', solid: '26,16,21', solidAlt: '28,17,26',                     accentDark: '90,31,69', surface: '18,10,15', accentLight: '255,181,217',
+                },
+            },
+            {
+                id: 'green', label: 'Green',
+                colors: {
+                    accent: '72,214,132', text: '224,255,214', panel: '24,37,29', panelDeep: '14,24,18',
+                    field: '5,10,7', solid: '15,26,19', solidAlt: '17,28,21', accentDark: '31,90,55', surface: '10,18,13', accentLight: '168,240,196',
+                },
+            },
+            {
+                id: 'blue', label: 'Blue',
+                colors: {
+                    accent: '88,150,253', text: '214,232,255', panel: '24,31,45', panelDeep: '14,19,30',
+                    field: '5,8,14', solid: '15,20,28', solidAlt: '17,22,31', accentDark: '31,55,110', surface: '10,14,22', accentLight: '170,205,255',
+                },
+            },
+            {
+                id: 'purple', label: 'Purple',
+                colors: {
+                    accent: '168,110,250', text: '234,220,255', panel: '34,25,46', panelDeep: '21,15,30',
+                    field: '9,6,13', solid: '22,16,30', solidAlt: '25,18,34', accentDark: '70,40,110', surface: '15,10,22', accentLight: '212,186,255',
+                },
+            },
+            {
+                id: 'red', label: 'Red',
+                colors: {
+                    accent: '240,72,72', text: '255,220,214', panel: '42,22,22', panelDeep: '28,13,13',
+                    field: '10,4,4', solid: '26,15,15', solidAlt: '30,17,17', accentDark: '100,28,28', surface: '18,9,9', accentLight: '255,170,165',
+                },
+            },
+            {
+                id: 'orange', label: 'Orange',
+                colors: {
+                    accent: '255,140,50', text: '255,232,205', panel: '42,29,20', panelDeep: '28,18,11',
+                    field: '11,6,3', solid: '27,18,12', solidAlt: '31,21,14', accentDark: '110,55,18', surface: '19,12,8', accentLight: '255,200,150',
+                },
+            },
+            {
+                id: 'grey', label: 'Grey',
+                colors: {
+                    accent: '170,170,176', text: '235,235,238', panel: '34,34,36', panelDeep: '22,22,24',
+                    field: '8,8,9', solid: '22,22,24', solidAlt: '25,25,27', accentDark: '70,70,74', surface: '15,15,16', accentLight: '210,210,216',
+                },
+            },
+        ];
+        const themeStorageKey = 'skinEditorUiTheme';
+        const themeColorPattern = /rgba?\(\s*(\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\s*\)/g;
+        const themeLookup = Object.fromEntries(Object.entries(themeColorKeys).map(([name, key]) => [key, name]));
+        const themedStyleRules = [];
+        let activeTheme = uiThemes[0];
+
+        const remapThemeColors = (value, theme) => value.replace(themeColorPattern, (match, r, g, b, alpha) => {
+            const name = themeLookup[`${r},${g},${b}`];
+            if (!name) return match;
+            const next = theme.colors[name].split(',').join(', ');
+            return alpha === undefined ? `rgb(${next})` : `rgba(${next}, ${alpha})`;
+        });
+        const collectThemedRules = rules => {
+            for (const rule of rules) {
+                if (rule.style && !/#femaleButton|#maleButton/.test(rule.selectorText)) {
+                    const entries = [];
+                    for (const name of Array.from(rule.style)) {
+                        const value = rule.style.getPropertyValue(name);
+                        if (remapThemeColors(value, uiThemes[1]) !== value) {
+                            entries.push([name, value, rule.style.getPropertyPriority(name)]);
+                        }
+                    }
+                    if (entries.length) themedStyleRules.push([rule, entries]);
+                } else if (rule.cssRules) {
+                    collectThemedRules(rule.cssRules);
+                }
+            }
+        };
+        for (const sheet of document.styleSheets) {
+            try {
+                collectThemedRules(sheet.cssRules);
+            } catch { /* cross-origin stylesheet */ }
+        }
+
+        const themeToggleButton = document.getElementById('themeToggleButton');
+        const applyUiTheme = theme => {
+            activeTheme = theme;
+            document.documentElement.style.setProperty('--win-accent', `rgb(${theme.colors.accent})`);
+            document.documentElement.style.setProperty('--win-accent-dark', `rgb(${theme.colors.accentDark})`);
+            document.querySelector('h2').style.fontPalette = theme.id === 'pink' ? '' : `--title-${theme.id}`;
+            for (const [rule, entries] of themedStyleRules) {
+                for (const [name, value, priority] of entries) {
+                    rule.style.setProperty(name, remapThemeColors(value, theme), priority);
+                }
+            }
+            const next = uiThemes[(uiThemes.indexOf(theme) + 1) % uiThemes.length];
+            themeToggleButton.title = `Color theme: ${theme.label} (click for ${next.label})`;
+            themeToggleButton.setAttribute('aria-label', themeToggleButton.title);
+            try {
+                localStorage.setItem(themeStorageKey, theme.id);
+            } catch { /* storage unavailable */ }
+        };
+        themeToggleButton.addEventListener('click', () => {
+            applyUiTheme(uiThemes[(uiThemes.indexOf(activeTheme) + 1) % uiThemes.length]);
+        });
+        try {
+            const storedTheme = uiThemes.find(theme => theme.id === localStorage.getItem(themeStorageKey));
+            applyUiTheme(storedTheme || uiThemes[0]);
+        } catch {
+            applyUiTheme(uiThemes[0]);
+        }
+
+        const win95ToggleButton = document.getElementById('win95ToggleButton');
+        const win95StorageKey = 'skinEditorWin95Style';
+        const setWin95Style = enabled => {
+            document.documentElement.classList.toggle('win95', enabled);
+            win95ToggleButton.setAttribute('aria-pressed', String(enabled));
+            try {
+                localStorage.setItem(win95StorageKey, enabled ? '1' : '0');
+            } catch { /* storage unavailable */ }
+        };
+        win95ToggleButton.addEventListener('click', () => {
+            setWin95Style(!document.documentElement.classList.contains('win95'));
+        });
+        try {
+            setWin95Style(localStorage.getItem(win95StorageKey) === '1');
+        } catch { /* storage unavailable */ }
+
+        const wallpaperKey = 'skinEditorWallpaperOff';
+        const wallpaperToggle = document.createElement('button');
+        wallpaperToggle.type = 'button';
+        wallpaperToggle.id = 'wallpaperToggle';
+        const setWallpaperOff = off => {
+            document.documentElement.classList.toggle('wallpaper-off', off);
+            wallpaperToggle.textContent = off ? 'Windows background: Off' : 'Windows background: On';
+            wallpaperToggle.setAttribute('aria-pressed', String(!off));
+            try { localStorage.setItem(wallpaperKey, off ? '1' : '0'); } catch { /* storage unavailable */ }
+        };
+        wallpaperToggle.addEventListener('click', () => setWallpaperOff(!document.documentElement.classList.contains('wallpaper-off')));
+        document.getElementById('backgroundControls').prepend(wallpaperToggle);
+        const wallpaperBrightness = document.createElement('label');
+        wallpaperBrightness.id = 'wallpaperBrightness';
+        wallpaperBrightness.textContent = 'Brightness';
+        const wallpaperBrightnessInput = document.createElement('input');
+        Object.assign(wallpaperBrightnessInput, { type: 'range', min: '0.02', max: '1', step: '0.01', value: '1' });
+        wallpaperBrightnessInput.setAttribute('aria-label', 'Windows background brightness');
+        wallpaperBrightness.append(wallpaperBrightnessInput);
+        wallpaperToggle.after(wallpaperBrightness);
+        const wallpaperBrightnessKey = 'skinEditorWallpaperBrightness';
+        const setWallpaperBrightness = value => {
+            document.documentElement.style.setProperty('--wallpaper-brightness', value);
+            wallpaperBrightnessInput.value = value;
+        };
+        wallpaperBrightnessInput.addEventListener('input', () => {
+            setWallpaperBrightness(wallpaperBrightnessInput.value);
+            try { localStorage.setItem(wallpaperBrightnessKey, wallpaperBrightnessInput.value); } catch { /* storage unavailable */ }
+        });
+        try {
+            const storedWallpaperBrightness = parseFloat(localStorage.getItem(wallpaperBrightnessKey));
+            if (storedWallpaperBrightness >= 0.02 && storedWallpaperBrightness <= 1) setWallpaperBrightness(storedWallpaperBrightness);
+        } catch { /* storage unavailable */ }
+        try { setWallpaperOff(localStorage.getItem(wallpaperKey) === '1'); } catch { setWallpaperOff(false); }
+
+        let clippyAgent = null;
+        let clippyLoading = false;
+        let clippyTimers = [];
+        let lastClippyLine = '';
+        const clippyColorStats = () => {
+            const colors = [...document.querySelectorAll('[aria-label$="color preview"]')]
+                .filter(el => el.closest('#sidebar'))
+                .map(el => getComputedStyle(el).backgroundColor.match(/\d+(\.\d+)?/g)?.slice(0, 3).map(Number))
+                .filter(rgb => rgb && rgb.length === 3);
+            if (!colors.length) return null;
+            const avg = colors.reduce((sum, rgb) => sum + (rgb[0] + rgb[1] + rgb[2]) / 3, 0) / colors.length;
+            const sat = colors.reduce((sum, rgb) => sum + (Math.max(...rgb) - Math.min(...rgb)), 0) / colors.length;
+            return { avg, sat };
+        };
+        const clippyGreeting = 'It looks like you\u2019re designing a new skin. Would you like help?';
+        const clippyAdjustLine = 'Oooh, I see the vision. Looks great!';
+        // Fixed animations per line (one is picked at random); other lines use clippyActions.
+        const clippyLineAnimations = {
+            [clippyGreeting]: ['GetAttention'],
+            [clippyAdjustLine]: ['LookDownLeft', 'LookDownRight'],
+            'Don\u2019t forget to save your skin before you go!': ['Alert'],
+            'Man, I wish I had your creative spark..': ['GetArtsy', 'GetWizardy'],
+            'Tip: the Male Display color is what the ladies see first.': ['IdleEyeBrowRaise', 'Searching'],
+            'Very vibrant. Predators will see you from space.': ['Searching', 'IdleRopePile'],
+            'A bit grey, no? Maybe add a splash of color!': ['GetArtsy'],
+        };
+        const clippyLine = () => {
+            const stats = clippyColorStats();
+            const lines = [
+                'Have you tried another skin pattern? There are some super cool ones!',
+                'Tip: the Male Display color is what the ladies see first.',
+                'Don\u2019t forget to save your skin before you go!',
+                'Man, I wish I had your creative spark..',
+                'Psst\u2026 try the lightbulb for dramatic lighting.',
+            ];
+            if (stats && stats.avg < 60) lines.push('Love it! The dark shades tie everything together!');
+            if (stats && stats.avg < 50) lines.push('It\u2019s getting dark in here, uh huh ~ \u266B \u266A');
+            if (stats && stats.avg > 240) lines.push('Wow, so bright! Sunglasses recommended.');
+            if (stats && stats.sat > 110) lines.push('Whoa, those colors are LOUD. I love it!', 'Very vibrant. Predators will see you from space.');
+            if (stats && stats.sat < 35) lines.push('A bit grey, no? Maybe add a splash of color!');
+            const pool = lines.filter(line => line !== lastClippyLine);
+            lastClippyLine = pool[Math.floor(Math.random() * pool.length)];
+            return lastClippyLine;
+        };
+        const clippyActions = ['Wave', 'Greeting', 'Congratulate', 'Thinking', 'CheckingSomething', 'Searching', 'Explain', 'Processing', 'GetArtsy', 'GetTechy', 'GetWizardy', 'Writing', 'Alert', 'Save', 'Print', 'SendMail', 'GestureUp', 'GestureLeft', 'GestureRight', 'GestureDown', 'LookLeft', 'LookRight', 'LookUp', 'LookDown'];
+        let clippyCloseTimer = null;
+        // Each line stays 5 seconds after it finishes typing; a new line replaces it immediately.
+        let clippyDelayTimer = null;
+        // For the first 6 seconds after Clippy appears, only the greeting and its animation may play.
+        let clippyQuietUntil = 0;
+        const clippyIsQuiet = () => Date.now() < clippyQuietUntil;
+        // Lines with set animations suppress Clippy's random idle animations while they are shown.
+        let clippyBlockIdle = false;
+        // Lines and animations start 1 second after being triggered; the animation plays while the text types.
+        const clippySay = (text, keepQueue = false) => {
+            if (!clippyAgent || (text !== clippyGreeting && clippyIsQuiet())) return;
+            clearTimeout(clippyDelayTimer);
+            clippyDelayTimer = setTimeout(() => {
+                if (!clippyAgent || !document.documentElement.classList.contains('win95')) return;
+                if (text !== clippyGreeting && clippyIsQuiet()) return;
+                clearTimeout(clippyCloseTimer);
+                if (!keepQueue) {
+                    clippyAgent._balloon.close();
+                    clippyAgent.stop();
+                }
+                const available = clippyAgent.animations();
+                const choices = (clippyLineAnimations[text] || clippyActions).filter(name => available.includes(name));
+                const animation = choices[Math.floor(Math.random() * choices.length)];
+                clippyBlockIdle = Boolean(clippyLineAnimations[text]);
+                clippyAgent._addToQueue(function(complete) {
+                    if (animation) this._playInternal(animation, (name, state) => {
+                        // Animations that hold their last frame must be told to finish, or they stay stuck on a pose.
+                        if (state === 1) this._animator.exitAnimation();
+                    });
+                    const typingTime = text.split(/\s+/).length * this._balloon.WORD_SPEAK_TIME;
+                    clippyCloseTimer = setTimeout(() => {
+                        clippyBlockIdle = false;
+                        this._balloon.close();
+                        this.closeBalloon();
+                    }, typingTime + 5000);
+                    this._balloon.speak(complete, text, true);
+                }, clippyAgent);
+            }, 1000);
+        };
+        const clippySpeak = () => clippySay(clippyLine());
+        let clippyAdjustTimer = null;
+        let clippyLastAdjust = 0;
+        // Reacts once you pause after changing a zone color or brightness, at most every 20 seconds.
+        const clippyOnAdjust = () => {
+            if (!clippyAgent || !document.documentElement.classList.contains('win95')) return;
+            clearTimeout(clippyAdjustTimer);
+            clippyAdjustTimer = setTimeout(() => {
+                if (Date.now() - clippyLastAdjust < 20000) return;
+                clippyLastAdjust = Date.now();
+                clippySay(clippyAdjustLine);
+            }, 500);
+        };
+        const sidebarEl = document.getElementById('sidebar');
+        ['input', 'change'].forEach(type => sidebarEl.addEventListener(type, event => {
+            if (event.target.closest('.zone-group')) clippyOnAdjust();
+        }));
+        sidebarEl.addEventListener('pointerup', event => {
+            if (event.target.closest('.zone-group .rgb-control-body')) clippyOnAdjust();
+        });
+        const clippyPlace = () => {
+            clippyAgent.moveTo(Math.min(392, window.innerWidth - 140), 130, 0);
+        };
+        const startClippy = async () => {
+            if (!clippyAgent && !clippyLoading) {
+                clippyLoading = true;
+                try {
+                    const [{ initAgent }, { Clippy }] = await Promise.all([import('clippyjs'), import('clippyjs/agents')]);
+                    clippyAgent = await initAgent(Clippy);
+                    clippyAgent._el.classList.add('clippy-agent');
+                    clippyAgent._balloon._balloon.classList.add('clippy-agent');
+                    // Clippy is silent: his animation sounds are disabled entirely.
+                    clippyAgent._animator._playSound = () => {};
+                    const originalIsIdle = clippyAgent._isIdleAnimation.bind(clippyAgent);
+                    clippyAgent._isIdleAnimation = () => clippyBlockIdle || clippyIsQuiet() || originalIsIdle();
+                    clippyAgent._el.addEventListener('click', () => {
+                        if (!clippyAgent._dragging) clippySpeak();
+                    });
+                } catch {
+                    clippyLoading = false;
+                    return;
+                }
+                clippyLoading = false;
+            }
+            if (!clippyAgent || !document.documentElement.classList.contains('win95')) return;
+            clippyAgent.show();
+            clippyPlace();
+            clippyQuietUntil = Date.now() + 6000;
+            clippySay(clippyGreeting, true);
+            clippyTimers.push(setInterval(() => {
+                if (Math.random() < 0.6) clippySpeak();
+            }, 25000));
+        };
+        const stopClippy = () => {
+            clippyTimers.forEach(timer => { clearTimeout(timer); clearInterval(timer); });
+            clearTimeout(clippyCloseTimer);
+            clearTimeout(clippyDelayTimer);
+            clippyTimers = [];
+            clippyBlockIdle = false;
+            clippyQuietUntil = 0;
+            if (clippyAgent) {
+                clippyAgent.stop();
+                clippyAgent.hide(true);
+                clippyAgent._balloon.close();
+                clippyAgent._balloon.hide(true);
+                Object.values(clippyAgent._animator._sounds).forEach(audio => {
+                    audio.pause();
+                    audio.currentTime = 0;
+                });
+            }
+        };
+        let clippyWasWin95 = false;
+        const syncClippy = () => {
+            const isWin95 = document.documentElement.classList.contains('win95');
+            if (isWin95 === clippyWasWin95) return;
+            clippyWasWin95 = isWin95;
+            if (isWin95) startClippy();
+            else stopClippy();
+        };
+        new MutationObserver(syncClippy).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+        syncClippy();
+
+        function formatAnimationName(name) {
+            return name
+                .replace(/^A_/, '')
+                .replace(/_[A-Za-z]+(?=Idle$)/, ' ')
+                .replace(/_/g, ' ')
+                .replace(/\bAdult\b/g, '')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        function playAnimation(clip) {
+            if (!currentMixer || !clip) return;
+
+            const nextAction = currentMixer.clipAction(clip);
+            const isOneShot = isOneShotAnimation(clip);
+            nextAction.reset();
+            nextAction.setLoop(isOneShot ? THREE.LoopOnce : THREE.LoopRepeat, isOneShot ? 1 : Infinity);
+            nextAction.clampWhenFinished = isOneShot;
+            nextAction.fadeIn(0.2).play();
+            if (currentAction && currentAction !== nextAction) currentAction.fadeOut(0.2);
+            currentAction = nextAction;
+            animationSelect.value = clip.name;
+        }
+
+        function isOneShotAnimation(clip) {
+            return /(?:Vocal|Charge|Sniff_(?:in|out)|SitToStand|StandToSit|Fishing_(?:Start|Recover))/i.test(clip.name);
+        }
+
+        function makeLoopSeamContinuous(clip) {
+            const loopClip = clip.clone();
+            loopClip.tracks.forEach(track => {
+                const valueSize = track.getValueSize();
+                if (track.values.length <= valueSize) return;
+                const lastKeyStart = track.values.length - valueSize;
+                for (let i = 0; i < valueSize; i++) {
+                    track.values[lastKeyStart + i] = track.values[i];
+                }
+            });
+            return loopClip;
+        }
+
+        function populateAnimationSelector(clips) {
+            animationSelect.replaceChildren();
+            if (clips.length === 0) {
+                animationSelect.add(new Option('No animations in this model', ''));
+                animationSelect.disabled = true;
+                return;
+            }
+
+            clips.forEach(clip => animationSelect.add(new Option(formatAnimationName(clip.name), clip.name)));
+            animationSelect.disabled = false;
+        }
+
+        animationSelect.addEventListener('change', () => {
+            const clip = currentModel?.animations?.find(item => item.name === animationSelect.value);
+            if (clip) playAnimation(clip);
+        });
+        animationToggleButton.addEventListener('click', () => {
+            if (!currentMixer) return;
+            isAnimationPaused = !isAnimationPaused;
+            currentMixer.timeScale = isAnimationPaused ? 0 : 1;
+            updateAnimationToggle();
+        });
+
+        function createEyeTexture(irisHex) {
+            const size = 512;
+            const canvas = document.createElement('canvas');
+            canvas.width = canvas.height = size;
+            const context = canvas.getContext('2d');
+            const center = size / 2;
+
+            if (currentEyeImage) context.drawImage(currentEyeImage, 0, 0, size, size);
+            else {
+                context.fillStyle = '#ffffff';
+                context.fillRect(0, 0, size, size);
+            }
+
+            const irisRadius = size * 0.3;
+            context.save();
+            context.beginPath();
+            context.arc(center, center, irisRadius, 0, Math.PI * 2);
+            context.clip();
+            context.globalCompositeOperation = 'color';
+            context.globalAlpha = 0.35;
+            context.fillStyle = irisHex;
+            context.fillRect(0, 0, size, size);
+            context.restore();
+
+            const texture = new THREE.CanvasTexture(canvas);
+            texture.colorSpace = THREE.SRGBColorSpace;
+            texture.flipY = false;
+            if (currentEyeUvMap) copyTextureTransform(texture, currentEyeUvMap);
+            return texture;
+        }
+
+        function refreshEyeTexture() {
+            if (!currentEyeMaterial) return;
+            const previousTexture = currentEyeMaterial.map;
+            const eyeHex = currentSkinIsGlitched
+                ? rgbaToNerfGlitchHex(eyeColorRgba)
+                : rgbaToHex(eyeColorRgba);
+            currentEyeMaterial.map = createEyeTexture(eyeHex);
+            currentEyeMaterial.needsUpdate = true;
+            if (previousTexture) previousTexture.dispose();
+        }
+
+        function createLinearTexture(image) {
+            const texture = new THREE.Texture(image);
+            texture.colorSpace = THREE.NoColorSpace;
+            texture.flipY = false;
+            texture.needsUpdate = true;
+            return texture;
+        }
+
+        function createColorTexture(image) {
+            const texture = new THREE.Texture(image);
+            texture.colorSpace = THREE.SRGBColorSpace;
+            texture.flipY = false;
+            texture.needsUpdate = true;
+            return texture;
+        }
+
+        function copyTextureTransform(target, source) {
+            target.wrapS = source.wrapS;
+            target.wrapT = source.wrapT;
+            target.channel = source.channel;
+            target.matrixAutoUpdate = source.matrixAutoUpdate;
+            if (source.matrixAutoUpdate) {
+                target.offset.copy(source.offset);
+                target.repeat.copy(source.repeat);
+                target.rotation = source.rotation;
+                target.center.copy(source.center);
+            } else {
+                target.matrix.copy(source.matrix);
+                target.needsUpdate = true;
+            }
+            if (source.matrixAutoUpdate) target.updateMatrix();
+        }
+
+        function createSkinMaterial(image, modelConfig = {}, mapImages = {}, sourceMaterial = null) {
+            if (!mapImages.mask || !mapImages.albedo) {
+                throw new Error(`The base mask and albedo maps are required for ${modelConfig.name || 'this model'}.`);
+            }
+            if (!sourceMaterial?.map) {
+                throw new Error(`The embedded DinoBody texture is missing for ${modelConfig.name || 'this model'}.`);
+            }
+            const patternMask = createLinearTexture(image);
+            const baseMask = createLinearTexture(mapImages.mask);
+            const albedoMap = createColorTexture(mapImages.albedo);
+            const skinNoise = mapImages.skinNoise ? createLinearTexture(mapImages.skinNoise) : null;
+            [patternMask, baseMask, albedoMap, skinNoise].filter(Boolean).forEach(texture => {
+                copyTextureTransform(texture, sourceMaterial.map);
+            });
+            currentSkinTextures = [patternMask, baseMask, albedoMap, skinNoise].filter(Boolean);
+            currentZoneUniforms = zoneRgbaValues.map(color => ({ value: colorFromRgba(color) }));
+            const skinUniforms = {
+                uBaseMask: { value: baseMask },
+                uPatternMask: { value: patternMask },
+                uAlbedoMap: { value: albedoMap },
+                uOrigMap: { value: sourceMaterial.map },
+                uSkinNoise: { value: skinNoise || albedoMap },
+                uHasSkinNoise: { value: Boolean(skinNoise) },
+                uNoiseTiling: { value: skinNoise ? 8 : 0 },
+                uTeethColor: { value: colorFromRgba(detailColors.teethColor) },
+                uMouthColor: { value: colorFromRgba(detailColors.mouthColor) },
+                uClawColor: { value: colorFromRgba(detailColors.clawColor) },
+                uColorR: currentZoneUniforms[0],
+                uColorG: currentZoneUniforms[1],
+                uColorB: currentZoneUniforms[2],
+                uColorC: currentZoneUniforms[3],
+                uColorM: currentZoneUniforms[4],
+                uColorY: currentZoneUniforms[5],
+            };
+            const material = new THREE.MeshStandardMaterial({
+                color: 0xffffff,
+                roughness: Math.max(sourceMaterial?.roughness ?? 1, 1),
+                metalness: 0,
+                map: sourceMaterial.map,
+                normalMap: sourceMaterial.normalMap || null,
+                normalScale: new THREE.Vector2(1.3, 1.3),
+                roughnessMap: sourceMaterial?.roughnessMap || null,
+                alphaTest: modelConfig.alphaCutoff || sourceMaterial?.alphaTest || 0,
+            });
+            material.onBeforeCompile = shader => {
+                if (!shader.fragmentShader.includes('#include <common>')
+                    || !shader.fragmentShader.includes('#include <map_fragment>')
+                    || !shader.fragmentShader.includes('#include <roughnessmap_fragment>')
+                    || !shader.fragmentShader.includes('#include <lights_physical_fragment>')) {
+                    throw new Error('Could not apply the Oasis skin-map shader to the model.');
+                }
+                Object.assign(shader.uniforms, skinUniforms);
+                currentSkinSpecularUniform = { value: Number(skinSpecularInput.value) };
+                shader.uniforms.skinSpecularStrength = currentSkinSpecularUniform;
+                currentGenderUniform = { value: isFemale };
+                shader.uniforms.isFemale = currentGenderUniform;
+                currentDetailUniforms = Object.fromEntries(detailColorSettings.map(({ key }) => [
+                    key,
+                    { value: colorFromRgba(detailColors[key]) },
+                ]));
+                shader.uniforms.uTeethColor = currentDetailUniforms.teethColor;
+                shader.uniforms.uMouthColor = currentDetailUniforms.mouthColor;
+                shader.uniforms.uClawColor = currentDetailUniforms.clawColor;
+                shader.fragmentShader = shader.fragmentShader.replace(
+                    '#include <common>',
+                    `#include <common>
+                    uniform sampler2D uBaseMask;
+                    uniform sampler2D uPatternMask;
+                    uniform sampler2D uAlbedoMap;
+                    uniform sampler2D uOrigMap;
+                    uniform sampler2D uSkinNoise;
+                    uniform bool uHasSkinNoise;
+                    uniform float uNoiseTiling;
+                    uniform float skinSpecularStrength;
+                    uniform bool isFemale;
+                    uniform vec3 uTeethColor;
+                    uniform vec3 uMouthColor;
+                    uniform vec3 uClawColor;
+                    uniform vec3 uColorR;
+                    uniform vec3 uColorG;
+                    uniform vec3 uColorB;
+                    uniform vec3 uColorC;
+                    uniform vec3 uColorM;
+                    uniform vec3 uColorY;
+                    float zoneSharpen(float weight) { return weight * weight; }
+                    vec3 zoneLayer(vec3 base, float wR, float wG, float wB,
+                        float wC, float wM, float wY, float coverage) {
+                        float total = wR + wG + wB + wC + wM + wY;
+                        if (total <= 0.0001 || coverage <= 0.001) return base;
+                        float sR = zoneSharpen(wR), sG = zoneSharpen(wG), sB = zoneSharpen(wB);
+                        float sC = zoneSharpen(wC), sM = zoneSharpen(wM), sY = zoneSharpen(wY);
+                        float sum = sR + sG + sB + sC + sM + sY;
+                        vec3 color = (sR * (isFemale ? uColorM : uColorR) + sG * uColorG
+                            + sB * uColorB + sC * uColorC + sM * uColorM + sY * uColorY)
+                            / max(sum, 1e-8);
+                        return mix(base, color, coverage);
+                    }
+                    vec3 blendOverlay(vec3 base, vec3 layer) {
+                        return mix(2.0 * base * layer,
+                            1.0 - 2.0 * (1.0 - base) * (1.0 - layer), step(0.5, base));
+                    }`,
+                );
+                shader.fragmentShader = shader.fragmentShader.replace(
+                    '#include <map_fragment>',
+                    `
+                    #ifdef USE_MAP
+                        vec3 baseMask = texture2D(uBaseMask, vMapUv).rgb;
+                        vec3 patternMask = texture2D(uPatternMask, vMapUv).rgb;
+                        vec3 albedo = texture2D(uAlbedoMap, vMapUv).rgb;
+                        float baseCoverage = smoothstep(0.03, 0.15,
+                            max(max(baseMask.r, baseMask.g), baseMask.b));
+                        float patternCoverage = smoothstep(0.03, 0.15,
+                            max(max(patternMask.r, patternMask.g), patternMask.b));
+
+                        float baseR = baseMask.r * (1.0 - baseMask.g) * (1.0 - baseMask.b);
+                        float baseG = baseMask.g * (1.0 - baseMask.r) * (1.0 - baseMask.b);
+                        float baseB = baseMask.b * (1.0 - baseMask.r) * (1.0 - baseMask.g);
+                        float baseC = baseMask.g * baseMask.b * (1.0 - baseMask.r);
+                        float baseM = baseMask.r * baseMask.b * (1.0 - baseMask.g);
+                        float baseY = baseMask.r * baseMask.g * (1.0 - baseMask.b);
+                        float patternR = patternMask.r * (1.0 - patternMask.g) * (1.0 - patternMask.b);
+                        float patternG = patternMask.g * (1.0 - patternMask.r) * (1.0 - patternMask.b);
+                        float patternB = patternMask.b * (1.0 - patternMask.r) * (1.0 - patternMask.g);
+                        float patternC = patternMask.g * patternMask.b * (1.0 - patternMask.r);
+                        float patternM = patternMask.r * patternMask.b * (1.0 - patternMask.g);
+                        float patternY = patternMask.r * patternMask.g * (1.0 - patternMask.b);
+
+                        vec3 skinColor = vec3(0.0);
+                        skinColor = zoneLayer(skinColor, 0.0, 0.0, 0.0,
+                            baseC, baseM, baseY, baseCoverage);
+                        skinColor = zoneLayer(skinColor, patternR, patternG, patternB,
+                            patternC, patternM, patternY, patternCoverage);
+                        skinColor = mix(skinColor, uTeethColor, baseR);
+                        skinColor = mix(skinColor, uMouthColor, baseG);
+                        skinColor = mix(skinColor, uClawColor, baseB);
+
+                        if (uHasSkinNoise && uNoiseTiling > 0.001) {
+                            float noise = texture2D(uSkinNoise, vMapUv * uNoiseTiling).g;
+                            skinColor *= 1.0 + (noise - 0.607) * 1.6;
+                        }
+                        vec3 cavity = texture2D(uOrigMap, vMapUv).rgb;
+                        diffuseColor.rgb = blendOverlay(clamp(skinColor, 0.0, 1.0) * albedo, cavity);
+                        diffuseColor.a = texture2D(uOrigMap, vMapUv).a;
+                    #endif
+                    `,
+                );
+                shader.fragmentShader = shader.fragmentShader.replace(
+                    '#include <roughnessmap_fragment>',
+                    `#include <roughnessmap_fragment>
+                    roughnessFactor = mix(roughnessFactor, 1.0, 0.35);
+                    if (uHasSkinNoise && uNoiseTiling > 0.001) {
+                        float noise = texture2D(uSkinNoise, vMapUv * uNoiseTiling).g;
+                        roughnessFactor = clamp(roughnessFactor - (noise - 0.607) * 0.25, 0.0, 1.0);
+                    }`,
+                );
+                shader.fragmentShader = shader.fragmentShader.replace(
+                    '#include <lights_physical_fragment>',
+                    `#include <lights_physical_fragment>
+                    material.specularColor *= skinSpecularStrength;
+                    material.specularF90 *= skinSpecularStrength;`,
+                );
+            };
+            material.userData.skinUniforms = skinUniforms;
+            material.customProgramCacheKey = () => 'oasis-skin-mask-material-v1';
+            return material;
+        }
+
+        function captureImportedMaterials(model) {
+            const materials = new Set();
+            model.traverse(child => {
+                if (!child.isMesh) return;
+                const meshMaterials = Array.isArray(child.material) ? child.material : [child.material];
+                meshMaterials.forEach(material => {
+                    if (material) materials.add(material);
+                });
+            });
+            currentImportedMaterials = [...materials];
+        }
+
+        function disposeCurrentModel() {
+            if (!currentModel) return;
+            scene.remove(currentModel);
+
+            const importedTextures = new Set();
+            currentImportedMaterials.forEach(material => {
+                Object.values(material).forEach(value => {
+                    if (value?.isTexture) importedTextures.add(value);
+                });
+                material.dispose();
+            });
+            importedTextures.forEach(texture => texture.dispose());
+
+            const materials = new Set();
+            currentModel.traverse(child => {
+                if (!child.isMesh) return;
+                const meshMaterials = Array.isArray(child.material) ? child.material : [child.material];
+                meshMaterials.forEach(material => {
+                    if (material && material !== currentSkinMaterial) {
+                        material.map?.dispose();
+                        materials.add(material);
+                    }
+                });
+            });
+            materials.forEach(material => material.dispose());
+
+            if (currentSkinMaterial) currentSkinMaterial.dispose();
+            currentSkinTextures.forEach(texture => texture.dispose());
+            currentModel = null;
+            currentImportedMaterials = [];
+            currentSkinMaterial = null;
+            currentEyeMaterial = null;
+            currentEyeImage = null;
+            currentEyeUvMap = null;
+            currentSkinTextures = [];
+            currentZoneUniforms = [];
+            currentDetailUniforms = {};
+            currentGenderUniform = null;
+            currentSkinSpecularUniform = null;
+            growthMeshes = [];
+        }
+
+        function frameModel(model) {
+            const bounds = new THREE.Box3().setFromObject(model);
+            const sphere = bounds.getBoundingSphere(new THREE.Sphere());
+            const modelSize = bounds.getSize(new THREE.Vector3());
+            const radius = Math.max(sphere.radius, 0.1);
+            keyLightDistance = radius * 4;
+            const groundSize = Math.max(modelSize.x, modelSize.z, radius) * 30;
+            groundPlane.geometry.dispose();
+            groundPlane.geometry = new THREE.PlaneGeometry(groundSize, groundSize);
+            groundPlane.position.set(sphere.center.x, 0, sphere.center.z);
+
+            const shadowCamera = directionalLight.shadow.camera;
+            const shadowExtent = radius * 2;
+            shadowCamera.left = -shadowExtent;
+            shadowCamera.right = shadowExtent;
+            shadowCamera.top = shadowExtent;
+            shadowCamera.bottom = -shadowExtent;
+            shadowCamera.near = Math.max(radius * 0.01, 0.1);
+            shadowCamera.far = radius * 8;
+            shadowCamera.updateProjectionMatrix();
+            directionalLight.shadow.needsUpdate = true;
+
+            const distance = radius / Math.sin(THREE.MathUtils.degToRad(camera.fov / 2)) * 0.84;
+            const viewDirection = new THREE.Vector3(1, 0.3, 0.4).normalize();
+            const viewRight = new THREE.Vector3(viewDirection.z, 0, -viewDirection.x).normalize();
+
+            controls.target.copy(sphere.center).addScaledVector(viewRight, -radius * 0.45);
+            camera.position.copy(controls.target).addScaledVector(viewDirection, distance);
+            camera.near = Math.max(radius / 100, 0.01);
+            camera.far = radius * 100;
+            camera.updateProjectionMatrix();
+            controls.minDistance = radius * 1.05;
+            controls.maxDistance = radius * 12;
+            controls.update();
+        }
+
+        function loadGltf(path) {
+            return new Promise((resolve, reject) => {
+                loader.load(path, resolve, undefined, reject);
+            });
+        }
+
+        function loadImage(url) {
+            return new Promise((resolve, reject) => {
+                const image = new Image();
+                image.onload = () => resolve(image);
+                image.onerror = () => reject(new Error(`Could not load texture: ${url}`));
+                image.src = url;
+            });
+        }
+
+        function populatePatternSelector(choices) {
+            currentPatternChoices = choices;
+            patternSelect.replaceChildren();
+            if (!choices.length) {
+                patternSelect.add(new Option('No skin patterns available', ''));
+                patternSelect.disabled = true;
+                return;
+            }
+
+            choices.forEach((choice, index) => {
+                const label = choice.label.replace(/^Adult\s+(\d+)$/i, '$1');
+                patternSelect.add(new Option(label, String(index)));
+            });
+            patternSelect.value = '0';
+            patternSelect.disabled = false;
+        }
+
+        async function applyPatternChoice(index) {
+            const choice = currentPatternChoices[index];
+            if (!choice || !currentSkinMaterial) return;
+
+            const request = modelLoadRequest;
+            const imageUrl = downloadedAssetUrl(choice.file);
+            try {
+                const image = await loadImage(imageUrl);
+                if (request !== modelLoadRequest || !currentSkinMaterial) return;
+                const patternUniform = currentSkinMaterial.userData.skinUniforms?.uPatternMask;
+                if (!patternUniform) throw new Error('The model skin-pattern shader is not initialized.');
+                const previousTexture = patternUniform.value;
+                const nextTexture = createLinearTexture(image);
+                copyTextureTransform(nextTexture, currentSkinMaterial.map);
+                patternUniform.value = nextTexture;
+                currentSkinTextures = currentSkinTextures.filter(texture => texture !== previousTexture);
+                currentSkinTextures.push(nextTexture);
+                previousTexture?.dispose();
+            } catch (error) {
+                if (request !== modelLoadRequest) return;
+                console.error(`Could not load skin pattern "${choice.label}".`, error);
+            }
+        }
+
+        patternSelect.addEventListener('change', () => {
+            applyPatternChoice(Number(patternSelect.value));
+        });
+
+        function downloadedAssetUrl(assetPath) {
+            if (!downloadedAssetsBase) {
+                throw new Error('The downloaded test bundle is available only through the Vite development server.');
+            }
+            return `${downloadedAssetsBase}/${assetPath.replace(/^\/+/, '')}`;
+        }
+
+        async function getDownloadedManifest() {
+            if (downloadedManifest) return downloadedManifest;
+            if (!downloadedManifestPromise) {
+                downloadedManifestPromise = fetch(downloadedAssetUrl('asset-manifest.json'))
+                    .then(response => {
+                        if (!response.ok) throw new Error(`Could not load the downloaded asset manifest (HTTP ${response.status}).`);
+                        return response.json();
+                    })
+                    .then(manifest => {
+                        downloadedManifest = manifest;
+                        return manifest;
+                    })
+                    .catch(error => {
+                        downloadedManifestPromise = null;
+                        throw error;
+                    });
+            }
+            return downloadedManifestPromise;
+        }
+
+        async function loadDownloadedMaterialMaps(modelData) {
+            const modelMaps = modelData.maps || {};
+            const mapFiles = [
+                ['mask', modelMaps.mask || modelData.maskMap],
+                ['albedo', modelMaps.albedo],
+                ['skinNoise', modelMaps.skinNoise],
+            ].filter(([, path]) => path);
+            if (!mapFiles.some(([name]) => name === 'mask') || !mapFiles.some(([name]) => name === 'albedo')) {
+                throw new Error(`The base mask or albedo map is missing from ${modelData.name}'s metadata.`);
+            }
+            const resolveMapUrl = path => {
+                const speciesPrefix = `/files/${modelData.name}/`;
+                const assetPath = path.startsWith(speciesPrefix)
+                    ? path
+                    : `files/${modelData.name}/${path.replace(/^\/+/, '')}`;
+                return downloadedAssetUrl(assetPath);
+            };
+            const loadedMaps = await Promise.all(mapFiles.map(async ([name, path]) => {
+                try {
+                    return [name, await loadImage(resolveMapUrl(path))];
+                } catch (error) {
+                    throw new Error(`Could not load ${name} map for ${modelData.name}.`, { cause: error });
+                }
+            }));
+            return Object.fromEntries(loadedMaps);
+        }
+
+        function updateZoneDefaults(defaults) {
+            if (!Array.isArray(defaults) || defaults.length !== zoneColors.length) return;
+            zoneColors = defaults.slice();
+            zoneRgbaValues = defaults.map(rgbaValuesFromHex);
+            zoneRgbaValues.forEach((values, index) => {
+                rgbaColorControls.get(`zone-${index}`)?.(values);
+                currentZoneUniforms[index]?.value.copy(colorFromRgba(values));
+            });
+            refreshEyeTexture();
+        }
+
+        function updateDetailColorDefaults(config = {}) {
+            detailColorSettings.forEach(({ key, defaultColor }) => {
+                detailColors[key] = rgbaValuesFromHex(config[key] || defaultColor);
+                rgbaColorControls.get(key)?.(detailColors[key]);
+                currentDetailUniforms[key]?.value.copy(colorFromRgba(detailColors[key]));
+            });
+        }
+
+        function updateEyeColorDefault(config = {}) {
+            eyeColorRgba = rgbaValuesFromHex(config.eyeColorHex || '#FFBE00');
+            rgbaColorControls.get('eye')?.(eyeColorRgba);
+            refreshEyeTexture();
+        }
+
+        async function loadDownloadedAnimations(model, root, request) {
+            const boneNames = new Set();
+            root.traverse(node => {
+                if (node.name) boneNames.add(node.name);
+            });
+
+            const animationResults = await Promise.allSettled(model.animationFiles.map(async filename => {
+                const animationUrl = downloadedAssetUrl(`files/${model.name}/Animations/${filename}`);
+                const response = await fetch(animationUrl);
+                if (!response.ok) throw new Error(`${filename}: HTTP ${response.status}`);
+                const parsed = parseUEAnim(await response.arrayBuffer());
+                const compatibleTracks = parsed.tracks.filter(track => boneNames.has(track.boneName));
+                const clip = buildUEAnimationClip({ ...parsed, tracks: compatibleTracks }, THREE, boneNames);
+                clip.name = filename.replace(/\.ueanim$/i, '');
+                if (!clip.tracks.length) throw new Error(`${filename}: no animation tracks match this model's skeleton.`);
+                return isOneShotAnimation(clip) ? clip : makeLoopSeamContinuous(clip);
+            }));
+
+            if (request !== modelLoadRequest) return [];
+            const clips = [];
+            const failures = [];
+            animationResults.forEach((result, index) => {
+                if (result.status === 'fulfilled') clips.push(result.value);
+                else failures.push(`${model.animationFiles[index]}: ${result.reason.message}`);
+            });
+            if (failures.length) console.warn(`${model.name}: ${failures.length} UEAnim file(s) could not be used.`, failures);
+            return clips;
+        }
+
+        async function loadDownloadedSpeciesModel(speciesName, request) {
+            try {
+                const manifest = await getDownloadedManifest();
+                if (request !== modelLoadRequest) return;
+                const modelData = manifest.models.find(model => model.name === speciesName);
+                if (!modelData?.modelGlbUrl) throw new Error(`No downloaded GLB is listed for ${speciesName}.`);
+
+                const modelPath = modelData.modelGlbUrl.replace(/^\/files\//, '');
+                const gltf = await loadGltf(downloadedAssetUrl(`files/${modelPath}`));
+                if (request !== modelLoadRequest) return;
+
+                populatePatternSelector((modelData.skins || []).map(skin => ({
+                    label: skin.name,
+                    file: skin.url,
+                })));
+                const firstSkin = modelData.skins?.[0];
+                if (!firstSkin?.url) throw new Error(`No downloaded skin texture is listed for ${speciesName}.`);
+                const patternImage = await loadImage(downloadedAssetUrl(firstSkin.url));
+                if (request !== modelLoadRequest) return;
+
+                const eyeTexturePath = modelData.eye?.composedTexture || modelData.eye?.scleraTexture
+                    ? `/files/${modelData.name}/${modelData.eye.composedTexture || modelData.eye.scleraTexture}`
+                    : '/files/Eye/T_Eye_Sclera_D.png';
+                const [mapImages, eyeImage] = await Promise.all([
+                    loadDownloadedMaterialMaps(modelData),
+                    loadImage(downloadedAssetUrl(eyeTexturePath)),
+                ]);
+                if (request !== modelLoadRequest) return;
+
+                const animationClips = modelData.animationFiles?.length
+                    ? await loadDownloadedAnimations(modelData, gltf.scene, request)
+                    : gltf.animations || [];
+                if (request !== modelLoadRequest) return;
+
+                if (currentMixer) {
+                    currentMixer.stopAllAction();
+                    currentMixer = null;
+                }
+                animationToggleButton.disabled = true;
+                currentAction = null;
+                idleClip = null;
+                disposeCurrentModel();
+
+                if (!hasLoadedSpeciesModel) {
+                    updateZoneDefaults(modelData.zoneDefaults);
+                    updateDetailColorDefaults(modelData);
+                    updateEyeColorDefault(modelData);
+                }
+                currentEyeImage = eyeImage;
+                currentModel = gltf.scene;
+                captureImportedMaterials(currentModel);
+                const sourceSkinMaterial = modelData.embeddedMaterialMaps
+                    ? currentImportedMaterials.find(material => material.name === 'DinoBody')
+                    : null;
+                if (modelData.embeddedMaterialMaps && !sourceSkinMaterial) {
+                    throw new Error(`The embedded skin material was not found for ${speciesName}.`);
+                }
+                currentSkinMaterial = createSkinMaterial(patternImage, modelData, mapImages, sourceSkinMaterial);
+                const sourceEyeMaterial = currentImportedMaterials.find(material =>
+                    material.name?.toLowerCase().includes('eye'));
+                currentEyeUvMap = sourceEyeMaterial?.map || null;
+                currentEyeMaterial = new THREE.MeshStandardMaterial({
+                    color: 0xffffff,
+                    roughness: 0.25,
+                    map: createEyeTexture(rgbaToHex(eyeColorRgba)),
+                    side: THREE.DoubleSide,
+                });
+                growthMeshes = [];
+                currentModel.traverse(child => {
+                    if (!child.isMesh) return;
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+                    if (child.morphTargetDictionary && child.morphTargetInfluences) growthMeshes.push(child);
+                    const sourceMaterials = Array.isArray(child.material) ? child.material : [child.material];
+                    const isEye = sourceMaterials.some(material => material?.name?.toLowerCase().includes('eye'))
+                        || child.geometry.attributes.position?.count < 500;
+                    child.material = isEye ? currentEyeMaterial : currentSkinMaterial;
+                });
+                const availableGrowthStages = new Set(
+                    growthMeshes.flatMap(mesh => Object.keys(mesh.morphTargetDictionary)),
+                );
+                currentGrowthStages = growthStageOrder.filter(stage =>
+                    stage === 'Adult' || availableGrowthStages.has(stage));
+                setGrowth(adultGrowthValue());
+                scene.add(currentModel);
+                frameModel(currentModel);
+
+                idleClip = animationClips.find(clip => /(?:^|_)Adult_Idle$/i.test(clip.name))
+                    || animationClips.find(clip => /idle/i.test(clip.name) && !/crouch|swim|sit/i.test(clip.name));
+                currentModel.animations = animationClips;
+                populateAnimationSelector(animationClips);
+                viewerMessage.hidden = true;
+                hasLoadedSpeciesModel = true;
+
+                if (animationClips.length) {
+                    currentMixer = new THREE.AnimationMixer(currentModel);
+                    isAnimationPaused = false;
+                    currentMixer.timeScale = 1;
+                    animationToggleButton.disabled = false;
+                    updateAnimationToggle();
+                    playAnimation(idleClip || animationClips[0]);
+                    currentMixer.addEventListener('finished', event => {
+                        if (event.action !== currentAction || !idleClip || event.action.getClip() === idleClip) return;
+                        playAnimation(idleClip);
+                    });
+                    console.log(`${speciesName}: loaded downloaded GLB and ${animationClips.length} UEAnim clip(s).`);
+                } else {
+                    isAnimationPaused = false;
+                    updateAnimationToggle();
+                    console.warn(`${speciesName}: the downloaded model loaded, but no compatible UEAnim clips were found.`);
+                    populateAnimationSelector([]);
+                }
+                return true;
+            } catch (error) {
+                if (request !== modelLoadRequest) return;
+                viewerMessage.hidden = false;
+                viewerMessage.textContent = `Could not load downloaded test assets for ${speciesName}.\n${error.message}`;
+                console.error(`Could not load downloaded assets for ${speciesName}.`, error);
+                return false;
+            }
+        }
+
+        async function loadSpeciesModel(speciesName) {
+            const request = ++modelLoadRequest;
+            viewerMessage.hidden = false;
+            viewerMessage.textContent = `Loading ${speciesName}…`;
+            return await loadDownloadedSpeciesModel(speciesName, request);
+        }
+
+        const speciesSelect = document.getElementById('speciesSelect');
+        speciesList.forEach(sp => {
+            const opt = document.createElement('option');
+            opt.value = sp;
+            opt.textContent = sp;
+            speciesSelect.appendChild(opt);
+        });
+
+        speciesSelect.addEventListener('change', (e) => {
+            loadSpeciesModel(e.target.value);
+        });
+
+        const presetStorageKey = 'sushy-skin-editor-presets-v1';
+        const presetNameInput = document.getElementById('presetName');
+        const savedPresetSelect = document.getElementById('savedPresetSelect');
+        const skinCodeFormatSelect = document.getElementById('skinCodeFormat');
+        const base64PatternNumberingSelect = document.getElementById('base64PatternNumbering');
+        const skinCodeOutput = document.getElementById('skinCodeOutput');
+        const skinCodeInput = document.getElementById('skinCodeInput');
+        const presetStatus = document.getElementById('presetStatus');
+        const copySkinCodeButton = document.getElementById('copySkinCodeButton');
+        const loadSkinCodeButton = document.getElementById('loadSkinCodeButton');
+        const skinCodeActionFeedbackTimeouts = new WeakMap();
+
+        function setPresetStatus(message, isError = false) {
+            presetStatus.textContent = message;
+            presetStatus.style.color = isError ? '#ff8b8b' : `rgb(${activeTheme.colors.text})`;
+        }
+
+        function resetSkinCodeActionFeedback(button, label) {
+            const timeout = skinCodeActionFeedbackTimeouts.get(button);
+            if (timeout !== undefined) window.clearTimeout(timeout);
+            skinCodeActionFeedbackTimeouts.delete(button);
+            button.textContent = label;
+        }
+
+        function showSkinCodeActionSuccess(button, label, message) {
+            resetSkinCodeActionFeedback(button, label);
+            button.textContent = `✓ ${label}`;
+            setPresetStatus(message);
+            skinCodeActionFeedbackTimeouts.set(button, window.setTimeout(() => {
+                button.textContent = label;
+                skinCodeActionFeedbackTimeouts.delete(button);
+            }, 2000));
+        }
+
+        function getSavedPresets() {
+            const serialized = localStorage.getItem(presetStorageKey);
+            if (!serialized) return [];
+            const presets = JSON.parse(serialized);
+            if (!Array.isArray(presets)) throw new Error('Saved preset storage has an invalid format.');
+            return presets;
+        }
+
+        function refreshSavedPresetList(selectedId = '') {
+            const presets = getSavedPresets();
+            savedPresetSelect.replaceChildren();
+            if (!presets.length) {
+                savedPresetSelect.add(new Option('No saved presets', ''));
+                return;
+            }
+            presets.forEach(preset => {
+                savedPresetSelect.add(new Option(preset.name, preset.id));
+            });
+            if (selectedId && presets.some(preset => preset.id === selectedId)) {
+                savedPresetSelect.value = selectedId;
+            }
+        }
+
+        function getCurrentSkinPreset(name = '') {
+            const selectedPattern = currentPatternChoices[Number(patternSelect.value)];
+            return {
+                version: 1,
+                name,
+                species: speciesSelect.value,
+                gender: isFemale ? 'female' : 'male',
+                patternFile: selectedPattern?.file || '',
+                growth: growthValue,
+                zones: zoneRgbaValues.map(values => ({ ...values })),
+                eye: { ...eyeColorRgba },
+                details: Object.fromEntries(detailColorSettings.map(({ key }) => [
+                    key,
+                    { ...detailColors[key] },
+                ])),
+                glitchSkin: currentSkinIsGlitched || hasNonByteRgbValues([
+                    ...zoneRgbaValues,
+                    eyeColorRgba,
+                    ...Object.values(detailColors),
+                ]),
+            };
+        }
+
+        function validateRgbaColor(value, label) {
+            if (!value || typeof value !== 'object') throw new Error(`${label} color is missing.`);
+            for (const channel of ['r', 'g', 'b']) {
+                if (typeof value[channel] !== 'number' || !Number.isFinite(value[channel])
+                    || value[channel] < -glitchRgbLimit || value[channel] > glitchRgbLimit) {
+                    throw new Error(`${label} ${channel.toUpperCase()} must be a number from -${glitchRgbLimit} to ${glitchRgbLimit}.`);
+                }
+            }
+            return { r: value.r, g: value.g, b: value.b };
+        }
+
+        function validateSkinPreset(preset) {
+            if (!preset || preset.version !== 1) throw new Error('Unsupported skin code version.');
+            if (!speciesList.includes(preset.species)) throw new Error('Skin code has an unknown species.');
+            if (!['male', 'female'].includes(preset.gender)) throw new Error('Skin code has an invalid gender.');
+            if (!Array.isArray(preset.zones) || preset.zones.length !== 6) {
+                throw new Error('Skin code must contain all six skin-zone colors.');
+            }
+            const zones = preset.zones.map((color, index) => validateRgbaColor(color, `Zone ${index + 1}`));
+            const details = Object.fromEntries(detailColorSettings.map(({ key, label }) => [
+                key,
+                validateRgbaColor(preset.details?.[key], label),
+            ]));
+            if (preset.growth !== undefined && preset.growth !== null
+                && (typeof preset.growth !== 'number' || !Number.isFinite(preset.growth)
+                    || preset.growth < 0 || preset.growth > 1)) {
+                throw new Error('Growth must be a number from 0 to 1.');
+            }
+            const patternFile = typeof preset.patternFile === 'string' ? preset.patternFile : '';
+            const name = typeof preset.name === 'string' ? preset.name.slice(0, 60) : '';
+            return {
+                version: 1,
+                name,
+                species: preset.species,
+                gender: preset.gender,
+                patternFile,
+                growth: preset.growth ?? null,
+                zones,
+                eye: validateRgbaColor(preset.eye, 'Eye'),
+                details,
+                glitchSkin: preset.glitchSkin === true || hasNonByteRgbValues([
+                    ...zones,
+                    preset.eye,
+                    ...Object.values(details),
+                ]),
+            };
+        }
+
+        function encodeSkinCode(preset) {
+            const bytes = new TextEncoder().encode(JSON.stringify(preset));
+            const hexPayload = Array.from(bytes, byte => byte.toString(16).padStart(2, '0')).join('');
+            return `SKINHEX1:${hexPayload}`;
+        }
+
+        function encodeExtendedRgbCode(preset) {
+            return `RGBX1:${JSON.stringify(preset)}`;
+        }
+
+        function encodeBase64SkinCode(preset, zeroBasedPattern = false) {
+            const glitchSkin = zeroBasedPattern && preset.glitchSkin;
+            const toHex = glitchSkin ? rgbaToNerfGlitchHex : rgbaToHex;
+            const data = {
+                colors: {
+                    maleDisplayColor: toHex(preset.zones[0]),
+                    underbellyColor: toHex(preset.zones[1]),
+                    flankColor: toHex(preset.zones[2]),
+                    bodyColor: toHex(preset.zones[3]),
+                    markingsColor: toHex(preset.zones[4]),
+                    detail1Color: toHex(preset.zones[5]),
+                    eyesColor: toHex(preset.eye),
+                    teethColor: toHex(preset.details.teethColor),
+                    mouthColor: toHex(preset.details.mouthColor),
+                    clawColor: toHex(preset.details.clawColor),
+                },
+                patternVariation: String(currentSkinMaterial?.userData.skinUniforms?.uNoiseTiling?.value ?? 0),
+                pattern: String(Number(patternSelect.value) + (zeroBasedPattern ? 0 : 1)),
+                gender: preset.gender,
+                model: preset.species,
+                sunAzimuth: String(THREE.MathUtils.radToDeg(sunAzimuthOffset)),
+                sunIntensity: sunIntensityInput.value,
+            };
+            if (glitchSkin) {
+                data.glitchSkin = true;
+                data.glitchColors = {
+                    maleDisplayColor: preset.zones[0],
+                    markingsColor: preset.zones[4],
+                    bodyColor: preset.zones[3],
+                    flankColor: preset.zones[2],
+                    underbellyColor: preset.zones[1],
+                    detail1Color: preset.zones[5],
+                    eyesColor: preset.eye,
+                    teethColor: preset.details.teethColor,
+                    mouthColor: preset.details.mouthColor,
+                    clawColor: preset.details.clawColor,
+                };
+            }
+            const bytes = new TextEncoder().encode(JSON.stringify(data));
+            let binary = '';
+            for (let index = 0; index < bytes.length; index += 0x8000) {
+                binary += String.fromCharCode(...bytes.subarray(index, index + 0x8000));
+            }
+            return btoa(binary);
+        }
+
+        function rgbaToNerfGlitchHex(values) {
+            const channel = value => {
+                const byte = ((Math.round(value * 255) % 256) + 256) % 256;
+                return byte.toString(16).padStart(2, '0');
+            };
+            return `#${channel(values.r)}${channel(values.g)}${channel(values.b)}`;
+        }
+
+        function encodeColorHexList(preset) {
+            const visibleZoneIndices = [0, 4, 2, 3, 1];
+            const colors = visibleZoneIndices.map(index => rgbaToHex(preset.zones[index]));
+            colors.push(rgbaToHex(preset.eye));
+            detailColorSettings.forEach(({ key }) => colors.push(rgbaToHex(preset.details[key])));
+            return colors.join(' ');
+        }
+
+        function encodeSkinCodeForFormat(preset, format) {
+            if (format === 'skinhex1') return encodeSkinCode(preset);
+            if (format === 'extended-rgb') return encodeExtendedRgbCode(preset);
+            if (format === 'oasis-base64') return encodeBase64SkinCode(preset);
+            if (format === 'nerf-base64') return encodeBase64SkinCode(preset, true);
+            if (format === 'color-hex') return encodeColorHexList(preset);
+            throw new Error('Choose a supported skin-code export format.');
+        }
+
+        function hasExtendedRgbValues(preset) {
+            return [
+                ...preset.zones,
+                preset.eye,
+                ...Object.values(preset.details),
+            ].some(color => hasNonByteRgbValues([color]));
+        }
+
+        function decodeExtendedRgbCode(code) {
+            const payload = code.slice('RGBX1:'.length);
+            if (!payload || payload.length > 30000) throw new Error('Invalid extended RGB skin code.');
+            try {
+                return validateSkinPreset(JSON.parse(payload));
+            } catch (error) {
+                if (error instanceof SyntaxError) throw new Error('Invalid extended RGB skin code.');
+                throw error;
+            }
+        }
+
+        function decodeSkinCode(code) {
+            const normalizedCode = code.trim();
+            const match = /^SKINHEX1:([0-9a-f]+)$/i.exec(normalizedCode);
+            if (!match || match[1].length % 2 !== 0 || match[1].length > 30000) {
+                throw new Error('Invalid skin code. Expected a SKINHEX1 code.');
+            }
+            const bytes = new Uint8Array(match[1].length / 2);
+            for (let index = 0; index < bytes.length; index++) {
+                bytes[index] = Number.parseInt(match[1].slice(index * 2, index * 2 + 2), 16);
+            }
+            return validateSkinPreset(JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes)));
+        }
+
+        function decodeBase64SkinCode(code, patternNumbering) {
+            const normalizedCode = code.trim();
+            if (!normalizedCode || normalizedCode.length > 30000
+                || !/^[A-Za-z0-9+/_-]+={0,2}$/.test(normalizedCode)
+                || normalizedCode.length % 4 === 1) {
+                throw new Error('Invalid Base64 skin code.');
+            }
+            const base64 = normalizedCode.replace(/-/g, '+').replace(/_/g, '/');
+            let data;
+            try {
+                const binary = atob(base64.padEnd(Math.ceil(base64.length / 4) * 4, '='));
+                const bytes = Uint8Array.from(binary, character => character.charCodeAt(0));
+                data = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes));
+            } catch (error) {
+                if (error instanceof SyntaxError || error instanceof TypeError
+                    || error?.name === 'InvalidCharacterError') {
+                    throw new Error('Invalid Base64 skin code.');
+                }
+                throw error;
+            }
+            if (!data || typeof data !== 'object' || Array.isArray(data) || !data.colors) {
+                throw new Error('Base64 skin code does not contain a colors object.');
+            }
+            const colors = data.colors;
+            const colorFields = [
+                ['maleDisplayColor', 'Male Display'],
+                ['underbellyColor', 'Underbelly'],
+                ['flankColor', 'Flank'],
+                ['bodyColor', 'Body'],
+                ['markingsColor', 'Markings'],
+                ['detail1Color', 'Details'],
+            ];
+            const zones = Array(6);
+            colorFields.forEach(([field, label], index) => {
+                zones[index] = parseColorHexCode(colors[field]);
+            });
+            const details = Object.fromEntries(detailColorSettings.map(({ key, label }) => {
+                const field = key === 'teethColor' ? 'teethColor'
+                    : key === 'mouthColor' ? 'mouthColor' : 'clawColor';
+                return [key, parseColorHexCode(colors[field])];
+            }));
+            let eye = parseColorHexCode(colors.eyesColor);
+            const glitchSkin = data.glitchSkin === true;
+            if (glitchSkin) {
+                if (!data.glitchColors || typeof data.glitchColors !== 'object'
+                    || Array.isArray(data.glitchColors)) {
+                    throw new Error('NERF glitch skin code does not contain its glitchColors.');
+                }
+                const parseGlitchColor = (field, label) => {
+                    const value = data.glitchColors[field];
+                    if (!value || typeof value !== 'object' || Array.isArray(value)) {
+                        throw new Error(`NERF glitch color "${field}" is missing.`);
+                    }
+                    const result = {};
+                    for (const channel of ['r', 'g', 'b']) {
+                        const raw = value[channel];
+                        const number = typeof raw === 'number' ? raw
+                            : typeof raw === 'string' && raw.trim() ? Number(raw) : NaN;
+                        if (!Number.isFinite(number) || number < -glitchRgbLimit || number > glitchRgbLimit) {
+                            throw new Error(`${label} ${channel.toUpperCase()} must be a number from -${glitchRgbLimit} to ${glitchRgbLimit}.`);
+                        }
+                        result[channel] = number;
+                    }
+                    return result;
+                };
+                const glitchColorMappings = [
+                    ['maleDisplayColor', color => { zones[0] = color; }],
+                    ['underbellyColor', color => { zones[1] = color; }],
+                    ['flankColor', color => { zones[2] = color; }],
+                    ['bodyColor', color => { zones[3] = color; }],
+                    ['markingsColor', color => { zones[4] = color; }],
+                    ['detail1Color', color => { zones[5] = color; }],
+                    ['eyesColor', color => { eye = color; }],
+                    ['teethColor', color => { details.teethColor = color; }],
+                    ['mouthColor', color => { details.mouthColor = color; }],
+                    ['clawColor', color => { details.clawColor = color; }],
+                ];
+                glitchColorMappings.forEach(([field, assign]) => {
+                    assign(parseGlitchColor(field, field));
+                });
+            }
+            const numberField = (value, label, min, max) => {
+                const number = Number(value);
+                if (!Number.isFinite(number) || number < min || number > max) {
+                    throw new Error(`${label} must be a number from ${min} to ${max}.`);
+                }
+                return number;
+            };
+            const species = data.model;
+            if (!speciesList.includes(species)) throw new Error('Base64 skin code has an unknown model.');
+            if (!['male', 'female'].includes(data.gender)) {
+                throw new Error('Base64 skin code has an invalid gender.');
+            }
+            const pattern = Number(data.pattern);
+            const zeroBased = patternNumbering === 'zero-based'
+                || (patternNumbering === 'auto'
+                    && (pattern === 0 || data.glitchSkin === true));
+            if (!Number.isInteger(pattern) || pattern < (zeroBased ? 0 : 1)) {
+                throw new Error('Base64 skin code has an invalid pattern number.');
+            }
+            return {
+                preset: validateSkinPreset({
+                    version: 1,
+                    name: '',
+                    species,
+                    gender: data.gender,
+                    patternFile: '',
+                    zones,
+                    eye,
+                    details,
+                    glitchSkin,
+                }),
+                patternIndex: zeroBased ? pattern : pattern - 1,
+                patternVariation: data.patternVariation === undefined
+                    ? null
+                    : numberField(data.patternVariation, 'Pattern variation', 0, 16),
+                sunIntensity: data.sunIntensity === undefined
+                    ? null
+                    : numberField(data.sunIntensity, 'Key light intensity', 0, 3),
+                sunAzimuth: data.sunAzimuth === undefined
+                    ? null
+                    : numberField(data.sunAzimuth, 'Sun azimuth', -360, 360),
+            };
+        }
+
+        function decodeGameSkinJson(code, selectedSpecies) {
+            let data;
+            try {
+                data = JSON.parse(code);
+            } catch {
+                throw new Error('Invalid skin JSON.');
+            }
+            if (!data || typeof data !== 'object' || Array.isArray(data)) {
+                throw new Error('Skin JSON must be an object.');
+            }
+
+            const species = data.model || data.species || selectedSpecies;
+            if (!speciesList.includes(species)) {
+                throw new Error('Choose a supported species before loading JSON without a species field.');
+            }
+            if (typeof data.bIsFemale !== 'boolean') {
+                throw new Error('Skin JSON must contain a boolean bIsFemale field.');
+            }
+            const patternIndex = Number(data.PatternIndex);
+            if (!Number.isInteger(patternIndex) || patternIndex < 0) {
+                throw new Error('Skin JSON PatternIndex must be a non-negative integer.');
+            }
+            const patternVariation = Number(data.SkinVariation);
+            if (!Number.isFinite(patternVariation) || patternVariation < 0 || patternVariation > 16) {
+                throw new Error('Skin JSON SkinVariation must be a number from 0 to 16.');
+            }
+
+            const clampedChannels = [];
+            const readColor = field => {
+                const color = data[field];
+                if (!color || typeof color !== 'object' || Array.isArray(color)) {
+                    throw new Error(`Skin JSON ${field} color is missing.`);
+                }
+                return Object.fromEntries(['R', 'G', 'B'].map(channel => {
+                    const raw = color[channel];
+                    const value = typeof raw === 'number' ? raw
+                        : typeof raw === 'string' && raw.trim() ? Number(raw) : NaN;
+                    if (!Number.isFinite(value)) {
+                        throw new Error(`Skin JSON ${field}.${channel} must be a finite number.`);
+                    }
+                    const clampedValue = THREE.MathUtils.clamp(value, -glitchRgbLimit, glitchRgbLimit);
+                    if (clampedValue !== value) clampedChannels.push(`${field}.${channel}`);
+                    return [channel.toLowerCase(), clampedValue];
+                }));
+            };
+            const details = {
+                teethColor: readColor('TeethColor'),
+                mouthColor: readColor('MouthColor'),
+                clawColor: readColor('ClawsColor'),
+            };
+
+            return {
+                preset: validateSkinPreset({
+                    version: 1,
+                    name: '',
+                    species,
+                    gender: data.bIsFemale ? 'female' : 'male',
+                    patternFile: '',
+                    zones: [
+                        readColor('MaleDisplayColor'),
+                        readColor('UnderbellyColor'),
+                        readColor('FlankColor'),
+                        readColor('BodyColor'),
+                        readColor('MarkingsColor'),
+                        readColor('Detail1Color'),
+                    ],
+                    eye: readColor('EyesColor'),
+                    details,
+                    glitchSkin: true,
+                }),
+                patternIndex,
+                patternVariation,
+                clampedChannels,
+            };
+        }
+
+        function parseColorHexCode(code) {
+            const match = /^#?([0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i.exec(code);
+            if (!match) throw new Error(`Invalid color hex code: "${code}".`);
+            const digits = match[1].length <= 4
+                ? Array.from(match[1], digit => digit + digit).join('')
+                : match[1];
+            return {
+                r: Number.parseInt(digits.slice(0, 2), 16),
+                g: Number.parseInt(digits.slice(2, 4), 16),
+                b: Number.parseInt(digits.slice(4, 6), 16),
+            };
+        }
+
+        function applyColorHexCode(code) {
+            const tokens = code.trim().split(/[\s,;]+/);
+            if (tokens.length !== 1 && tokens.length !== 8 && tokens.length !== 9) {
+                throw new Error('Enter one color code or 8–9 codes (one per color control).');
+            }
+            const colors = tokens.map(parseColorHexCode);
+            setSkinGlitchMode(false);
+            const colorList = colors.length === 1 ? Array(9).fill(colors[0]) : colors;
+            const visibleZoneIndices = [0, 4, 2, 3, 1];
+            visibleZoneIndices.forEach((zoneIndex, colorIndex) => {
+                const values = { ...colorList[colorIndex] };
+                zoneRgbaValues[zoneIndex] = values;
+                zoneColors[zoneIndex] = rgbaToHex(values);
+                rgbaColorControls.get(`zone-${zoneIndex}`)?.(values);
+                currentZoneUniforms[zoneIndex]?.value.copy(colorFromRgba(values));
+            });
+
+            let colorIndex = visibleZoneIndices.length;
+            if (colors.length === 1 || colors.length === 9) {
+                eyeColorRgba = { ...colorList[colorIndex++] };
+                rgbaColorControls.get('eye')?.(eyeColorRgba);
+                refreshEyeTexture();
+            }
+
+            detailColorSettings.forEach(({ key }) => {
+                const values = { ...colorList[colorIndex++] };
+                detailColors[key] = values;
+                rgbaColorControls.get(key)?.(values);
+                currentDetailUniforms[key]?.value.copy(colorFromRgba(values));
+            });
+        }
+
+        async function applySkinPreset(unvalidatedPreset, settings = {}) {
+            const preset = validateSkinPreset(unvalidatedPreset);
+            speciesSelect.value = preset.species;
+            const loaded = await loadSpeciesModel(preset.species);
+            if (loaded !== true) throw new Error(`Could not load ${preset.species} for this preset.`);
+
+            let patternIndex = settings.patternIndex ?? null;
+            if (patternIndex === null && preset.patternFile) {
+                patternIndex = currentPatternChoices.findIndex(choice => choice.file === preset.patternFile);
+                if (patternIndex < 0) throw new Error('This skin pattern is not available for the selected species.');
+            }
+            if (patternIndex !== null && (!Number.isInteger(patternIndex)
+                || patternIndex < 0 || patternIndex >= currentPatternChoices.length)) {
+                throw new Error(`Pattern ${patternIndex + 1} is not available for ${preset.species}.`);
+            }
+
+            setSkinGlitchMode(preset.glitchSkin);
+            setGender(preset.gender === 'female');
+            setGrowth(preset.growth ?? adultGrowthValue());
+            zoneRgbaValues = preset.zones.map(values => ({ ...values }));
+            zoneColors = zoneRgbaValues.map(rgbaToHex);
+            zoneRgbaValues.forEach((values, index) => {
+                rgbaColorControls.get(`zone-${index}`)?.(values);
+                currentZoneUniforms[index]?.value.copy(colorFromRgba(values));
+            });
+            eyeColorRgba = { ...preset.eye };
+            rgbaColorControls.get('eye')?.(eyeColorRgba);
+            refreshEyeTexture();
+            detailColorSettings.forEach(({ key }) => {
+                detailColors[key] = { ...preset.details[key] };
+                rgbaColorControls.get(key)?.(detailColors[key]);
+                currentDetailUniforms[key]?.value.copy(colorFromRgba(detailColors[key]));
+            });
+            refreshRgbaColorPreviews();
+
+            if (patternIndex !== null) {
+                patternSelect.value = String(patternIndex);
+                await applyPatternChoice(patternIndex);
+            }
+            if (settings.patternVariation !== undefined && settings.patternVariation !== null) {
+                const noiseTiling = currentSkinMaterial?.userData.skinUniforms?.uNoiseTiling;
+                if (noiseTiling) noiseTiling.value = settings.patternVariation;
+            }
+            if (settings.sunIntensity !== undefined && settings.sunIntensity !== null) {
+                sunIntensityInput.value = String(settings.sunIntensity);
+                updateLightingControl(sunIntensityInput, sunIntensityValue, value => {
+                    directionalLight.intensity = value;
+                });
+            }
+            if (settings.sunAzimuth !== undefined && settings.sunAzimuth !== null) {
+                sunAzimuthOffset = THREE.MathUtils.degToRad(settings.sunAzimuth);
+            }
+            if (preset.name) presetNameInput.value = preset.name;
+        }
+
+        async function applyBase64SkinCode(code) {
+            const settings = decodeBase64SkinCode(code, base64PatternNumberingSelect.value);
+            await applySkinPreset(settings.preset, settings);
+        }
+
+        document.getElementById('savePresetButton').addEventListener('click', () => {
+            const name = presetNameInput.value.trim();
+            if (!name) {
+                setPresetStatus('Enter a name for this preset.', true);
+                presetNameInput.focus();
+                return;
+            }
+            try {
+                const presets = getSavedPresets();
+                const preset = getCurrentSkinPreset(name);
+                const id = crypto.randomUUID();
+                presets.push({ id, name, preset });
+                localStorage.setItem(presetStorageKey, JSON.stringify(presets));
+                refreshSavedPresetList(id);
+                setPresetStatus(`Saved "${name}".`);
+            } catch (error) {
+                setPresetStatus(`Could not save preset: ${error.message}`, true);
+            }
+        });
+
+        document.getElementById('loadPresetButton').addEventListener('click', async () => {
+            try {
+                const preset = getSavedPresets().find(item => item.id === savedPresetSelect.value);
+                if (!preset) throw new Error('Choose a saved preset first.');
+                const { zones, eye, details, glitchSkin } = preset.preset;
+                await applySkinPreset({ ...getCurrentSkinPreset(preset.name), zones, eye, details, glitchSkin });
+                setPresetStatus(`Loaded "${preset.name}".`);
+            } catch (error) {
+                setPresetStatus(`Could not load preset: ${error.message}`, true);
+            }
+        });
+
+        document.getElementById('deletePresetButton').addEventListener('click', () => {
+            try {
+                const id = savedPresetSelect.value;
+                if (!id) throw new Error('Choose a saved preset first.');
+                const presets = getSavedPresets();
+                const remaining = presets.filter(preset => preset.id !== id);
+                if (remaining.length === presets.length) throw new Error('The selected preset no longer exists.');
+                localStorage.setItem(presetStorageKey, JSON.stringify(remaining));
+                refreshSavedPresetList();
+                setPresetStatus('Preset deleted.');
+            } catch (error) {
+                setPresetStatus(`Could not delete preset: ${error.message}`, true);
+            }
+        });
+
+        document.getElementById('exportSkinCodeButton').addEventListener('click', () => {
+            try {
+                const preset = validateSkinPreset(getCurrentSkinPreset());
+                skinCodeOutput.value = encodeSkinCodeForFormat(preset, skinCodeFormatSelect.value);
+                const hasExtendedValues = hasExtendedRgbValues(preset);
+                const isLimitedFormat = ['oasis-base64', 'color-hex']
+                    .includes(skinCodeFormatSelect.value);
+                setPresetStatus(
+                    hasExtendedValues && isLimitedFormat
+                        ? 'Skin code generated, but this format cannot preserve extended RGB values. Choose Extended RGB or SKINHEX1, or NERF Base64 for a NERF glitch skin.'
+                        : 'Skin code generated. Copy it to share or back it up.',
+                    hasExtendedValues && isLimitedFormat,
+                );
+            } catch (error) {
+                setPresetStatus(`Could not generate skin code: ${error.message}`, true);
+            }
+        });
+
+        copySkinCodeButton.addEventListener('click', async () => {
+            resetSkinCodeActionFeedback(copySkinCodeButton, 'Copy code');
+            if (!skinCodeOutput.value) {
+                setPresetStatus('Generate a skin code first.', true);
+                return;
+            }
+            try {
+                await navigator.clipboard.writeText(skinCodeOutput.value);
+                skinCodeOutput.value = '';
+                showSkinCodeActionSuccess(copySkinCodeButton, 'Copy code', 'copied to clipboard');
+            } catch (error) {
+                skinCodeOutput.focus();
+                skinCodeOutput.select();
+                setPresetStatus('Clipboard access was denied. The code is selected; copy it with Ctrl+C.', true);
+            }
+        });
+
+        loadSkinCodeButton.addEventListener('click', async () => {
+            resetSkinCodeActionFeedback(loadSkinCodeButton, 'Apply skin code');
+            try {
+                const input = skinCodeInput.value.trim();
+                if (/^SKINHEX1:/i.test(input)) {
+                    const preset = decodeSkinCode(input);
+                    await applySkinPreset(preset);
+                } else if (/^RGBX1:/i.test(input)) {
+                    const preset = decodeExtendedRgbCode(input);
+                    await applySkinPreset(preset);
+                } else if (input.startsWith('{')) {
+                    const settings = decodeGameSkinJson(input, speciesSelect.value);
+                    await applySkinPreset(settings.preset, settings);
+                    skinCodeFormatSelect.value = 'nerf-base64';
+                    skinCodeOutput.value = encodeSkinCodeForFormat(
+                        validateSkinPreset(getCurrentSkinPreset()),
+                        'nerf-base64',
+                    );
+                } else if (/^[A-Za-z0-9+/_-]+={0,2}$/.test(input)) {
+                    await applyBase64SkinCode(input);
+                } else {
+                    applyColorHexCode(input);
+                }
+                skinCodeInput.value = '';
+                showSkinCodeActionSuccess(loadSkinCodeButton, 'Apply skin code', 'Skin code applied');
+            } catch (error) {
+                setPresetStatus(`Could not apply skin code: ${error.message}`, true);
+            }
+        });
+
+        try {
+            refreshSavedPresetList();
+        } catch (error) {
+            setPresetStatus(`Could not read saved presets: ${error.message}`, true);
+        }
+
+        fetch('mapping.json')
+            .then(response => response.json())
+            .then(data => {
+                console.log("Mapping successfully loaded:", data);
+                const controlsContainer = document.getElementById('controls-container');
+                
+                const zones = data.pattern_zone_definitions;
+                if(zones) {
+                    zoneColors = Object.keys(zones)
+                        .sort((a, b) => zones[a].index - zones[b].index)
+                        .map(zoneKey => zones[zoneKey].default_color);
+                    zoneRgbaValues = zoneColors.map(rgbaValuesFromHex);
+                    const editableZoneOrder = [0, 4, 2, 3, 1];
+                    editableZoneOrder.forEach((zoneIndex, displayIndex) => {
+                        const zone = Object.values(zones).find(item => item.index === zoneIndex);
+                        if (!zone) throw new Error(`Missing color-zone configuration for index ${zoneIndex}.`);
+                        const zoneControl = createRgbaColorControl(
+                            controlsContainer,
+                            `zone-${zone.index}`,
+                            zone.label,
+                            zoneRgbaValues[zone.index],
+                            values => {
+                            zoneRgbaValues[zone.index] = values;
+                            zoneColors[zone.index] = rgbaToHex(values);
+                            currentZoneUniforms[zone.index]?.value.copy(colorFromRgba(values));
+                            if (zoneIndex === 4) refreshEyeTexture();
+                            },
+                        );
+                        if (zone.index === 0) {
+                            maleDisplayZoneControl = zoneControl;
+                            setGender(isFemale);
+                        }
+                    });
+                }
+
+                createRgbaColorControl(controlsContainer, 'eye', 'Eye Color', eyeColorRgba, values => {
+                    eyeColorRgba = values;
+                    refreshEyeTexture();
+                });
+
+                detailColorSettings.forEach(({ key, label }) => {
+                    createRgbaColorControl(controlsContainer, key, label, detailColors[key], values => {
+                        detailColors[key] = values;
+                        currentDetailUniforms[key]?.value.copy(colorFromRgba(values));
+                    });
+                });
+
+                if (modelLoadRequest === 0) {
+                    speciesSelect.value = "Carnotaurus";
+                    loadSpeciesModel("Carnotaurus");
+                }
+            })
+            .catch(err => console.error("Error loading mapping.json:", err));
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const delta = Math.min(clock.getDelta(), 1 / 20);
+            if (currentMixer) currentMixer.update(delta);
+            controls.update();
+            const azimuth = Math.atan2(
+                camera.position.x - controls.target.x,
+                camera.position.z - controls.target.z,
+            ) + sunAzimuthOffset;
+            lightYaw.setFromAxisAngle(lightYawAxis, azimuth);
+            rotatedSunDirection.copy(sunDirection).applyQuaternion(lightYaw);
+            rotatedFillDirection.copy(fillDirection).applyQuaternion(lightYaw);
+            sunCenter.copy(controls.target);
+            directionalLight.position.copy(sunCenter).addScaledVector(rotatedSunDirection, keyLightDistance);
+            directionalLight.target.position.copy(sunCenter);
+            fillLight.position.copy(sunCenter).addScaledVector(rotatedFillDirection, 100);
+            fillLight.target.position.copy(sunCenter);
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) clock.stop();
+            else clock.start();
+        });
+
+        window.addEventListener('resize', () => {
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        });
+    </script>
+
+</body>
+</html>

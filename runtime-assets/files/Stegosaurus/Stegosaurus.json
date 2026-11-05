@@ -1,0 +1,292 @@
+{
+  "name": "Stegosaurus",
+  "quality": "compact",
+  "model": "Stegosaurus.glb",
+  "body": {
+    "layerColors": {
+      "red": {
+        "hex": "89513F",
+        "rgb": [
+          0.25,
+          0.083333,
+          0.05
+        ],
+        "default": false
+      },
+      "green": {
+        "hex": "7C6D5B",
+        "rgb": [
+          0.2,
+          0.153719,
+          0.105785
+        ],
+        "default": false
+      },
+      "blue": {
+        "hex": "595934",
+        "rgb": [
+          0.1,
+          0.1,
+          0.035
+        ],
+        "default": false
+      },
+      "cyan": {
+        "hex": "AA8562",
+        "rgb": [
+          0.4,
+          0.236171,
+          0.123404
+        ],
+        "default": false
+      },
+      "magenta": {
+        "hex": "303030",
+        "rgb": [
+          0.03,
+          0.03,
+          0.03
+        ],
+        "default": false
+      },
+      "yellow": {
+        "hex": "000000",
+        "rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "default": false
+      }
+    },
+    "shadingModel": "Subsurface",
+    "blendMode": "Opaque",
+    "mouthColor": {
+      "hex": "AA8275",
+      "rgb": [
+        0.4,
+        0.223047,
+        0.179468
+      ],
+      "default": true
+    },
+    "clawColor": {
+      "hex": "595448",
+      "rgb": [
+        0.1,
+        0.089582,
+        0.065104
+      ],
+      "default": true
+    },
+    "teethColor": {
+      "hex": "A08A74",
+      "rgb": [
+        0.35,
+        0.252261,
+        0.175
+      ],
+      "default": true
+    },
+    "detailScale": 12.0,
+    "skinNoiseTiling": 8.0,
+    "detailNormalIntensity": 2.0,
+    "extra": {
+      "scalars": {
+        "BloodAmount": 0.0,
+        "BoneWeightsRowsPerFrame": 0.0,
+        "CarcassGoreTiling": 0.5,
+        "DirectionWet": 0.0,
+        "DirtAmount": 0.0,
+        "DryBloodAmount": 0.0,
+        "DryDuckweedAmount": 0.0,
+        "DryMudAmount": 0.0,
+        "DuckweedAmount": 0.0,
+        "DustAmount": 0.0,
+        "EndFrame": 0.0,
+        "Frame": 0.0,
+        "FullWetAmount": 0.0,
+        "GrowthAmount": 1.0,
+        "HatchlingToJuvenilePoint": 0.33,
+        "IsEnvenomated": 0.0,
+        "IsFemale": 0.0,
+        "IsHallucinating": 0.0,
+        "IsSignaling": 0.0,
+        "LowFood": 0.0,
+        "LowHealth": 0.0,
+        "MorphCarcassGore": 0.0,
+        "MouthGore": 0.0,
+        "MudAmount": 0.0,
+        "NumBones": 0.0,
+        "NumFrames": 1.0,
+        "Playrate": 1.0,
+        "PrevFrame": 0.0,
+        "RottenCarcassGore": 0.0,
+        "SS_Mask_Intensity": 0.2,
+        "SampleRate": 30.0,
+        "SandAmount": 0.0,
+        "StartFrame": 0.0,
+        "TimeOffset": 0.0,
+        "VomitAmount": 0.0,
+        "Wet_Roughness": 0.28
+      },
+      "colors": {
+        "MinBBox": {
+          "hex": "000000",
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "default": false
+        },
+        "SizeBBox": {
+          "hex": "000000",
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "default": false
+        }
+      },
+      "switches": {
+        "UseSkinSystem": true
+      }
+    },
+    "patterns": {
+      "adult": [
+        {
+          "name": "1",
+          "path": "Textures/T_Stegosaurus_Adult_Pattern_1.webp",
+          "label": "1"
+        },
+        {
+          "name": "2",
+          "path": "Textures/T_Stegosaurus_Adult_Pattern_2.webp",
+          "label": "2"
+        },
+        {
+          "name": "3",
+          "path": "Textures/T_Stegosaurus_Adult_Pattern_3.webp",
+          "label": "3"
+        },
+        {
+          "name": "4",
+          "path": "Textures/T_Stegosaurus_Adult_Pattern_White-Tipped.webp",
+          "label": "White-Tipped"
+        }
+      ],
+      "juvenile": "Textures/T_Stegosaurus_Juvenile_Pattern.webp",
+      "hatchling": "Textures/T_Stegosaurus_Hatchling_Pattern.webp"
+    },
+    "palettes": {
+      "Palette1": {
+        "blue": "Textures/Gradients/Palette1/T_Stegosaurus_Palette1_BlueLayer.webp",
+        "cyan": "Textures/Gradients/Palette1/T_Stegosaurus_Palette1_CyanLayer.webp",
+        "green": "Textures/Gradients/Palette1/T_Stegosaurus_Palette1_GreenLayer.webp",
+        "magenta": "Textures/Gradients/Palette1/T_Stegosaurus_Palette1_MagentaLayer.webp",
+        "red": "Textures/Gradients/Palette1/T_Stegosaurus_Palette1_RedLayer.webp"
+      },
+      "Palette2": {
+        "blue": "Textures/Gradients/Palette2/T_Stegosaurus_palette2_BlueLayer.webp",
+        "cyan": "Textures/Gradients/Palette2/T_Stegosaurus_palette2_CyanLayer.webp",
+        "green": "Textures/Gradients/Palette2/T_Stegosaurus_palette2_GreenLayer.webp",
+        "magenta": "Textures/Gradients/Palette2/T_Stegosaurus_palette2_MagentaLayer.webp",
+        "red": "Textures/Gradients/Palette2/T_Stegosaurus_palette2_RedLayer.webp"
+      },
+      "Palette4WhiteTipped": {
+        "blue": "Textures/Gradients/Palette4WhiteTipped/T_Stegosaurus_paletteWhite-Tipped_BlueLayer.webp",
+        "cyan": "Textures/Gradients/Palette4WhiteTipped/T_Stegosaurus_paletteWhite-Tipped_CyanLayer.webp",
+        "green": "Textures/Gradients/Palette4WhiteTipped/T_Stegosaurus_paletteWhite-Tipped_GreenLayer.webp",
+        "magenta": "Textures/Gradients/Palette4WhiteTipped/T_Stegosaurus_paletteWhite-Tipped_MagentaLayer.webp",
+        "red": "Textures/Gradients/Palette4WhiteTipped/T_Stegosaurus_paletteWhite-Tipped_RedLayer.webp"
+      }
+    },
+    "maps": {
+      "mask": "Textures/T_Stegosaurus_Detail_M.webp",
+      "vfxMask": "Textures/T_Stegosaurus_FX_M.webp",
+      "albedo": "Textures/T_Stegosaurus_Albedo.webp",
+      "skinNoise": "Textures/T_SkinNoise_M.webp"
+    }
+  },
+  "eye": {
+    "irisPrimary": {
+      "hex": "6C3A13",
+      "rgb": [
+        0.15,
+        0.042959,
+        0.006522
+      ],
+      "default": false
+    },
+    "irisSecondary": {
+      "hex": "DC7500",
+      "rgb": [
+        0.713542,
+        0.178385,
+        0.0
+      ],
+      "default": false
+    },
+    "sclera": {
+      "hex": "20100C",
+      "rgb": [
+        0.015,
+        0.005511,
+        0.00375
+      ],
+      "default": false
+    },
+    "irisScale": 0.65,
+    "irisOutlineScale": 0.6,
+    "pupilScale": 0.4,
+    "irisBlur": 3.0,
+    "extra": {
+      "scalars": {
+        "Blink": 1.0,
+        "Iris_Blur": 3.0,
+        "IsCarcass": 0.0
+      },
+      "colors": {
+        "EyeCarcassColor": {
+          "hex": "CADCD3",
+          "rgb": [
+            0.591667,
+            0.71,
+            0.650833
+          ],
+          "default": false
+        }
+      }
+    },
+    "eyeNormalTexture": "Textures/Eye/T_EyeBase_1_N.webp",
+    "irisTexture": "Textures/Eye/T_AnimalEyes_Iris_2.webp",
+    "pupilTexture": "Textures/Eye/T_AnimalEyes_Pupil_3.webp",
+    "scleraTexture": "Textures/Eye/T_Eye_Sclera_D.webp",
+    "flipbooks": {
+      "membrane": {
+        "path": "Textures/Eye/T_Membrane_D.webp",
+        "frames": 8,
+        "columns": 8,
+        "rows": 4,
+        "frameWidth": 128,
+        "frameHeight": 256
+      }
+    },
+    "composedTexture": "Textures/Eye/Stegosaurus_Eye.webp"
+  },
+  "morphStages": [
+    "Juvenile",
+    "Elder",
+    "Female"
+  ],
+  "growth": {
+    "stages": [
+      "Juvenile",
+      "Elder",
+      "Female"
+    ],
+    "hatchlingToJuvenile": 0.33
+  }
+}

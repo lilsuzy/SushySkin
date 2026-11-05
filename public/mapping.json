@@ -1,0 +1,53 @@
+{
+  "format_version": 1,
+  "pattern_zone_definitions": {
+    "Color1_RedLayer": {
+      "index": 0,
+      "label": "Male Display",
+      "shader_uniform": "color1",
+      "pattern_mask_key": "red",
+      "pattern_mask_rgb": [255, 0, 0],
+      "default_color": "#5E393E"
+    },
+    "Color2_GreenLayer": {
+      "index": 1,
+      "label": "Underbelly",
+      "shader_uniform": "color2",
+      "pattern_mask_key": "green",
+      "pattern_mask_rgb": [0, 255, 0],
+      "default_color": "#83766E"
+    },
+    "Color3_BlueLayer": {
+      "index": 2,
+      "label": "Flank",
+      "shader_uniform": "color3",
+      "pattern_mask_key": "blue",
+      "pattern_mask_rgb": [0, 0, 255],
+      "default_color": "#4A4441"
+    },
+    "Color4_CyanLayer": {
+      "index": 3,
+      "label": "Body",
+      "shader_uniform": "color4",
+      "pattern_mask_key": "cyan",
+      "pattern_mask_rgb": [0, 255, 255],
+      "default_color": "#755F44"
+    },
+    "Color5_MagentaLayer": {
+      "index": 4,
+      "label": "Markings",
+      "shader_uniform": "color5",
+      "pattern_mask_key": "magenta",
+      "pattern_mask_rgb": [255, 0, 255],
+      "default_color": "#252526"
+    },
+    "Color6_YellowLayer": {
+      "index": 5,
+      "label": "Eyes",
+      "shader_uniform": "color6",
+      "pattern_mask_key": "yellow",
+      "pattern_mask_rgb": [255, 255, 0],
+      "default_color": "#FFE8C4"
+    }
+  }
+}

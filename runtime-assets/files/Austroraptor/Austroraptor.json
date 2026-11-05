@@ -1,0 +1,295 @@
+{
+  "name": "Austroraptor",
+  "quality": "compact",
+  "model": "Austroraptor.glb",
+  "body": {
+    "layerColors": {
+      "red": {
+        "hex": "377D70",
+        "rgb": [
+          0.038204,
+          0.205079,
+          0.162029
+        ],
+        "default": false
+      },
+      "green": {
+        "hex": "2C3334",
+        "rgb": [
+          0.025187,
+          0.033105,
+          0.03434
+        ],
+        "default": false
+      },
+      "blue": {
+        "hex": "8A6A50",
+        "rgb": [
+          0.254152,
+          0.144128,
+          0.08022
+        ],
+        "default": false
+      },
+      "cyan": {
+        "hex": "B5AFA7",
+        "rgb": [
+          0.462077,
+          0.42869,
+          0.386429
+        ],
+        "default": false
+      },
+      "magenta": {
+        "hex": "4F3837",
+        "rgb": [
+          0.078187,
+          0.039546,
+          0.038204
+        ],
+        "default": false
+      },
+      "yellow": {
+        "hex": "353535",
+        "rgb": [
+          0.036458,
+          0.036458,
+          0.036458
+        ],
+        "default": false
+      }
+    },
+    "shadingModel": "Subsurface",
+    "blendMode": "Masked",
+    "alphaCutoff": 0.33,
+    "mouthColor": {
+      "hex": "AA8275",
+      "rgb": [
+        0.4,
+        0.223047,
+        0.179468
+      ],
+      "default": true
+    },
+    "clawColor": {
+      "hex": "595448",
+      "rgb": [
+        0.1,
+        0.089582,
+        0.065104
+      ],
+      "default": true
+    },
+    "teethColor": {
+      "hex": "A08A74",
+      "rgb": [
+        0.35,
+        0.252261,
+        0.175
+      ],
+      "default": true
+    },
+    "detailScale": 12.0,
+    "skinNoiseTiling": 8.0,
+    "detailNormalIntensity": 2.0,
+    "extra": {
+      "scalars": {
+        "BloodAmount": 0.0,
+        "BoneWeightsRowsPerFrame": 0.0,
+        "CarcassGoreTiling": 0.5,
+        "DirectionWet": 0.0,
+        "DirtAmount": 0.0,
+        "DryBloodAmount": 0.0,
+        "DryDuckweedAmount": 0.0,
+        "DryMudAmount": 0.0,
+        "DuckweedAmount": 0.0,
+        "DustAmount": 0.0,
+        "EndFrame": 0.0,
+        "Frame": 0.0,
+        "FullWetAmount": 0.0,
+        "GrowthAmount": 1.0,
+        "HatchlingToJuvenilePoint": 0.33,
+        "IsEnvenomated": 0.0,
+        "IsFemale": 0.0,
+        "IsHallucinating": 0.0,
+        "IsSignaling": 0.0,
+        "LowFood": 0.0,
+        "LowHealth": 0.0,
+        "MorphCarcassGore": 0.0,
+        "MouthGore": 0.0,
+        "MudAmount": 0.0,
+        "NumBones": 0.0,
+        "NumFrames": 1.0,
+        "Playrate": 1.0,
+        "PrevFrame": 0.0,
+        "RottenCarcassGore": 0.0,
+        "SS_Mask_Intensity": 0.2,
+        "SampleRate": 30.0,
+        "SandAmount": 0.0,
+        "StartFrame": 0.0,
+        "TimeOffset": 0.0,
+        "VomitAmount": 0.0
+      },
+      "colors": {
+        "MinBBox": {
+          "hex": "000000",
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "default": false
+        },
+        "SizeBBox": {
+          "hex": "000000",
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "default": false
+        }
+      },
+      "switches": {
+        "IsOpacity": true,
+        "UseSkinSystem": true
+      }
+    },
+    "patterns": {
+      "adult": [
+        {
+          "name": "1",
+          "path": "Textures/T_Austroraptor_Adult_Pattern_1.webp",
+          "label": "1"
+        },
+        {
+          "name": "2",
+          "path": "Textures/T_Austroraptor_Adult_Pattern_2.webp",
+          "label": "2"
+        },
+        {
+          "name": "3",
+          "path": "Textures/T_Austroraptor_Adult_Pattern_3.webp",
+          "label": "3"
+        },
+        {
+          "name": "4",
+          "path": "Textures/T_Austroraptor_Adult_Pattern_Heron_M.webp",
+          "label": "Heron"
+        }
+      ],
+      "juvenile": "Textures/T_Austroraptor_Juvenile_Pattern.webp",
+      "hatchling": "Textures/T_Austroraptor_Hatchling_Pattern.webp"
+    },
+    "palettes": {
+      "Palette1": {
+        "blue": "Textures/Gradients/Palette1/T_Austroraptor_palette1_BlueLayer.webp",
+        "cyan": "Textures/Gradients/Palette1/T_Austroraptor_palette1_CyanLayer.webp",
+        "green": "Textures/Gradients/Palette1/T_Austroraptor_palette1_GreenLayer.webp",
+        "magenta": "Textures/Gradients/Palette1/T_Austroraptor_palette1_MagentaLayer.webp",
+        "red": "Textures/Gradients/Palette1/T_Austroraptor_palette1_RedLayer.webp"
+      },
+      "Palette2": {
+        "blue": "Textures/Gradients/Palette2/T_Austroraptor_palette2_BlueLayer.webp",
+        "cyan": "Textures/Gradients/Palette2/T_Austroraptor_palette2_CyanLayer.webp",
+        "green": "Textures/Gradients/Palette2/T_Austroraptor_palette2_GreenLayer.webp",
+        "magenta": "Textures/Gradients/Palette2/T_Austroraptor_palette2_MagentaLayer.webp",
+        "red": "Textures/Gradients/Palette2/T_Austroraptor_palette2_RedLayer.webp"
+      },
+      "Palette3Heron": {
+        "blue": "Textures/Gradients/Palette3Heron/T_Austroraptor_paletteHeron_BlueLayer.webp",
+        "cyan": "Textures/Gradients/Palette3Heron/T_Austroraptor_paletteHeron_CyanLayer.webp",
+        "green": "Textures/Gradients/Palette3Heron/T_Austroraptor_paletteHeron_GreenLayer.webp",
+        "magenta": "Textures/Gradients/Palette3Heron/T_Austroraptor_paletteHeron_MagentaLayer.webp",
+        "red": "Textures/Gradients/Palette3Heron/T_Austroraptor_paletteHeron_RedLayer.webp"
+      }
+    },
+    "maps": {
+      "mask": "Textures/T_Austroraptor_M.webp",
+      "vfxMask": "Textures/T_Austroraptor_VFX_M.webp",
+      "albedo": "Textures/T_Austroraptor_Albedo.webp",
+      "skinNoise": "Textures/T_SkinNoise_M.webp"
+    },
+    "opacitySource": "mask.rgb",
+    "opacityResolved": true
+  },
+  "eye": {
+    "irisPrimary": {
+      "hex": "6F4870",
+      "rgb": [
+        0.158961,
+        0.064803,
+        0.162029
+      ],
+      "default": false
+    },
+    "irisSecondary": {
+      "hex": "688BB9",
+      "rgb": [
+        0.138432,
+        0.258183,
+        0.48515
+      ],
+      "default": false
+    },
+    "sclera": {
+      "hex": "20100C",
+      "rgb": [
+        0.015,
+        0.005511,
+        0.00375
+      ],
+      "default": false
+    },
+    "irisScale": 0.7,
+    "irisOutlineScale": 0.7,
+    "pupilScale": 0.4,
+    "irisBlur": 5.0,
+    "extra": {
+      "scalars": {
+        "Blink": 1.0,
+        "Iris_Blur": 5.0,
+        "IsCarcass": 0.0
+      },
+      "colors": {
+        "EyeCarcassColor": {
+          "hex": "CADCD3",
+          "rgb": [
+            0.591667,
+            0.71,
+            0.650833
+          ],
+          "default": false
+        }
+      }
+    },
+    "eyeNormalTexture": "Textures/Eye/T_EyeBase_1_N.webp",
+    "irisTexture": "Textures/Eye/T_AnimalEyes_Iris_1.webp",
+    "pupilTexture": "Textures/Eye/T_AnimalEyes_Pupil_1.webp",
+    "scleraTexture": "Textures/Eye/T_Eye_Sclera_D.webp",
+    "flipbooks": {
+      "membrane": {
+        "path": "Textures/Eye/T_Membrane_D.webp",
+        "frames": 8,
+        "columns": 8,
+        "rows": 4,
+        "frameWidth": 128,
+        "frameHeight": 256
+      }
+    },
+    "composedTexture": "Textures/Eye/Austroraptor_Eye.webp"
+  },
+  "morphStages": [
+    "Hatchling",
+    "Juvenile",
+    "Elder"
+  ],
+  "growth": {
+    "stages": [
+      "Hatchling",
+      "Juvenile",
+      "Elder"
+    ],
+    "hatchlingToJuvenile": 0.33
+  }
+}
