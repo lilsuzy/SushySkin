@@ -587,6 +587,104 @@
             color: rgba(255, 235, 179, 0.62);
             font-size: 10px;
         }
+        #randomizeColorsButton {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: -6px auto 14px;
+            padding: 6px 14px;
+            border: 1px solid rgba(253, 88, 185, 0.4);
+            border-radius: 8px;
+            background: #1a1015;
+            color: #ffebb3;
+            cursor: pointer;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        #randomizeColorsButton:hover {
+            border-color: rgba(253, 88, 185, 0.9);
+        }
+        #randomizeColorsButton .rand-arrow-a {
+            fill: #ffebb3;
+        }
+        #randomizeColorsButton .rand-arrow-b {
+            fill: #ffb5d9;
+        }
+        #randomizeColorsButton {
+            position: relative;
+        }
+        #randomizeColorsButton::after {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            padding: 1px;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #ffb3ba, #ffdfba, #ffffba, #baffc9, #bae1ff, #d5baff);
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor;
+            mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+            opacity: 0;
+            pointer-events: none;
+        }
+        #randomizeColorsButton.is-lit::after {
+            animation: rainbow-border-light 0.45s ease-out forwards;
+        }
+        #randomizeColorsButton.is-lit {
+            animation: rainbow-glow-light 0.45s ease-out;
+        }
+        @keyframes rainbow-border-light {
+            0% { opacity: 0; filter: hue-rotate(0deg); }
+            15% { opacity: 1; }
+            100% { opacity: 0; filter: hue-rotate(180deg); }
+        }
+        @keyframes rainbow-glow-light {
+            0% { box-shadow: 0 0 0 0 rgba(213, 186, 255, 0); }
+            15% { box-shadow: 0 0 10px 1px rgba(255, 179, 186, 0.6), 0 0 16px 2px rgba(186, 225, 255, 0.45); }
+            100% { box-shadow: 0 0 0 0 rgba(213, 186, 255, 0); }
+        }
+        html.win95 #randomizeColorsButton {
+            border: 0;
+            border-radius: 0;
+            background: rgba(192, 192, 192, 0.6);
+            box-shadow: var(--w-raised);
+        }
+        html.win95 #randomizeColorsButton:active {
+            box-shadow: var(--w-sunken);
+        }
+        html.win95 #randomizeColorsButton .rand-arrow-a,
+        html.win95 #randomizeColorsButton .rand-arrow-b {
+            fill: #000;
+        }
+        html.win95 .zone-lock {
+            color: #000;
+            opacity: 1;
+        }
+        html.win95 .zone-lock[aria-pressed="true"] {
+            color: #e00000;
+            filter: none;
+        }
+        html.win95 #randomizeColorsButton.is-lit {
+            animation: none;
+        }
+        html.win95 #randomizeColorsButton.is-lit::after {
+            animation: none;
+        }
+        .zone-lock {
+            display: inline-flex;
+            padding: 0;
+            border: 0;
+            background: none;
+            color: #ffebb3;
+            opacity: 0.5;
+            cursor: pointer;
+        }
+        .zone-lock[aria-pressed="true"] {
+            opacity: 1;
+            color: #ff8a8a;
+            filter: drop-shadow(0 0 4px rgba(255, 70, 70, 0.85));
+        }
+        .zone-lock + .zone-title {
+            margin-right: auto;
+        }
         #topTools {
             position: fixed;
             top: 14px;
@@ -1236,14 +1334,14 @@
             <span id="lightingIcon" aria-hidden="true"></span>
         </summary>
         <div class="lighting-controls-body">
-            <label for="ambientIntensity">Environment <output id="ambientIntensityValue" for="ambientIntensity">0.50</output></label>
-            <input id="ambientIntensity" type="range" min="0" max="3" step="0.05" value="0.5">
+            <label for="ambientIntensity">Environment <output id="ambientIntensityValue" for="ambientIntensity">2.00</output></label>
+            <input id="ambientIntensity" type="range" min="0" max="3" step="0.05" value="2">
             <label for="sunIntensity">Key light <output id="sunIntensityValue" for="sunIntensity">3.00</output></label>
             <input id="sunIntensity" type="range" min="0" max="3" step="0.05" value="3">
             <label for="sunHeight">Light height <output id="sunHeightValue" for="sunHeight">0.20</output></label>
             <input id="sunHeight" type="range" min="0" max="1" step="0.01" value="0.2">
             <label for="fillIntensity">Fill light <output id="fillIntensityValue" for="fillIntensity">0.10</output></label>
-            <input id="fillIntensity" type="range" min="0" max="1" step="0.05" value="0.1">
+            <input id="fillIntensity" type="range" min="0" max="1" step="0.05" value="0.6">
             <label for="skinSpecular">Surface shine <output id="skinSpecularValue" for="skinSpecular">0.10</output></label>
             <input id="skinSpecular" type="range" min="0" max="1" step="0.01" value="0.1">
         </div>
@@ -1350,6 +1448,7 @@
                 <span id="growthEndLabel">Elder</span>
             </div>
         </div>
+        <button type="button" id="randomizeColorsButton" aria-label="Randomize unlocked colors" title="Randomize unlocked colors"><span id="randomizeColorsIcon" aria-hidden="true"></span></button>
 
         <div id="controls-container">
             <!-- Dynamic Shader Zones -->
@@ -1378,6 +1477,9 @@
             mdiEyedropperPlus,
             mdiWaterOutline,
             mdiWaterCheckOutline,
+            mdiLockOpenOutline,
+            mdiLockOutline,
+            mdiCached,
         } from '@mdi/js';
         import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
         import { KTX2Loader } from 'three/addons/loaders/KTX2Loader.js';
@@ -1387,6 +1489,24 @@
 
         console.log("Starting Glitched Skin Editor...");
 
+        createRoot(document.getElementById('randomizeColorsIcon')).render(
+            React.createElement('svg', { viewBox: '0 0 24 24', width: '1.5rem', height: '1.5rem', role: 'presentation' },
+                React.createElement('path', { className: 'rand-arrow-a', d: mdiCached.slice(0, mdiCached.indexOf('M6,12')) }),
+                React.createElement('path', { className: 'rand-arrow-b', d: mdiCached.slice(mdiCached.indexOf('M6,12')) }),
+            ),
+        );
+        document.getElementById('randomizeColorsButton').addEventListener('click', event => {
+            const button = event.currentTarget;
+            button.classList.remove('is-lit');
+            void button.offsetWidth;
+            button.classList.add('is-lit');
+            window.clearTimeout(button.litTimer);
+            button.litTimer = window.setTimeout(() => button.classList.remove('is-lit'), 500);
+            requestAnimationFrame(() => {
+                setSkinGlitchMode(false);
+                colorRandomizers.forEach(randomize => randomize());
+            });
+        });
         createRoot(document.getElementById('lightingIcon')).render(
             React.createElement(Icon, { path: mdiLightbulbOn10, size: 1 }),
         );
@@ -1571,6 +1691,7 @@
         let growthValue = 0.5;
         let eyeColorRgba = rgbaValuesFromHex('#FFBE00');
         const rgbaColorControls = new Map();
+        const colorRandomizers = new Map();
         // Color copied with the eyedropper; the water-drop buttons paste it into any zone.
         let copiedZoneColor = null;
         const colorPasteButtons = new Set();
@@ -1761,7 +1882,34 @@
             const preview = document.createElement('span');
             preview.className = 'zone-preview';
             preview.setAttribute('aria-label', `${label} color preview`);
-            summary.append(title, preview);
+            const lockButton = document.createElement('button');
+            lockButton.type = 'button';
+            lockButton.className = 'zone-lock';
+            const lockIcon = document.createElement('span');
+            lockIcon.setAttribute('aria-hidden', 'true');
+            lockButton.appendChild(lockIcon);
+            const lockRoot = createRoot(lockIcon);
+            let isLocked = false;
+            const renderLock = () => {
+                lockButton.setAttribute('aria-pressed', String(isLocked));
+                const text = isLocked ? 'Unlock color' : 'Lock color';
+                lockButton.title = text;
+                lockButton.setAttribute('aria-label', `${text} (${label})`);
+                lockRoot.render(React.createElement(Icon, {
+                    path: isLocked ? mdiLockOutline : mdiLockOpenOutline,
+                    path: isLocked ? mdiLockOutline : mdiLockOpenOutline,
+                    size: 0.7,
+                }));
+            };
+            renderLock();
+            lockButton.addEventListener('click', event => {
+                event.preventDefault();
+                event.stopPropagation();
+                isLocked = !isLocked;
+                renderLock();
+            });
+            lockButton.addEventListener('keydown', event => event.stopPropagation());
+            summary.append(lockButton, title, preview);
             details.appendChild(summary);
             if (key === 'zone-0') {
                 summary.addEventListener('click', event => {
@@ -2096,6 +2244,17 @@
             };
             setValues(initialValues);
             rgbaColorControls.set(key, setValues);
+            if (containerElement.id !== 'backgroundControls') colorRandomizers.set(key, () => {
+                if (isLocked || details.classList.contains('is-disabled')) return;
+                const values = {
+                    ...readValues(),
+                    r: Math.floor(Math.random() * 256),
+                    g: Math.floor(Math.random() * 256),
+                    b: Math.floor(Math.random() * 256),
+                };
+                setValues(values);
+                onChange(values);
+            });
             return details;
         }
 
