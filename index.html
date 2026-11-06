@@ -2911,6 +2911,10 @@
                         }
                         vec3 cavity = texture2D(uOrigMap, vMapUv).rgb;
                         diffuseColor.rgb = blendOverlay(clamp(skinColor, 0.0, 1.0) * albedo, cavity);
+                        float teethCoverage = smoothstep(0.05, 0.6,
+                            baseMask.r - max(baseMask.g, baseMask.b));
+                        vec3 teethDiffuse = clamp(uTeethColor, 0.0, 1.0) * albedo * (2.0 * cavity);
+                        diffuseColor.rgb = mix(diffuseColor.rgb, teethDiffuse, teethCoverage);
                         diffuseColor.a = texture2D(uOrigMap, vMapUv).a;
                     #endif
                     `,
