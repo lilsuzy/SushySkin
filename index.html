@@ -1381,6 +1381,7 @@
                 <select id="skinCodeFormat">
                     <option value="skinhex1">Editor code (SKINHEX1)</option>
                     <option value="extended-rgb">Extended RGB (preserves NERF limit ±1,000,000)</option>
+                    <option value="game-json">Game skin JSON</option>
                     <option value="oasis-base64">Oasis code (Base64)</option>
                     <option value="nerf-base64">NERF-compatible code (Base64)</option>
                     <option value="color-hex">Color hex list</option>
@@ -3477,6 +3478,37 @@
             return `RGBX1:${JSON.stringify(preset)}`;
         }
 
+        function encodeGameSkinJson(preset) {
+            const toGameColor = (values, eye = false) => {
+                const color = preset.glitchSkin
+                    ? values
+                    : eye
+                        ? { r: values.r / 255, g: values.g / 255, b: values.b / 255 }
+                        : new THREE.Color().setRGB(
+                            values.r / 255, values.g / 255, values.b / 255, THREE.SRGBColorSpace,
+                        );
+                return { R: color.r, G: color.g, B: color.b, A: 1 };
+            };
+            if (!currentSkinMaterial || !currentPatternChoices[Number(patternSelect.value)]) {
+                throw new Error('Load a model and pattern before generating skin JSON.');
+            }
+            return JSON.stringify({
+                bIsFemale: preset.gender === 'female',
+                SkinVariation: currentSkinMaterial.userData.skinUniforms.uNoiseTiling.value,
+                PatternIndex: Number(patternSelect.value),
+                MaleDisplayColor: toGameColor(preset.zones[0]),
+                MarkingsColor: toGameColor(preset.zones[4]),
+                BodyColor: toGameColor(preset.zones[3]),
+                FlankColor: toGameColor(preset.zones[2]),
+                UnderbellyColor: toGameColor(preset.zones[1]),
+                Detail1Color: toGameColor(preset.zones[5]),
+                EyesColor: toGameColor(preset.eye, true),
+                TeethColor: toGameColor(preset.details.teethColor),
+                MouthColor: toGameColor(preset.details.mouthColor),
+                ClawsColor: toGameColor(preset.details.clawColor),
+            }, null, 2);
+        }
+
         function encodeBase64SkinCode(preset, zeroBasedPattern = false) {
             const glitchSkin = zeroBasedPattern && preset.glitchSkin;
             const toHex = glitchSkin ? rgbaToNerfGlitchHex : rgbaToHex;
@@ -3542,6 +3574,7 @@
         function encodeSkinCodeForFormat(preset, format) {
             if (format === 'skinhex1') return encodeSkinCode(preset);
             if (format === 'extended-rgb') return encodeExtendedRgbCode(preset);
+            if (format === 'game-json') return encodeGameSkinJson(preset);
             if (format === 'oasis-base64') return encodeBase64SkinCode(preset);
             if (format === 'nerf-base64') return encodeBase64SkinCode(preset, true);
             if (format === 'color-hex') return encodeColorHexList(preset);
@@ -3943,6 +3976,8 @@
                 setPresetStatus(
                     hasExtendedValues && isLimitedFormat
                         ? 'Skin code generated, but this format cannot preserve extended RGB values. Choose Extended RGB or SKINHEX1, or NERF Base64 for a NERF glitch skin.'
+                        : skinCodeFormatSelect.value === 'game-json'
+                            ? 'Skin JSON generated. It does not include species or growth; select the species before importing.'
                         : 'Skin code generated. Copy it to share or back it up.',
                     hasExtendedValues && isLimitedFormat,
                 );
@@ -3972,6 +4007,7 @@
             resetSkinCodeActionFeedback(loadSkinCodeButton, 'Apply skin code');
             try {
                 const input = skinCodeInput.value.trim();
+                let clampedChannels = [];
                 if (/^SKINHEX1:/i.test(input)) {
                     const preset = decodeSkinCode(input);
                     await applySkinPreset(preset);
@@ -3981,6 +4017,7 @@
                 } else if (input.startsWith('{')) {
                     const settings = decodeGameSkinJson(input, speciesSelect.value);
                     await applySkinPreset(settings.preset, settings);
+                    clampedChannels = settings.clampedChannels;
                     skinCodeFormatSelect.value = 'nerf-base64';
                     skinCodeOutput.value = encodeSkinCodeForFormat(
                         validateSkinPreset(getCurrentSkinPreset()),
@@ -3993,6 +4030,12 @@
                 }
                 skinCodeInput.value = '';
                 showSkinCodeActionSuccess(loadSkinCodeButton, 'Apply skin code', 'Skin code applied');
+                if (clampedChannels.length) {
+                    setPresetStatus(
+                        `Skin code applied, but ${clampedChannels.join(', ')} exceeded the ±${glitchRgbLimit} limit and were clamped.`,
+                        true,
+                    );
+                }
             } catch (error) {
                 setPresetStatus(`Could not apply skin code: ${error.message}`, true);
             }
